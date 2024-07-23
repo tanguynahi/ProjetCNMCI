@@ -6,7 +6,7 @@
                     <span class="text-danger">*</span></label>
                 <input type="text" name="numero_identification"
                     class="form-control @error('numero_identification') is-invalid @enderror" placeholder="XXXXXXXX"
-                    autocomplete="numero_identification" autofocus value="{{ old('numero_identification') }}" >
+                    autocomplete="numero_identification" autofocus value="{{ old('numero_identification') }}">
                 @error('numero_identification')
                     <span class="invalid-feedback" role="alert">
                         <strong>
@@ -139,29 +139,45 @@
     </div>
     <div class="row mt-4">
         <div class="col-lg-3 col-md-3 col-12" data-select2-id="select2-data-19-lrou">
-            <label class="form-label">Type Activités <span class="text-danger">*</span></label>
-            <select name="type_activite_id"
-                class="form-control show-tick ms select2 select2-hidden-accessible @error('type_activite_id') is-invalid @enderror"
-                data-placeholder="Select" data-select2-id="select2-data-1-4ue7" tabindex="-1" aria-hidden="true">
-                <option data-select2-id="select2-data-3-o5ur" autocomplete="type_activite_id" autofocus required>--
-                    Séléctionner
-                    un type d'activité --</option>
-                @foreach ($typeActivites as $typeActivite)
-                    <option data-select2-id="select2-data-22-ekqo" value="{{ $typeActivite->id }}"
-                        {{ old('type_activite_id') == $typeActivite->id ? 'selected' : '' }}>
-                        {{ $typeActivite->libelle }}
+            <label class="form-label">Branche Activites <span class="text-danger">*</span></label>
+            <select name="branche_activite_id"
+                class="form-control show-tick ms select2 select2-hidden-accessible @error('branche_activite_id') is-invalid @enderror"
+                data-placeholder="Select" data-select2-id="select2-data-1-4ue7" tabindex="-1" aria-hidden="true"
+                id="branche_activite_id">
+                <option data-select2-id="select2-data-3-o5ur" autocomplete="branche_activite_id" autofocus required>--
+                    Séléctionner un type d'activité --</option>
+                @foreach ($brancheActivites as $brancheActivite)
+                    <option data-select2-id="select2-data-22-ekqo" value="{{ $brancheActivite->id }}"
+                        {{ old('branche_activite_id') == $brancheActivite->id ? 'selected' : '' }}>
+                        {{ $brancheActivite->libelle }}
                     </option>
                 @endforeach
             </select>
-            @error('type_activite_id')
+            @error('branche_activite_id')
                 <span class="invalid-feedback" role="alert">
-                    <strong>
-                        {{ $message }}
-                    </strong>
+                    <strong>{{ $message }}</strong>
                 </span>
             @enderror
         </div>
-        <div class="col-md-6 col-lg-6 col-12">
+
+        <div class="col-lg-6 col-md-6 col-12" data-select2-id="select2-data-19-lrou">
+            <label class="form-label">Metiers <span class="text-danger">*</span></label>
+            <select name="type_activite_id"
+                class="form-control show-tick ms select2 select2-hidden-accessible @error('type_activite_id') is-invalid @enderror"
+                data-placeholder="Select" data-select2-id="select2-data-1-4ue7" tabindex="-1" aria-hidden="true"
+                id="type_activite_id">
+
+            </select>
+            @error('type_activite_id')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+
+
+        <div class="col-md-3 col-lg-3 col-12">
             <label class="form-label">Activité Secondaire </label>
             <input type="text" name="activite_secondaire"
                 class="form-control @error('activite_secondaire') is-invalid @enderror"
@@ -175,6 +191,9 @@
                 </span>
             @enderror
         </div>
+    </div>
+
+    <div class="row mt-4">
         <div class="col-md-3 col-lg-3 col-12">
             <label class="form-label">Date de début d'activité <span class="text-danger">*</span></label>
             <input type="date" name="date_debut_activite"
@@ -188,8 +207,7 @@
                 </span>
             @enderror
         </div>
-    </div>
-    <div class="row mt-4">
+
         <div class="col-md-3 col-lg-3 col-12">
             <label class="form-label">Raison social <span class="text-danger">*</span></label>
             <input type="text" name="raison_social"
@@ -229,38 +247,7 @@
                 </span>
             @enderror
         </div>
-        <div class="col-lg-3 col-md-3 col-12" data-select2-id="select2-data-19-lrou">
-            <label class="form-label">Regime Fiscal <span class="text-danger">*</span></label>
-            <select name="regime_fiscal"
-                class="form-control show-tick ms select2 select2-hidden-accessible @error('regime_fiscal') is-invalid @enderror"
-                data-placeholder="Select" data-select2-id="select2-data-1-4ue7" tabindex="-1" aria-hidden="true"
-                autocomplete="regime_fiscal" autofocus required>
-                <option data-select2-id="select2-data-3-o5ur">--
-                    Séléctionner
-                    un regime --</option>
-                <option data-select2-id="select2-data-22-ekqo" value="Taxe communale de l'Entreprenant"
-                    {{ old('regime_fiscal') == "Taxe communale de l'Entreprenant" ? 'selected' : '' }}>Taxe
-                    communale
-                    de l'Entreprenant
-                </option>
-                <option data-select2-id="select2-data-23-9qx4"
-                    value="Taxe d'Etat de l'Entreprenant"{{ old('regime_fiscal') == "Taxe d'Etat de l'Entreprenant" ? 'selected' : '' }}>
-                    Taxe d'Etat
-                    de
-                    l'Entreprenant
-                </option>
-                <option data-select2-id="select2-data-24-1ajb"
-                    value="Autres"{{ old('regime_fiscal') == 'Autres' ? 'selected' : '' }}>Autres
-                </option>
-            </select>
-            @error('regime_fiscal')
-                <span class="invalid-feedback" role="alert">
-                    <strong>
-                        {{ $message }}
-                    </strong>
-                </span>
-            @enderror
-        </div>
+
     </div>
     <div class="row mt-4">
         <div class="col-md-3 col-lg-3 col-12">
@@ -370,11 +357,42 @@
                 </span>
             @enderror
         </div>
+        <div class="col-lg-3 col-md-3 col-12" data-select2-id="select2-data-19-lrou">
+            <label class="form-label">Regime Fiscal <span class="text-danger">*</span></label>
+            <select name="regime_fiscal"
+                class="form-control show-tick ms select2 select2-hidden-accessible @error('regime_fiscal') is-invalid @enderror"
+                data-placeholder="Select" data-select2-id="select2-data-1-4ue7" tabindex="-1" aria-hidden="true"
+                autocomplete="regime_fiscal" autofocus required>
+                <option data-select2-id="select2-data-3-o5ur">--
+                    Séléctionner
+                    un regime --</option>
+                <option data-select2-id="select2-data-22-ekqo" value="Taxe communale de l'Entreprenant"
+                    {{ old('regime_fiscal') == "Taxe communale de l'Entreprenant" ? 'selected' : '' }}>Taxe
+                    communale
+                    de l'Entreprenant
+                </option>
+                <option data-select2-id="select2-data-23-9qx4"
+                    value="Taxe d'Etat de l'Entreprenant"{{ old('regime_fiscal') == "Taxe d'Etat de l'Entreprenant" ? 'selected' : '' }}>
+                    Taxe d'Etat
+                    de
+                    l'Entreprenant
+                </option>
+                <option data-select2-id="select2-data-24-1ajb"
+                    value="Autres"{{ old('regime_fiscal') == 'Autres' ? 'selected' : '' }}>Autres
+                </option>
+            </select>
+            @error('regime_fiscal')
+                <span class="invalid-feedback" role="alert">
+                    <strong>
+                        {{ $message }}
+                    </strong>
+                </span>
+            @enderror
+        </div>
         <div class="col-md-3 col-lg-3 col-12">
             <label class="form-label">Departement <span class="text-danger">*</span></label>
             <input type="text" name="departement" class="form-control @error('departement') is-invalid @enderror"
-                placeholder="departement" autocomplete="departement" autofocus value="{{ old('departement') }}"
-                required>
+                placeholder="departement" autocomplete="departement" autofocus value="{{ old('departement') }}">
             @error('departement')
                 <span class="invalid-feedback" role="alert">
                     <strong>
@@ -383,6 +401,9 @@
                 </span>
             @enderror
         </div>
+
+    </div>
+    <div class="row mt-4">
         <div class="col-lg-3 col-lg-3 col-md-4" data-select2-id="select2-data-19-lrou">
             <label class="form-label">Commune <span class="text-danger">*</span> </label>
             <select name="commune_id"
@@ -407,9 +428,7 @@
                 </span>
             @enderror
         </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-lg-3 col-12 col-md-4" data-select2-id="select2-data-19-lrou">
+        <div class="col-lg-3 col-12 col-md-3" data-select2-id="select2-data-19-lrou">
             <label class="form-label">Sous préfecture <span class="text-danger">*</span></label>
             <select name="sous_prefecture_id"
                 class="form-control show-tick ms select2 select2-hidden-accessible @error('sous_prefecture_id') is-invalid @enderror"
@@ -457,21 +476,40 @@
                 </span>
             @enderror
         </div>
-        <div class="col-md-3 col-lg-3 col-12">
-            <label class="form-label">Adresse Entreprise <span class="text-danger">*</span></label>
-            <input type="text" name="adresse_postale"
-                class="form-control @error('adresse_postale') is-invalid @enderror" placeholder="adresse entreprise"
-                autocomplete="adresse_postale" autofocus value="{{ old('adresse_postale') }}" required>
-            @error('adresse_postale')
-                <span class="invalid-feedback" role="alert">
-                    <strong>
-                        {{ $message }}
-                    </strong>
-                    {{ alert() }}
-                </span>
-            @enderror
+
+
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-sm-12 ">
+            <div class="form-group">
+                <label for="adresse_postale">Adresse Entreprise <span style="color: red;">*</span></label>
+                <input type="text" class="form-control @error('adresse_postale') is-invalid @enderror"
+                    id="adresse_postale" name="adresse_postale" placeholder="Entrez l'adresse de l'entreprise"
+                    required>
+                @error('adresse_postale')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+        <div class="col-6">
+            <input type="text" name="lien_google_map" id="lien_google_map" class="" hidden required>
         </div>
     </div>
+    <style>
+        #map {
+            height: 500px;
+            width: 1200px;
+        }
+    </style>
+    <div class="row mt-3">
+        <div class="col-12 col-lg-12 col-md-12" id="map">
+        </div>
+    </div>
+
+
     <div class="mt-3">
         <p><span class="text-danger fw-bold">*</span> Champs obligatoires.</p>
     </div>
@@ -482,3 +520,119 @@
         </button>
     </div>
 </div> <!-- .row end -->
+
+@push('js')
+    <script>
+        let map, marker, autocomplete;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: -34.397,
+                    lng: 150.644
+                },
+                zoom: 8
+            });
+
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true
+            });
+
+            autocomplete = new google.maps.places.Autocomplete(document.getElementById('adresse_postale'), {
+                types: ['geocode']
+            });
+            autocomplete.addListener('place_changed', onPlaceChanged);
+
+            google.maps.event.addListener(marker, 'dragend', function() {
+                const position = marker.getPosition();
+                map.setCenter(position);
+                document.getElementById('lien_google_map').value = position.lat() + ", " + position.lng();
+            });
+        }
+
+        function onPlaceChanged() {
+            const place = autocomplete.getPlace();
+            if (!place.geometry) {
+                alert("No details available for input: '" + place.name + "'");
+                return;
+            }
+
+            map.setCenter(place.geometry.location);
+            map.setZoom(14);
+            marker.setPosition(place.geometry.location);
+            marker.setVisible(true);
+
+            document.getElementById('lien_google_map').value = place.geometry.location.lat() + ", " + place.geometry
+                .location
+                .lng();
+        }
+
+        function showLocation() {
+            const address = document.getElementById('lien_google_map').value;
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+                'adresse_postale': address
+            }, function(results, status) {
+                if (status === 'OK') {
+                    map.setCenter(results[0].geometry.location);
+                    marker.setPosition(results[0].geometry.location);
+                    marker.setVisible(true);
+
+                    document.getElementById('lien_google_map').value = results[0].formatted_address + " (" +
+                        results[0]
+                        .geometry.location.lat() + ", " + results[0].geometry.location.lng() + ")";
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+    </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiw_DCMqoSQ5MoxmNqwbMKN_JEy-qQAS0&libraries=places&callback=initMap"
+        async defer></script>
+
+        {{-- trier du metier en fonction de la branche d'activites --}}
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const brancheSelect = document.getElementById('branche_activite_id');
+                const metierSelect = document.getElementById('type_activite_id');
+
+                // Ajouter une option par défaut au chargement
+                const defaultOption = document.createElement("option");
+                defaultOption.text = "Sélectionner une branche d'activité d'abord";
+                defaultOption.value = "";
+                metierSelect.appendChild(defaultOption);
+
+                brancheSelect.addEventListener("change", function() {
+                    const selectedBrancheId = brancheSelect.value;
+
+                    // Désactiver le menu déroulant des métiers si aucune branche n'a été sélectionnée
+                    metierSelect.disabled = !selectedBrancheId;
+
+                    // Effacer les options précédentes
+                    metierSelect.innerHTML = "";
+
+                    if (selectedBrancheId) {
+                        @foreach ($typeActivites as $typeActivite)
+                            if ({{ $typeActivite->branche_activite_id }} == selectedBrancheId) {
+                                const option = document.createElement("option");
+                                option.value = {{ $typeActivite->id }};
+                                option.text = "{{ $typeActivite->libelle }}";
+                                metierSelect.appendChild(option);
+                            }
+                        @endforeach
+                    } else {
+                        // Réafficher l'option par défaut si aucune branche n'est sélectionnée
+                        const option = document.createElement("option");
+                        option.text = "Sélectionner une branche d'activité d'abord";
+                        option.value = "";
+                        metierSelect.appendChild(option);
+                    }
+                });
+            });
+        </script>
+@endpush
+
+
+

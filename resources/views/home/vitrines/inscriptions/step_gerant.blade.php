@@ -74,12 +74,7 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-lg-8 col-md-8 col-sm-8 col-12 mt-3">
-                <input class="form-check-input exclusive-checkbox" type="checkbox" id="ouiMoi"
-                    onclick="copyArtisanToGerant()">
-                <label class="form-check-label" for="ouiMoi"> <strong class="form-label"> C'est Moi le gérant</strong>
-                </label>
-            </div> --}}
+
         </div>
         <div class="row  mb-2">
             <div class="col-md-3 col-lg-3 col-12">
@@ -222,7 +217,7 @@
                 <label class="form-label">Diplome Obtenu <span class="text-danger">*</span></label>
                 <input type="text" name="diplome_metier_obtenu_gerant" id="diplome_metier_obtenu_gerant"
                     class="form-control @error('diplome_metier_obtenu_gerant') is-invalid @enderror"
-                    value="{{ old('diplome_metier_obtenu_gerant') }}" required>
+                    value="{{ old('diplome_metier_obtenu_gerant') }}" >
                 @error('diplome_metier_obtenu_gerant')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

@@ -5,7 +5,7 @@ namespace App\Models\New;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CNMCI_users extends Model
+class cusers extends Model
 {
     protected $table = "CNMCI_users";
     protected $primaryKey = "ID_USERS";
@@ -20,6 +20,8 @@ class CNMCI_users extends Model
         "ADRESSE",
         "CIVILITE",
         "AVATAR",
+        "DATE_NAISS" ,
+        "LIEU_NAISS"  ,
         "LOGIN",
         "MOT_DE_PASSE",
         "SEL",

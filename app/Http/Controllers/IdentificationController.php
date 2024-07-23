@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Taxe;
+// use App\Models\Taxe;
 use App\Models\User;
 use App\Models\Gerant;
 use App\Models\Artisan;
@@ -80,10 +81,10 @@ class IdentificationController extends Controller
 
         try {
             DB::beginTransaction();
-            if ($identification->administrateur_id == null) {
+            if ($identification->ID_ADMINISTRATEUR == null) {
                 $identification->update([
-                    'administrateur_id' => auth()->user()->administrateur->id,
-                    'avis' => "Acceptée",
+                    'ID_ADMINISTRATEUR' => auth()->user()->administrateur->id,
+                    'MOTIFS_REJET' => "Acceptée",
                 ]);
                 // $identification->administrateur_id = auth()->user()->administrateur->id;
                 // $identification->avis = "Acceptée";
@@ -91,123 +92,133 @@ class IdentificationController extends Controller
                 // dd($identification->administrateur_id);
             }
 
-            $typeEntrepise = TypeEntreprise::where('id', $identification->type_entreprise_id)
-                ->select('groupe_id')
+            $typeEntrepise = TypeEntreprise::where('ID_TYPE_ENTREPRISES', $identification->type_entreprise_id)
+                ->select('ID_GROUPES')
                 ->first();
 
-            $groupeId = $typeEntrepise->groupe_id;
+            $groupeId = $typeEntrepise->ID_GROUPES;
 
-            $taxe = Taxe::where('groupe_id', $groupeId)->first();
+            $taxe = Taxe::where('ID_GROUPES', $groupeId)->first();
 
             $user = User::create([
-                'contact' => $identification->contact_artisan,
-                'email' => $identification->email_artisan,
-                'password' => Hash::make('12345678')
+                'NOM' => $identification->nom_artisan,
+                'PRENOMS' => $identification->prenom_artisan,
+                'CONTACT' => $identification->contact_artisan,
+                'ADR_EMAIL' => $identification->email_artisan,
+                'ADRESSE' => $identification->adresse_artisan,
+                'CIVILITE' => $identification->sexe_artisan,
+                'AVATAR' => $identification->lien_photo_artisan ?? '',
+                'DATE_NAISS' => $identification->date_naissance_artisan,
+                'LIEU_NAISS' => $identification->lieu_naissance_artisan,
+                // 'MOT_DE_PASSE' => Hash::make('12345678')
             ]);
 
             $user->assignRole('artisan');
 
             $artisan = Artisan::create([
-                'chambre_regionale_id' => $identification->chambre_regionale_id,
-                'user_id' => $user->id,
-                'nom' => $identification->nom_artisan,
-                'prenom' => $identification->prenom_artisan,
-                'date_naissance' => $identification->date_naissance_artisan,
-                'lieu_naissance' => $identification->lieu_naissance_artisan,
-                'sexe' => $identification->sexe_artisan,
-                'type_document_id' => $identification->type_document_id,
-                'lien_type_document' => $identification->lien_type_document_artisan,
-                'autre_document' => $identification->autre_document_artisan,
-                'numero_document' => $identification->numero_document_artisan,
-                'lieu_delivrance_document' => $identification->lieu_delivrance_document_artisan,
-                'date_delivrance_document' => $identification->date_delivrance_document_artisan,
-                'nationalite' => $identification->nationalite_artisan,
-                'adresse' => $identification->adresse_artisan,
-                'contact' => $identification->contact_artisan,
-                'contact_whatsapp' => $identification->contact_whatsapp,
-                'etat_civil' => $identification->etat_civil_artisan,
-                'email' => $identification->email_artisan,
-                'lien_photo' => $identification->lien_photo_artisan ?? '',
-                'niveau_etude' => $identification->niveau_etude,
-                'classe' => $identification->classe,
-                'diplome_etude_obtenu' => $identification->diplome_etude_obtenu,
-                'apprentissage_metier' => $identification->apprentissage_metier,
-                'niveau_metier' => $identification->niveau_metier_artisan,
-                'diplome_metier_obtenu' => $identification->diplome_metier_obtenu,
-                'diplome_cnmci' => $identification->diplome_cnmci,
-                'declaration_maitrise_metier' => $identification->declaration_maitrise_metier,
-                'declaration_honneur' => $identification->declaration_honneur,
-                'accepte_confidentialite' => $identification->accepte_confidentialite,
-                'registre_entreprise' => $identification->registre_entreprise,
-                'numero_registre' => $identification->numero_registre,
-                'etes_gerant' => $identification->etes_gerant,
+                'ID_CHAMBRE_REGION' => $identification->ID_CHAMBRE_REGION,
+                'ID_USERS' => $user->id,
+                // 'nom' => $identification->nom_artisan,
+                // 'prenom' => $identification->prenom_artisan,
+                // 'date_naissance' => $identification->date_naissance_artisan,
+                // 'lieu_naissance' => $identification->lieu_naissance_artisan,
+                // 'sexe' => $identification->sexe_artisan,
+                'ID_TYPE_DOCS' => $identification->ID_TYPE_DOCS_ARTIS,
+                'LIEN_TYPE_DOCS' => $identification->LIEN_TYPE_DOCS_ARTIS,
+                'AUTRE_DOCS' => $identification->AUTRE_DOCS_ARTIS,
+                'NUMERO_DOCS' => $identification->NUM_DOCS_ARTIS,
+                'LIEU_DELIVRE_DOCS' => $identification->LIEU_DELIVRE_DOCS_ARTIS,
+                'DATE_DELIVRE_DOCS' => $identification->DATE_DELIVRE_DOCS_ARTIS,
+                'NATIONALITE' => $identification->NATIONALITE_ARTIS,
+                'ADRESSE' => $identification->ADRESSE_ARTIS,
+                'CONTACT' => $identification->CONTACT_ARTIS,
+                'CONTACT_WHATSAPP' => $identification->CONTACT_WHATSAPP_ARTIS,
+                'ETAT_CIVIL' => $identification->ETAT_CIVIL_ARTIS,
+                'ADR_EMAIL' => $identification->ADR_EMAIL_ARTIS,
+                'AVATAR' => $identification->AVATAR_ARTIS ?? '',
+                'NIVEAU_ETUDE' => $identification->NIVEAU_ETUDE_ARTIS,
+                'CLASSE_ARTIS' => $identification->CLASSE_ARTIS,
+                'DIPLOME_ETD_OBT' => $identification->DIPLOME_OBT_ARTIS,
+                'APPRENTISS_MET' => $identification->APPRENTISS_MET_ARTIS,
+                'NIVEAU_METIER' => $identification->NIVEAU_METIER_ARTIS,
+                'DIPLOME_METIER_OBT' => $identification->DIPLOME_METIER_OBT_ARTIS,
+                'DIPLOME_CNMCI' => $identification->DIPLOME_CNMCI_ARTIS,
+                'SIGNATURE' => $identification->SIGNATURE,
+                'DECLARE_MAITRISE_METIER' => $identification->DECLARE_MAITRISE_METIER,
+                'DECLARE_HONNEUR' => $identification->DECLARE_HONNEUR,
+                'ACCEPTE_CONFIDENTIAL' => $identification->ACCEPTE_CONFIDENTIAL,
+                'EST_GERANT' => $identification->EST_GERANT,
+                'NUMERO_REGISTRE' => $identification->NUMERO_REGISTRE,
+                'TYPE_REGISTRE' => $identification->TYPE_REGISTRE,
 
             ]);
 
             if ($artisan) {
 
                 $activiteartisan = ActiviteArtisan::create([
-                    'chambre_regionale_id' => $identification->chambre_regionale_id,
-                    'type_entreprise_id' => $identification->type_entreprise_id,
-                    'artisan_id' => $artisan->id,
-                    'numero_identification' => $identification->numero_identification,
-                    'denomination_entreprise' => $identification->denomination_entreprise,
-                    'adresse_postale' => $identification->adresse_postale,
-                    'contact_entreprise' => $identification->contact_entreprise,
-                    'email_entreprise' => $identification->email_entreprise,
-                    'regime_fiscal' => $identification->regime_fiscal,
-                    'nombre_associes' => $identification->nombre_associes,
-                    'duree_personne_morale' => $identification->duree_personne_morale,
-                    'annee_duree_personne_morale' => $identification->annee_duree_personne_morale,
-                    'capital_social' => $identification->capital_social,
-                    'numero_cnps' => $identification->numero_cnps,
-                    'numero_compte_contribuable' => $identification->numero_compte_contribuable,
-                    'type_activite_id' => $identification->type_activite_id,
-                    'activite_secondaire' => $identification->activite_secondaire,
-                    'raison_social' => $identification->raison_social,
-                    'sigle_ou_enseigne' => $identification->sigle_ou_enseigne,
-                    'objet_social' => $identification->objet_social,
-                    'date_debut_activite' => $identification->date_debut_activite,
-                    'departement' => $identification->departement,
-                    'sous_prefecture_id' => $identification->sous_prefecture_id,
-                    'commune_id' => $identification->commune_id,
-                    'quartier' => $identification->quartier,
-                    'village' => $identification->village,
-                    'numero_lot' => $identification->numero_lot,
-                    'numero_ilot' => $identification->numero_ilot,
-                    'nombre_compagnon' => $identification->nombre_compagnon ?? 0,
-                    'nombre_apprenti' => $identification->nombre_apprenti ?? 0,
+                    'ID_CHAMBRE_REGION' => $identification->ID_CHAMBRE_REGION,
+                    'ID_TYPE_ENTREPRISES' => $identification->ID_TYPE_ENTREPRISES,
+                    'ID_ARTISANS' => $artisan->id,
+                    'NUMERO_IDENT' => $identification->NUMERO_IDENT,
+                    'DENOMINATION' => $identification->DENOMINATION,
+                    'ADRESSE_POSTAL' => $identification->ADRESSE_POSTAL,
+                    'CONTACT' => $identification->CONTACT,
+                    'ADR_EMAIL' => $identification->ADR_EMAIL,
+                    'REGIME_FISCALE' => $identification->REGIME_FISCALE,
+                    'NB_ASSOCIES' => $identification->NB_ASSOCIES,
+                    'DUREE_PERS_MORAL' => $identification->DUREE_PERS_MORAL,
+                    'TYPE_DUREE' => $identification->TYPE_DUREE,
+                    'CAPITAL_SOCIAL' => $identification->CAPITAL_SOCIAL,
+                    'NUMERO_CNPS' => $identification->NUMERO_CNPS,
+                    'NUM_COMPTE_CONT' => $identification->NUM_COMPTE_CONT,
+                    'ID_BRANCHES' => $identification->ID_BRANCHES,
+                    'ID_TYPE_ACTIVITES' => $identification->ID_TYPE_ACTIVITES,
+                    'ACTIVITE_SECONDAIRE' => $identification->ACTIVITE_SECONDAIRE,
+                    'RAISON_SOCIALE' => $identification->RAISON_SOCIALE,
+                    'SIGLE' => $identification->SIGLE,
+                    'OBJET_SOCIAL' => $identification->OBJET_SOCIAL,
+                    'DATE_DEBT_ACTIVITE' => $identification->DATE_DEBT_ACTIVITE,
+                    'LIB_DEPARTEMENT' => $identification->LIB_DEPARTEMENT,
+                    'ID_SOUS_PREFECTURE' => $identification->ID_SOUS_PREFECTURE,
+                    'ID_COMMUNE' => $identification->ID_COMMUNE,
+                    'QUARTIER' => $identification->QUARTIER,
+                    'VILLAGE' => $identification->VILLAGE,
+                    'NUM_LOT' => $identification->NUM_LOT,
+                    'NUM_ILOT' => $identification->NUM_ILOT,
+                    'NB_COMPAGNON' => $identification->NB_COMPAGNON ?? 0,
+                    'NB_APPRENTIS' => $identification->NB_APPRENTIS ?? 0,
+                    'LIEN_MAP'=>$identification->LIEN_MAP,
                 ]);
 
                 $gerant = Gerant::create([
-                    'chambre_regionale_id' => $identification->chambre_regionale_id,
-                    'artisan_id' => $artisan->id,
-                    'activite_artisan_id' => $activiteartisan->id,
-                    'nom' => $identification->nom_gerant,
-                    'prenom' => $identification->prenom_gerant,
-                    'date_naissance' => $identification->date_naissance_gerant,
-                    'lieu_naissance' => $identification->lieu_naissance_gerant,
-                    'sexe_gerant' => $identification->sexe_gerant,
-                    'type_document_id' => $identification->gerant_type_document_id,
-                    'autre_document' => $identification->autre_document_gerant,
-                    'numero_document' => $identification->numero_document_gerant,
-                    'lieu_delivrance_document' => $identification->lieu_delivrance_document_gerant,
-                    'date_delivrance_document' => $identification->date_delivrance_document_gerant,
-                    'nationalite_gerant' => $identification->nationalite_gerant,
-                    'adresse' => $identification->adresse_gerant,
-                    'contact' => $identification->contact_gerant,
-                    'contact_whatsapp' => $identification->contact_whatsapp_gerant,
-                    'etat_civil' => $identification->etat_civil_gerant,
-                    'email' => $identification->email_gerant,
-                    'lien_photo' => $identification->lien_photo_gerant ?? '',
-                    'niveau_etude' => $identification->niveau_etude_gerant,
-                    'classe_gerant' => $identification->classe_gerant,
-                    'diplome_etude_obtenu' => $identification->diplome_etude_obtenu_gerant,
-                    'apprentissage_metier' => $identification->apprentissage_metier_gerant,
-                    'niveau_metier' => $identification->niveau_metier_gerant,
-                    'diplome_metier_obtenu' => $identification->diplome_metier_obtenu_gerant,
-                    'diplome_cnmci' => $identification->diplome_cnmci_gerant,
-                    'lien_photo' => $identification->lien_photo_gerant
+                    'ID_CHAMBRE_REGION' => $identification->ID_CHAMBRE_REGION,
+                    'ID_ARTISANS' => $artisan->id,
+                    'ID_ACTIVITES_ARTIS' => $activiteartisan->id,
+                    'NOM' => $identification->NOM_GERAN,
+                    'PRENOM_GERAN' => $identification->PRENOM_GERAN,
+                    'DATE_NAISS' => $identification->DATE_NAI_GERAN,
+                    'LIEU_NAISS' => $identification->LIEU_NAISS_GERAN,
+                    'CIVILITE' => $identification->CIVILITE_GERAN,
+                    'ID_TYPE_DOCS' => $identification->ID_TYPE_DOCS_GERAN,
+                    'LIEN_TYPE_DOCS' => $identification->LIEN_TYPE_DOCS_GERAN,
+                    'AUTRE_DOCS' => $identification->AUTRE_DOCS_GERAN,
+                    'NUMERO_DOCS' => $identification->NUM_DOCS_GERAN,
+                    'LIEU_DELIVRE_DOCS' => $identification->LIEU_DELIVRE_DOCS_GERAN,
+                    'DATE_DELIVRE_DOCS' => $identification->DATE_DELIVRE_DOCS_GERAN,
+                    'NATIONALITE' => $identification->NATIONALITE_GERAN,
+                    'ADRESSE' => $identification->ADRESSE_GERAN,
+                    'CONTACT' => $identification->CONTACT_GERAN,
+                    'CONTACT_WHATSAPP' => $identification->CONTACT_WHATSAPP_GERAN,
+                    'NIVEAU_ETUDE' => $identification->NIVEAU_ETUDE_GERAN,
+                    'CLASSE_GERAN' => $identification->CLASSE_GERAN,
+                    'DIPLOME_OBT' => $identification->DIPLOME_ETD_OBT_GERAN,
+                    'APPRENTISS_MET' => $identification->APPRENTISS_MET_GERAN,
+                    'NIVEAU_METIER' => $identification->NIVEAU_METIER_GERAN,
+                    'DIPLOME_MET_OBT_GERAN' => $identification->DIPLOME_MET_OBT_GERAN,
+                    'DIPLOME_CNMCI' => $identification->DIPLOME_CNMCI_GERAN,
+                    'ETAT_CIVIL' => $identification->ETAT_CIVIL_GERAN,
+                    'ADR_EMAIL' => $identification->ADR_EMAIL_GERAN,
+                    'AVATAR' => $identification->AVATAR_GERAN ?? '',
                 ]);
 
                 // Obtenir la date actuelle

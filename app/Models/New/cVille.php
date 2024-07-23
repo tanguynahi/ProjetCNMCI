@@ -5,7 +5,7 @@ namespace App\Models\New;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CNMCI_Ville extends Model
+class cVille extends Model
 {
     protected $table = "CNMCI_Ville";
     protected $primaryKey = "ID_VILLE";

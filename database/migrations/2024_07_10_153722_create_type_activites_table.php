@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('type_activites', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('branche_activite_id')->constrained('branche_activites','id');
             $table->string('libelle');
             $table->string('description')->nullable();
             $table->enum('status',[1,2,3])->default(1);

@@ -18,13 +18,14 @@ use App\Models\SousPrefecture;
 use App\Models\TypeEntreprise;
 use Illuminate\Support\Carbon;
 use App\Models\ActiviteArtisan;
-use App\Models\ChambreRegionale;
+use App\Models\BrancheActivite;
 // use Illuminate\Support\Facades\Validator;
 // use App\Http\Requests\ArtisanConnexionRequest;
+use App\Models\ChambreRegionale;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-// use App\Http\Requests\StoreIdentificationRequest;
+use App\Http\Requests\StoreIdentificationRequest;
 
 // use App\Http\Requests\UpdateIdentificationRequest;
 
@@ -54,12 +55,13 @@ class HomeController extends Controller
     public function inscription()
     {
         $chambresRegionales = ChambreRegionale::orderBy('libelle', 'ASC')->get();
-        $typeEntreprises = TypeEntreprise::orderBy('libelle', 'ASC')->get();
+        $brancheActivites = BrancheActivite::orderBy('libelle', 'ASC')->get();
         $typeActivites = TypeActivite::orderBy('libelle', 'ASC')->get();
+        $typeEntreprises = TypeEntreprise::orderBy('libelle', 'ASC')->get();
         $sousPrefectures = SousPrefecture::orderBy('libelle', 'ASC')->get();
         $typeDocuments = TypeDocument::orderBy('libelle', 'ASC')->get();
         $communes = Commune::orderBy('libelle', 'ASC')->get();
-        return view('home.vitrines.inscription', compact('communes', 'typeDocuments', 'sousPrefectures', 'typeActivites', 'typeEntreprises', 'chambresRegionales'));
+        return view('home.vitrines.inscription', compact('communes', 'typeDocuments', 'sousPrefectures', 'typeActivites', 'typeEntreprises', 'chambresRegionales','brancheActivites'));
     }
 
     // on la passe avec l'id de l'artisan pour mettre son mot de passe
@@ -98,11 +100,7 @@ class HomeController extends Controller
 
     public function identification(Request $request)
     {
-        // $request->validate([
-        //     'message' => 'required|string',
-        //     'lien_document' => 'nullable'
-        // ]);
-        // dd($request->signature);
+            //StoreIdentificationRequest
         try {
             DB::beginTransaction();
             // DB::beginTransaction();
@@ -140,104 +138,106 @@ class HomeController extends Controller
             $commune = Commune::where('id', $request->commune_id)->first();
             $identifiant = generateCode2('IDEN');
             $identification = Identification::create([
-                'chambre_regionale_id' => $commune->chambre_regionale_id,
-                'type_entreprise_id' => $request->type_entreprise_id,
-                'numero_identification' => $identifiant,
-                'denomination_entreprise' => $request->denomination_entreprise,
-                'adresse_postale' => $request->adresse_postale,
-                'contact_entreprise' => $request->contact_entreprise,
-                'email_entreprise' => $request->email_entreprise,
-                'registre_entreprise' => $request->registre_entreprise,
-                'numero_registre' => $request->numero_registre,
-                'regime_fiscal' => $request->regime_fiscal,
-                'nombre_associes' => $request->nombre_associes,
-                'duree_personne_morale' => $request->duree_personne_morale,
-                'annee_duree_personne_morale' => $request->annee_duree_personne_morale,
-                'capital_social' => $request->capital_social,
-                'numero_cnps' => $request->numero_cnps,
-                'numero_compte_contribuable' => $request->numero_compte_contribuable,
-                'type_activite_id' => $request->type_activite_id,
-                'activite_secondaire' => $request->activite_secondaire,
-                'raison_social' => $request->raison_social,
-                'sigle_ou_enseigne' => $request->sigle_ou_enseigne,
-                'objet_social' => $request->objet_social,
-                'date_debut_activite' => $request->date_debut_activite,
-                'departement' => $request->departement,
-                'sous_prefecture_id' => $request->sous_prefecture_id,
-                'commune_id' => $request->commune_id,
-                'quartier' => $request->quartier,
-                'village' => $request->village,
-                'numero_lot' => $request->numero_lot,
-                'numero_ilot' => $request->numero_ilot,
-                'nombre_compagnon' => $request->nombre_compagnon,
-                'nombre_apprenti' => $request->nombre_apprenti,
-                'lien_google_map' => $request->lien_google_map,
-                'nom_artisan' => $request->nom_artisan,
-                'prenom_artisan' => $request->prenom_artisan,
-                'date_naissance_artisan' => $request->date_naissance_artisan,
-                'lieu_naissance_artisan' => $request->lieu_naissance_artisan,
-                'sexe_artisan' => $request->sexe_artisan,
-                'type_document_id' => $request->type_document_id,
-                'lien_type_document_artisan' => $lien_type_document_artisan,
-                'autre_document_artisan' => $request->autre_document_artisan,
-                'numero_document_artisan' => $request->numero_document_artisan,
-                'lieu_delivrance_document_artisan' => $request->lieu_delivrance_document_artisan,
-                'date_delivrance_document_artisan' => $request->date_delivrance_document_artisan,
-                'nationalite_artisan' => $request->nationalite_artisan,
-                'adresse_artisan' => $request->adresse_artisan,
-                'contact_artisan' => $request->contact_artisan,
-                'contact_whatsapp' => $request->contact_whatsapp,
-                'etat_civil_artisan' => $request->etat_civil_artisan,
-                'email_artisan' => $request->email_artisan,
-                'lien_photo_artisan' => $lien_photo_artisan,
-                'niveau_etude' => $request->niveau_etude,
-                'classe' => $request->classe,
-                'diplome_etude_obtenu' => $request->diplome_etude_obtenu,
-                'apprentissage_metier' => $request->apprentissage_metier,
-                'niveau_metier_artisan' => $request->niveau_metier_artisan,
-                'diplome_metier_obtenu' => $request->diplome_metier_obtenu,
-                'diplome_cnmci' => $request->diplome_cnmci,
-                'nom_gerant' => $request->nom_gerant,
-                'prenom_gerant' => $request->prenom_gerant,
-                'date_naissance_gerant' => $request->date_naissance_gerant,
-                'lieu_naissance_gerant' => $request->lieu_naissance_gerant,
-                'sexe_gerant' => $request->sexe_gerant,
-                'gerant_type_document_id' => $request->gerant_type_document_id,
-                'lien_type_document_gerant' => $lien_type_document_gerant,
-                'autre_document_gerant' => $request->autre_document_gerant,
-                'numero_document_gerant' => $request->numero_document_gerant,
-                'lieu_delivrance_document_gerant' => $request->lieu_delivrance_document_gerant,
-                'date_delivrance_document_gerant' => $request->date_delivrance_document_gerant,
-                'nationalite_gerant' => $request->nationalite_gerant,
-                'adresse_gerant' => $request->adresse_gerant,
-                'contact_gerant' => $request->contact_gerant,
-                'contact_whatsapp_gerant' => $request->contact_whatsapp_gerant,
-                'etat_civil_gerant' => $request->etat_civil_gerant,
-                'email_gerant' => $request->email_gerant,
-                'lien_photo_gerant' => $lien_photo_gerant,
-                'niveau_etude_gerant' => $request->niveau_etude_gerant,
-                'classe_gerant' => $request->classe_gerant,
-                'diplome_etude_obtenu_gerant' => $request->diplome_etude_obtenu_gerant,
-                'apprentissage_metier_gerant' => $request->apprentissage_metier_gerant,
-                'niveau_metier_gerant' => $request->niveau_metier_gerant,
-                'diplome_metier_obtenu_gerant' => $request->diplome_metier_obtenu_gerant,
-                'diplome_cnmci_gerant' => $request->diplome_cnmci_gerant,
-                'signature' => $signature,
+                'ID_CHAMBRE_REGION' => $commune->chambre_regionale_id,
+                'ID_TYPE_ENTREPRISES' => $request->type_entreprise_id,
+                'NUMERO_IDENT' => $identifiant,
+                'DENOMINATION' => $request->denomination_entreprise,
+                'ADRESSE_POSTAL' => $request->adresse_postale,
+                'CONTACT' => $request->contact_entreprise,
+                'ADR_EMAIL' => $request->email_entreprise,
+                'TYPE_REGISTRE' => $request->registre_entreprise,
+                'NUMERO_REGISTRE' => $request->numero_registre,
+                'REGIME_FISCALE' => $request->regime_fiscal,
+                'NB_ASSOCIES' => $request->nombre_associes,
+                'DUREE_PERS_MORAL' => $request->duree_personne_morale,
+                'TYPE_DUREE' => $request->annee_duree_personne_morale,
+                'CAPITAL_SOCIAL' => $request->capital_social,
+                'NUMERO_CNPS' => $request->numero_cnps,
+                'NUM_COMPTE_CONT' => $request->numero_compte_contribuable,
+                'ID_BRANCHES' => $request->branche_activite_id,
+                'ID_TYPE_ACTIVITES' => $request->type_activite_id,
+                'ACTIVITE_SECONDAIRE' => $request->activite_secondaire,
+                'RAISON_SOCIALE' => $request->raison_social,
+                'SIGLE' => $request->sigle_ou_enseigne,
+                'OBJET_SOCIAL' => $request->objet_social,
+                'DATE_DEBT_ACTIVITE' => $request->date_debut_activite,
+                'LIB_DEPARTEMENT' => $request->departement,
+                'ID_SOUS_PREFECTURE' => $request->sous_prefecture_id,
+                'ID_COMMUNE' => $request->commune_id,
+                'QUARTIER' => $request->quartier,
+                'VILLAGE' => $request->village,
+                'NUM_LOT' => $request->numero_lot,
+                'NUM_ILOT' => $request->numero_ilot,
+                'NB_COMPAGNON' => $request->nombre_compagnon,
+                'NB_APPRENTIS' => $request->nombre_apprenti,
+                'LIEN_MAP' => $request->lien_google_map,
+                'NOM_ART' => $request->nom_artisan,
+                'PRENOMS_ARTIS' => $request->prenom_artisan,
+                'DATE_NAISS_ARTIS' => $request->date_naissance_artisan,
+                'LIEU_NAISS_ARTIS' => $request->lieu_naissance_artisan,
+                'CIVILITE_ARTIS' => $request->sexe_artisan,
+                'ID_TYPE_DOCS_ARTIS' => $request->type_document_id,
+                'LIEN_TYPE_DOCS_ARTIS' => $lien_type_document_artisan,
+                'AUTRE_DOCS_ARTIS' => $request->autre_document_artisan,
+                'NUM_DOCS_ARTIS' => $request->numero_document_artisan,
+                'LIEU_DELIVRE_DOCS_ARTIS' => $request->lieu_delivrance_document_artisan,
+                'DATE_DELIVRE_DOCS_ARTIS' => $request->date_delivrance_document_artisan,
+                'NATIONALITE_ARTIS' => $request->nationalite_artisan,
+                'ADRESSE_ARTIS' => $request->adresse_artisan,
+                'CONTACT_ARTIS' => $request->contact_artisan,
+                'CONTACT_WHATSAPP_ARTIS' => $request->contact_whatsapp,
+                'ETAT_CIVIL_ARTIS' => $request->etat_civil_artisan,
+                'EST_GERANT' => $request->etes_gerant,
+                'ADR_EMAIL_ARTIS' => $request->email_artisan,
+                'AVATAR_ARTIS' => $lien_photo_artisan,
+                'NIVEAU_ETUDE_ARTIS' => $request->niveau_etude,
+                'CLASSE_ARTIS' => $request->classe,
+                'DIPLOME_OBT_ARTIS' => $request->diplome_etude_obtenu,
+                'APPRENTISS_MET_ARTIS' => $request->apprentissage_metier,
+                'NIVEAU_METIER_ARTIS' => $request->niveau_metier_artisan,
+                'DIPLOME_METIER_OBT_ARTIS' => $request->diplome_metier_obtenu,
+                'DIPLOME_CNMCI_ARTIS' => $request->diplome_cnmci,
+                'NOM_GERAN' => $request->nom_gerant,
+                'PRENOM_GERAN' => $request->prenom_gerant,
+                'DATE_NAI_GERAN' => $request->date_naissance_gerant,
+                'LIEU_NAISS_GERAN' => $request->lieu_naissance_gerant,
+                'CIVILITE_GERAN' => $request->sexe_gerant,
+                'ID_TYPE_DOCS_GERAN' => $request->gerant_type_document_id,
+                'LIEN_TYPE_DOCS_GERAN' => $lien_type_document_gerant,
+                'AUTRE_DOCS_GERAN' => $request->autre_document_gerant,
+                'NUM_DOCS_GERAN' => $request->numero_document_gerant,
+                'LIEU_DELIVRE_DOCS_GERAN' => $request->lieu_delivrance_document_gerant,
+                'DATE_DELIVRE_DOCS_GERAN' => $request->date_delivrance_document_gerant,
+                'NATIONALITE_GERAN' => $request->nationalite_gerant,
+                'ADRESSE_GERAN' => $request->adresse_gerant,
+                'CONTACT_GERAN' => $request->contact_gerant,
+                'CONTACT_WHATSAPP_GERAN' => $request->contact_whatsapp_gerant,
+                'NIVEAU_ETUDE_GERAN' => $request->niveau_etude_gerant,
+                'CLASSE_GERAN' => $request->classe_gerant,
+                'DIPLOME_ETD_OBT_GERAN' => $request->diplome_etude_obtenu_gerant,
+                'APPRENTISS_MET_GERAN' => $request->apprentissage_metier_gerant,
+                'NIVEAU_METIER_GERAN' => $request->niveau_metier_gerant,
+                'DIPLOME_MET_OBT_GERAN' => $request->diplome_metier_obtenu_gerant,
+                'DIPLOME_CNMCI_GERAN' => $request->diplome_cnmci_gerant,
+                'ETAT_CIVIL_GERAN' => $request->etat_civil_gerant,
+                'ADR_EMAIL_GERAN' => $request->email_gerant,
+                'AVATAR_GERAN' => $lien_photo_gerant,
+                'DECLARE_MAITRISE_METIER' => $request->declaration_maitrise_metier,
+                'DECLARE_HONNEUR' => $request->declaration_honneur,
+                'ACCEPTE_CONFIDENTIAL' => $request->accepte_confidentialite,
+                'SIGNATURE' => $signature,
                 // 'avis' => $request->avis,
                 // 'motif_refus' => $request->motif_refus,
-                'declaration_maitrise_metier' => $request->declaration_maitrise_metier,
-                'declaration_honneur' => $request->declaration_honneur,
-                'accepte_confidentialite' => $request->accepte_confidentialite,
-                'etes_gerant' => $request->etes_gerant,
+                'STATUT' => 1,
 
-                'status' => 1,
+
             ]);
 
             if ($request->etes_gerant == "oui") {
 
                 $lien_photo_gerant =  $lien_photo_artisan;
                 $identification->update([
-                    'lien_photo_gerant' => $lien_photo_gerant,
+                    'AVATAR_GERAN' => $lien_photo_gerant,
                 ]);
                 // dd($lien_photo_artisan);
             }

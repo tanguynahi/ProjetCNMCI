@@ -208,10 +208,10 @@
                                                         </div>
                                                     </div>
                                                     <div class="row mt-2">
-                                                        <h6 for="signature">Votre signature</h6>
-                                                        <div class="col-12">
-                                                            <canvas id="signature-pad" width="400"
-                                                                height="200" class="@error('signature') is-invalid
+                                                        <div class="col-12 col-lg-6 col-md-6">
+                                                            <h6 for="signature">Votre signature</h6>
+                                                            <canvas id="signature-pad" width="400" height="200"
+                                                                class="@error('signature') is-invalid
                                                                    @enderror"></canvas>
                                                             @error('signature')
                                                                 <span class="invalid-feedback" role="alert">
@@ -221,10 +221,11 @@
                                                             <br>
                                                             <button id="save-btn">Enregistrer la signature</button>
                                                             <button id="clear-btn">Effacer</button>
+                                                            <input type="file" name="signature" id="signature"
+                                                                class="hidden">
                                                         </div>
+                                                       
                                                     </div>
-                                                    <input type="file" name="signature" id="signature"
-                                                        class="hidden">
 
                                                     <style>
                                                         canvas {

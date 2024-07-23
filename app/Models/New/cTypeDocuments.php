@@ -5,22 +5,21 @@ namespace App\Models\New;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CNMCI_Taxes extends Model
+class cTypeDocuments extends Model
 {
-    protected $table = "CNMCI_Taxes";
-    protected $primaryKey = "ID_TAXES";
+    protected $table = "CNMCI_TypeDocuments";
+    protected $primaryKey = "ID_TYPE_DOCS";
     public $timestamps = true;
   protected $fillable = [
 
-        "ID_TAXES"  ,
-        "LIB_TAXE"  ,
-        "MONTANT" ,
+        "ID_TYPE_DOCS" ,
+        "LIB_TYPE_DOCS"  ,
         "DESCRIPTION"  ,
-        "ID_GROUPES" ,
         "STATUT" ,
         "created_at" ,
-        "updated_at" ,
+        "updated_at"  ,
         "deleted_at" ,
+
     ];
     use HasFactory;
 }

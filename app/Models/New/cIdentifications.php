@@ -14,7 +14,9 @@ class cIdentifications extends Model
 
         "ID_IDENTIFICATIONS" ,
         "ID_ADMINISTRATEUR" ,
+        "ID_CHAMBRE_REGION",
         "ID_TYPE_ENTREPRISES" ,
+        'ID_BRANCHES',
         "NUMERO_IDENT"  ,
         "DENOMINATION"  ,
         "ADRESSE_POSTAL"  ,

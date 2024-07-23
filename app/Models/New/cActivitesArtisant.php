@@ -16,6 +16,7 @@ class cActivitesArtisant extends Model
     protected $fillable = [
         "ID_ACTIVITES_ARTIS",
         "ID_CHAMBRE_REGION",
+        'ID_BRANCHES',
         "ID_TYPE_ENTREPRISES",
         "ID_AGENTS",
         "ID_ARTISANS",
