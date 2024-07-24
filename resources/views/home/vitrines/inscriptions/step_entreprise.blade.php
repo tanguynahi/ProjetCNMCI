@@ -24,7 +24,7 @@
                 class="form-control show-tick ms select2 select2-hidden-accessible @error('type_entreprise_id') is-invalid @enderror"
                 data-placeholder="Select" data-select2-id="select2-data-1-4ue7" tabindex="-1" aria-hidden="true"
                 name="type_entreprise_id" autocomplete="type_entreprise_id" autofocus>
-                <option data-select2-id="select2-data-3-o5ur">--
+                <option value="">--
                     Séléctionner
                     un type d'entreprise --</option>
                 @foreach ($typeEntreprises as $typeEntreprise)
@@ -52,15 +52,17 @@
                 <span class="invalid-feedback" role="alert">
                     <strong>
                         {{ $message }}
+
                     </strong>
-                </span>
+                 </span>
             @enderror
+            {{-- <span id="messageT"></span> --}}
         </div>
         <div class="col-md-3 col-lg-3 col-12">
             <label class="form-label">Email <span class="text-danger">*</span></label>
             <input type="email" name="email_entreprise"
                 class="form-control @error('email_entreprise') is-invalid @enderror" placeholder="bmi@gmail.com"
-                required autocomplete="email_entreprise" autofocus value="{{ old('email_entreprise') }}">
+                autocomplete="email_entreprise" autofocus value="{{ old('email_entreprise') }}">
             @error('email_entreprise')
                 <span class="invalid-feedback" role="alert">
                     <strong>
@@ -68,6 +70,7 @@
                     </strong>
                 </span>
             @enderror
+            {{-- <span id="messageT"></span> --}}
         </div>
         <div class="col-md-3 col-lg-3 col-12">
             <label class="form-label">Télèphone <span class="text-danger">*</span></label>
@@ -83,6 +86,7 @@
                         </strong>
                     </span>
                 @enderror
+                {{-- <span id="messageT"></span> --}}
                 <div class="form-icon position-absolute">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-phone" viewBox="0 0 16 16">
@@ -192,7 +196,6 @@
             @enderror
         </div>
     </div>
-
     <div class="row mt-4">
         <div class="col-md-3 col-lg-3 col-12">
             <label class="form-label">Date de début d'activité <span class="text-danger">*</span></label>
@@ -276,7 +279,7 @@
                         class=" form-control text-primary select2 @error('annee_duree_personne_morale') is-invalid @enderror"
                         style="width:80px; background-color:rgba(128, 128, 128, 0.282);"
                         autocomplete="annee_duree_personne_morale" autofocus required>
-                        <option>choisir</option>
+                        {{-- <option>choisir</option> --}}
                         <option value="JOURS" {{ old('annee_duree_personne_morale') == 'JOURS' ? 'selected' : '' }}>
                             JOURS
                         </option>
@@ -306,7 +309,7 @@
             <label class="form-label">Numero CNPS de l'entreprise <span class="text-danger">*</span></label>
             <input type="text" name="numero_cnps" class="form-control @error('numero_cnps') is-invalid @enderror"
                 placeholder="Numero CNPS de l'entreprise"autocomplete="numero_cnps" autofocus
-                value="{{ old('numero_cnps') }}" required>
+                value="{{ old('numero_cnps') }}">
             @error('numero_cnps')
                 <span class="invalid-feedback" role="alert">
                     <strong>
@@ -467,7 +470,7 @@
         <div class="col-md-3 col-lg-3 col-12">
             <label class="form-label">Quartier</label>
             <input type="text" name="quartier" class="form-control @error('quartier') is-invalid @enderror"
-                placeholder="quartier" autocomplete="quartier" autofocus value="{{ old('quartier') }}">
+                placeholder="quartier" autocomplete="quartier" autofocus value="{{ old('quartier') }}" required>
             @error('quartier')
                 <span class="invalid-feedback" role="alert">
                     <strong>
@@ -592,47 +595,44 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiw_DCMqoSQ5MoxmNqwbMKN_JEy-qQAS0&libraries=places&callback=initMap"
         async defer></script>
 
-        {{-- trier du metier en fonction de la branche d'activites --}}
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const brancheSelect = document.getElementById('branche_activite_id');
-                const metierSelect = document.getElementById('type_activite_id');
+    {{-- trier du metier en fonction de la branche d'activites --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const brancheSelect = document.getElementById('branche_activite_id');
+            const metierSelect = document.getElementById('type_activite_id');
 
-                // Ajouter une option par défaut au chargement
-                const defaultOption = document.createElement("option");
-                defaultOption.text = "Sélectionner une branche d'activité d'abord";
-                defaultOption.value = "";
-                metierSelect.appendChild(defaultOption);
+            // Ajouter une option par défaut au chargement
+            const defaultOption = document.createElement("option");
+            defaultOption.text = "Sélectionner une branche d'activité d'abord";
+            defaultOption.value = "";
+            metierSelect.appendChild(defaultOption);
 
-                brancheSelect.addEventListener("change", function() {
-                    const selectedBrancheId = brancheSelect.value;
+            brancheSelect.addEventListener("change", function() {
+                const selectedBrancheId = brancheSelect.value;
 
-                    // Désactiver le menu déroulant des métiers si aucune branche n'a été sélectionnée
-                    metierSelect.disabled = !selectedBrancheId;
+                // Désactiver le menu déroulant des métiers si aucune branche n'a été sélectionnée
+                metierSelect.disabled = !selectedBrancheId;
 
-                    // Effacer les options précédentes
-                    metierSelect.innerHTML = "";
+                // Effacer les options précédentes
+                metierSelect.innerHTML = "";
 
-                    if (selectedBrancheId) {
-                        @foreach ($typeActivites as $typeActivite)
-                            if ({{ $typeActivite->branche_activite_id }} == selectedBrancheId) {
-                                const option = document.createElement("option");
-                                option.value = {{ $typeActivite->id }};
-                                option.text = "{{ $typeActivite->libelle }}";
-                                metierSelect.appendChild(option);
-                            }
-                        @endforeach
-                    } else {
-                        // Réafficher l'option par défaut si aucune branche n'est sélectionnée
-                        const option = document.createElement("option");
-                        option.text = "Sélectionner une branche d'activité d'abord";
-                        option.value = "";
-                        metierSelect.appendChild(option);
-                    }
-                });
+                if (selectedBrancheId) {
+                    @foreach ($typeActivites as $typeActivite)
+                        if ({{ $typeActivite->branche_activite_id }} == selectedBrancheId) {
+                            const option = document.createElement("option");
+                            option.value = {{ $typeActivite->id }};
+                            option.text = "{{ $typeActivite->libelle }}";
+                            metierSelect.appendChild(option);
+                        }
+                    @endforeach
+                } else {
+                    // Réafficher l'option par défaut si aucune branche n'est sélectionnée
+                    const option = document.createElement("option");
+                    option.text = "Sélectionner une branche d'activité d'abord";
+                    option.value = "";
+                    metierSelect.appendChild(option);
+                }
             });
-        </script>
+        });
+    </script>
 @endpush
-
-
-

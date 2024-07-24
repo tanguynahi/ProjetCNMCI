@@ -38,7 +38,7 @@ class cArtisans extends Model
                 "DIPLOME_CNMCI"  ,
                 "SIGNATURE"  ,
                 "DECLARE_MAITRISE_METIER",
-                "DECLARE_HONNEUR",
+                "DECLARE_NON_CONDAMNATION",
                 "ACCEPTE_CONFIDENTIAL",
                 "EST_GERANT",
                 "NUMERO_REGISTRE"  ,

@@ -11,7 +11,7 @@ class StoreBrancheActiviteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,18 @@ class StoreBrancheActiviteRequest extends FormRequest
     {
         return [
             //
+            'libelle' => 'required|string|min:3',
+            'description' => 'nullable|string|min:3',
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'libelle.required' => 'Le champ libellé est obligatoire.',
+            'libelle.string' => 'Le champ libellé doit être une chaîne de caractères.',
+            'libelle.min' => 'Le champ libellé doit contenir au moins :min caractères.',
+            'description.string' => 'Le champ description doit être une chaîne de caractères.',
+            'description.min' => 'Le champ description doit contenir au moins :min caractères.',
         ];
     }
 }

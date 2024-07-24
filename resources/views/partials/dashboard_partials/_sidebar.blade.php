@@ -177,9 +177,9 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ route('brancheactivites.index') }}" class="menu-link">
                 <i class="fa-regular fa-circle-question mx-2"></i>
-                <div data-i18n="Type Branche">Type Branche</div>
+                <div data-i18n=" Branche activite"> Branche Activites</div>
             </a>
         </li>
 

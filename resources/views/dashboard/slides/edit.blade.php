@@ -33,7 +33,7 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <div class="form-floating">
-                                        <input type="sous_titre" id="sous_titre" name="sous_titre"
+                                        <input type="text" id="sous_titre" name="sous_titre"
                                             class="form-control @error('sous_titre') is-invalid @enderror"
                                             value="{{ old('sous_titre', $slide->sous_titre) }}"
                                             placeholder="Sous-titre de l'image" autocomplete="sous_titre" autofocus>

@@ -145,7 +145,7 @@ class IdentificationController extends Controller
                 'DIPLOME_CNMCI' => $identification->DIPLOME_CNMCI_ARTIS,
                 'SIGNATURE' => $identification->SIGNATURE,
                 'DECLARE_MAITRISE_METIER' => $identification->DECLARE_MAITRISE_METIER,
-                'DECLARE_HONNEUR' => $identification->DECLARE_HONNEUR,
+                'DECLARE_NON_CONDAMNATION' => $identification->DECLARE_NON_CONDAMNATION,
                 'ACCEPTE_CONFIDENTIAL' => $identification->ACCEPTE_CONFIDENTIAL,
                 'EST_GERANT' => $identification->EST_GERANT,
                 'NUMERO_REGISTRE' => $identification->NUMERO_REGISTRE,

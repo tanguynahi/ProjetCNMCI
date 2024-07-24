@@ -31,8 +31,7 @@
     </style>
     <div class="wrapper">
         @include('partials.home_partials.header')
-        <div
-            class="page-body px-xl-4 px-sm-2 px-0 py-lg-2 py-1 mt-0 mt-lg-3"style="background-image:url('{{ asset('assets/home/show.jpg') }}'); background-repeat: no-repeat; background-size:cover;">
+        <div class="page-body px-xl-4 px-sm-2 px-0 py-lg-2 py-1 mt-0 mt-lg-3"style="background-image:url('{{ asset('assets/home/show.jpg') }}'); background-repeat: no-repeat; background-size:cover;">
             <div class="container">
                 <div class="row g-3">
                     <div class="col-12 mt-3 mb-3">
@@ -207,8 +206,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row mt-2">
-                                                        <div class="col-12 col-lg-6 col-md-6">
+                                                    <div class="row mt-2 justify-content-center text-center">
+                                                        <div class="col-12 col-lg-6 col-md-6 text-center">
                                                             <h6 for="signature">Votre signature</h6>
                                                             <canvas id="signature-pad" width="400" height="200"
                                                                 class="@error('signature') is-invalid
@@ -219,12 +218,12 @@
                                                                 </span>
                                                             @enderror
                                                             <br>
-                                                            <button id="save-btn">Enregistrer la signature</button>
-                                                            <button id="clear-btn">Effacer</button>
+                                                            <button id="save-btn" class="btn btn-primary">Enregistrer la signature</button>
+                                                            <button id="clear-btn" class="btn btn-primary">Effacer</button>
                                                             <input type="file" name="signature" id="signature"
                                                                 class="hidden">
                                                         </div>
-                                                       
+
                                                     </div>
 
                                                     <style>

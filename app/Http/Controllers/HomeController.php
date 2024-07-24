@@ -223,7 +223,7 @@ class HomeController extends Controller
                 'ADR_EMAIL_GERAN' => $request->email_gerant,
                 'AVATAR_GERAN' => $lien_photo_gerant,
                 'DECLARE_MAITRISE_METIER' => $request->declaration_maitrise_metier,
-                'DECLARE_HONNEUR' => $request->declaration_honneur,
+                'DECLARE_NON_CONDAMNATION' => $request->declaration_honneur,
                 'ACCEPTE_CONFIDENTIAL' => $request->accepte_confidentialite,
                 'SIGNATURE' => $signature,
                 // 'avis' => $request->avis,

@@ -1,10 +1,10 @@
-@extends('layouts.dashboard', ['title' => 'Modifier une image'])
+@extends('layouts.dashboard', ['title' => 'Modifier une Branche'])
 @push('css')
 @endpush
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="py-3 mb-4">
-            <span class="text-muted fw-light">Images /</span> Modifier
+            <span class="text-muted fw-light">Branche /</span> Modifier
         </h4>
         <div class="row">
             <!-- FormValidation -->
@@ -12,19 +12,19 @@
                 <div class="card">
                     <h5 class="card-header">Renseignez le formulaire</h5>
                     <div class="card-body">
-                        <form action="{{ route('slides.update', $slide->id) }}" method="POST" id="edit_imageSlide_form"
+                        <form action="{{ route('brancheactivites.update', $brancheActivite->id) }}" method="POST" id="edit_imageSlide_form"
                             enctype="multipart/form-data" class="needs-validation" novalidate>
                             @csrf
                             @method('PUT')
                             <div class="row g-3">
                                 <div class="col-lg-6 col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" id="titre" name="titre"
-                                            class="form-control @error('titre') is-invalid @enderror"
-                                            value="{{ old('titre', $slide->titre) }}" placeholder="Titre" autocomplete="titre"
-                                            autofocus required>
-                                        <label>Entrez le titre<span class="text-danger fw-bold">*</span></label>
-                                        @error('titre')
+                                        <input type="text" id="libelle" name="libelle"
+                                            class="form-control @error('libelle') is-invalid @enderror"
+                                            value="{{ old('libelle', $annonce->libelle) }}" placeholder="Titre"
+                                            autocomplete="libelle" autofocus required>
+                                        <label>Entrez le libelle<span class="text-danger fw-bold">*</span></label>
+                                        @error('libelle')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -33,29 +33,28 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <div class="form-floating">
-                                        <input type="sous_titre" id="sous_titre" name="sous_titre"
-                                            class="form-control @error('sous_titre') is-invalid @enderror"
-                                            value="{{ old('sous_titre', $slide->sous_titre) }}"
-                                            placeholder="Sous-titre de l'image" autocomplete="sous_titre" autofocus>
+                                        <input type="text" id="description" name="description"
+                                            class="form-control @error('description') is-invalid @enderror"
+                                            value="{{ old('description', $annonce->description) }}"
+                                            placeholder="Sous-titre de l'image" autocomplete="description" autofocus>
                                         <label>Entrez le sous-titre<span class="text-danger fw-bold"></span></label>
-                                        @error('sous_titre')
+                                        @error('description')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6">
+                                {{-- <div class="col-lg-6 col-md-6">
                                     <div class="form-floating">
-                                        <select class="form-select form-control @error('categorie') is-invalid @enderror"
-                                            id="categorie" name="categorie" autocomplete="categorie" autofocus required>
-                                            <option value="">Sélectionnez la catégorie</option>
-                                            @foreach (['Image Annonce','Image Carousel', 'Image Partenaire'] as $categorie)
-                                                <option value="{{ $categorie }}" {{ $categorie === $slide->categorie ? 'selected' : '' }}>
-                                                    {{ $categorie }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <input type="text"
+                                            class="form-control"
+                                            value="{{ old('categorie', $annonce->categorie) }}"
+                                            autocomplete="categorie" autofocus disabled>
+                                        <input type="text" id="categorie" name="categorie"
+                                            class="form-control @error('categorie') is-invalid @enderror"
+                                            value="{{ old('categorie', $annonce->categorie) }}" placeholder="categorie"
+                                            autocomplete="categorie" autofocus readonly hidden>
                                         @error('categorie')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -68,7 +67,7 @@
                                     <div class="form-floating">
                                         <input type="file" id="lien_image" name="lien_image"
                                             class="form-control @error('lien_image') is-invalid @enderror"
-                                            value="{{ old('lien_image',$slide->lien_image       ) }}" placeholder="Image" autocomplete="lien_image"
+                                            value="{{ old('lien_image', $annonce->lien_image) }}" placeholder="Image" autocomplete="lien_image"
                                             autofocus>
                                         <label for="lien_image">Image<span class="text-danger fw-bold">*</span></label>
                                         @error('lien_image')
@@ -78,12 +77,12 @@
                                         @enderror
                                     </div>
                                 </div>
-                                @if ($slide->lien_image)
+                                @if ($annonce->lien_image)
                                     <div class="col-lg-4 col-md-4">
-                                        <img src="{{ asset($slide->lien_image) }}" alt="Image {{ $slide->categorie }}"
+                                        <img src="{{ asset($annonce->lien_image) }}" alt="Image {{ $annonce->categorie }}"
                                             class="img-thumbnail mt-3" width="130" height="120">
                                     </div>
-                                @endif
+                                @endif --}}
                             </div>
                             <div class="mt-3">
                                 <p><span class="text-danger fw-bold">*</span>Champs obligatoires.</p>

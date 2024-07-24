@@ -21,13 +21,39 @@
                     <li class="nav-item me-2"><a class="nav-link" href="{{ route('accueil') }}#contact">Contact</a></li>
                     <li class="nav-item me-3"><a class="nav-link" href="{{ route('accueil') }}#faq">FAQ</a></li>
                 </ul>
-                <form class="d-flex ms-4">
-                    <a class="btn px-4 rounded btn-primary" href="{{ route('connexion.artisan') }}">Connecter</a>
-                </form>
-                <br>
-                <form class="d-flex ms-4">
-                    <a class="btn px-4 rounded btn-primary" href="{{ route('inscription') }}">Inscription</a>
-                </form>
+                @if (Auth::check())
+                    @if (Auth::user()->artisan)
+                        <form class="d-flex ms-4" action="{{ route('logout') }}" method="post">
+                            @csrf
+                            <a class="btn px-4 rounded btn-primary" href="#"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Se
+                                déconnecter</a>
+                        </form>
+                        <br>
+                        <form class="d-flex ms-4">
+                            <a class="btn px-4 rounded btn-primary" href="{{ route('artisan.tableau_de_bord') }}">Mon
+                                espace</a>
+                        </form>
+                        <br>
+                    @else
+                        <form class="d-flex ms-4">
+                            <a class="btn px-4 rounded btn-primary"
+                                href="{{ route('connexion.artisan') }}">Connecter</a>
+                        </form>
+                        <br>
+                        <form class="d-flex ms-4">
+                            <a class="btn px-4 rounded btn-primary" href="{{ route('inscription') }}">Inscription</a>
+                        </form>
+                    @endif
+                @else
+                    <form class="d-flex ms-4">
+                        <a class="btn px-4 rounded btn-primary" href="{{ route('connexion.artisan') }}">Connecter</a>
+                    </form>
+                    <br>
+                    <form class="d-flex ms-4">
+                        <a class="btn px-4 rounded btn-primary" href="{{ route('inscription') }}">Inscription</a>
+                    </form>
+                @endif
             </div>
         </div>
     </nav>

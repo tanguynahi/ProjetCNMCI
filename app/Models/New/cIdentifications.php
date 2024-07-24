@@ -99,7 +99,7 @@ class cIdentifications extends Model
         "ADR_EMAIL_GERAN"  ,
         "AVATAR_GERAN"  ,
         "DECLARE_MAITRISE_METIER" ,
-        "DECLARE_HONNEUR" ,
+        "DECLARE_NON_CONDAMNATION" ,
         "ACCEPTE_CONFIDENTIAL" ,
         "SIGNATURE"  ,
         "STATUT" ,

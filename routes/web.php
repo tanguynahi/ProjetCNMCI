@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\BrancheActivite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FAQController;
@@ -137,5 +138,8 @@ Route::middleware('auth')->group(function () {
     ]);
     Route::controller(ParametreController::class)->group(function(){
         Route::put('/parametre-update-lien-reseauxSociaux/{parametre}','updateReseauxSociaux')->name('paramtre.reseauSociaux');
+    });
+    Route::controller(BrancheActiviteController::class)->group(function(){
+       Route::put('/mise-ajour/{id}','miseAjour')->name('branche.update');
     });
 });
