@@ -170,6 +170,18 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Files">Fichiers</span>
         </li>
+        <li class="menu-item">
+            <a href="#" class="menu-link">
+                <i class="fa-regular fa-circle-question mx-2"></i>
+                <div data-i18n="Type d'activite">Type d'activite</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="#" class="menu-link">
+                <i class="fa-regular fa-circle-question mx-2"></i>
+                <div data-i18n="Type Branche">Type Branche</div>
+            </a>
+        </li>
 
         <!-- Misc -->
         <li class="menu-header small text-uppercase">

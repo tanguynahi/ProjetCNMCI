@@ -14,6 +14,8 @@ class BrancheActiviteController extends Controller
     public function index()
     {
         //
+        $brancheActivites = BrancheActivite::orderBy('created_at','DESC')->get();
+        return view('dashboard.branches.index',compact('brancheActivites'));
     }
 
     /**
