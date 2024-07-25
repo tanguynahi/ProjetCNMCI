@@ -127,7 +127,7 @@
     <script>
         // Masking
         Inputmask({
-            "mask": "(+225) 99-99-99-99-99"
+            "mask": "(+225)99-99-99-99-99"
         }).mask(".phone-number");
         // Form Validation
         $('.basic-form').parsley();

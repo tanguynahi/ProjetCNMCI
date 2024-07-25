@@ -81,7 +81,7 @@
                 <label class="form-label">Nom <span class="text-danger">*</span></label>
                 <input type="text" name="nom_gerant" id="nom_gerant"
                     class="form-control @error('nom_gerant') is-invalid @enderror" placeholder="Nom"
-                    value="{{ old('nom_gerant') }}" required>
+                    value="{{ old('nom_gerant') }}" required onKeyPress="if(this.value.length==20) return false;">
                 @error('nom_gerant')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -92,7 +92,7 @@
                 <label class="form-label">Prénoms <span class="text-danger">*</span></label>
                 <input type="text" name="prenom_gerant" id="prenom_gerant"
                     class="form-control @error('prenom_gerant') is-invalid @enderror" placeholder="Prénoms"
-                    value="{{ old('prenom_gerant') }}" required>
+                    value="{{ old('prenom_gerant') }}" onKeyPress="if(this.value.length==70) return false;" required>
                 @error('prenom_gerant')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -104,9 +104,10 @@
                 <select name="sexe_gerant" id="sexe_gerant"
                     class="country form-control select2 @error('sexe_gerant') is-invalid @enderror"
                     aria-label="example">
-                    <option selected>-- Selectionner un Sexe --</option>
-                    <option value="Masculin" {{ old('sexe_gerant') == 'Masculin' ? 'selected' : '' }}>Masculin</option>
-                    <option value="Feminin" {{ old('sexe_gerant') == 'Feminin' ? 'selected' : '' }}>Feminin</option>
+                    <option value="">-- Selectionner un Sexe --</option>
+                    <option value="1" {{ old('sexe_gerant') == '1' ? 'selected' : '' }}>Monsieur</option>
+                <option value="2" {{ old('sexe_gerant') == '2' ? 'selected' : '' }}>Madame</option>
+                <option value="3" {{ old('sexe_gerant') == '3' ? 'selected' : '' }}>Mademoiselle</option>
                 </select>
                 @error('sexe_gerant')
                     <span class="invalid-feedback" role="alert">
@@ -119,7 +120,7 @@
                 <select name="etat_civil_gerant" id="etat_civil_gerant"
                     class="country form-control select2 @error('etat_civil_gerant') is-invalid @enderror"
                     aria-label="example">
-                    <option selected>-- Selectionner votre statut --</option>
+                    <option value="">-- Selectionner votre statut --</option>
                     <option value="Marié(e)" {{ old('etat_civil_gerant') == 'Marié(e)' ? 'selected' : '' }}>Marié(e)
                     </option>
                     <option value="Célibataire" {{ old('etat_civil_gerant') == 'Célibataire' ? 'selected' : '' }}>
@@ -141,7 +142,7 @@
                 <label class="form-label">Nationalité <span class="text-danger">*</span></label>
                 <input type="text" name="nationalite_gerant" id="nationalite_gerant"
                     class="form-control @error('nationalite_gerant') is-invalid @enderror" placeholder="Nationalité"
-                    value="{{ old('nationalite_gerant') }}">
+                    value="{{ old('nationalite_gerant') }}" onKeyPress="if(this.value.length==30) return false;">
                 @error('nationalite_gerant')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -163,7 +164,7 @@
                 <label class="form-label">Lieu De naissance <span class="text-danger">*</span></label>
                 <input type="text" name="lieu_naissance_gerant" id="lieu_naissance_gerant"
                     class="form-control @error('lieu_naissance_gerant') is-invalid @enderror"
-                    placeholder="Lieu de naissance" value="{{ old('lieu_naissance_gerant') }}">
+                    placeholder="Lieu de naissance" value="{{ old('lieu_naissance_gerant') }}" onKeyPress="if(this.value.length==50) return false;">
                 @error('lieu_naissance_gerant')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -174,7 +175,7 @@
                 <label class="form-label">Adresse Gerant <span class="text-danger">*</span></label>
                 <input type="text" name="adresse_gerant" id="adresse_gerant"
                     class="form-control @error('adresse_gerant') is-invalid @enderror" placeholder="Adresse Postale"
-                    value="{{ old('adresse_gerant') }}">
+                    value="{{ old('adresse_gerant') }}" onKeyPress="if(this.value.length==50) return false;">
                 @error('adresse_gerant')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -206,7 +207,7 @@
                 <label class="form-label">Niveau métier</label>
                 <input type="text" name="niveau_metier_gerant" id="niveau_metier_gerant"
                     class="form-control @error('niveau_metier_gerant') is-invalid @enderror"
-                    placeholder="Niveau métier" value="{{ old('niveau_metier_gerant') }}" required>
+                    placeholder="Niveau métier" value="{{ old('niveau_metier_gerant') }}" onKeyPress="if(this.value.length==30) return false;" required>
                 @error('niveau_metier_gerant')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -217,7 +218,7 @@
                 <label class="form-label">Diplome Obtenu <span class="text-danger">*</span></label>
                 <input type="text" name="diplome_metier_obtenu_gerant" id="diplome_metier_obtenu_gerant"
                     class="form-control @error('diplome_metier_obtenu_gerant') is-invalid @enderror"
-                    value="{{ old('diplome_metier_obtenu_gerant') }}" >
+                    value="{{ old('diplome_metier_obtenu_gerant') }}" onKeyPress="if(this.value.length==50) return false;" >
                 @error('diplome_metier_obtenu_gerant')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -230,7 +231,7 @@
                 <label class="form-label">Email </label>
                 <input type="email" name="email_gerant" id="email_gerant"
                     class="form-control @error('email_gerant') is-invalid @enderror" placeholder="xxxx@gmail.com"
-                    value="{{ old('email_gerant') }}">
+                    value="{{ old('email_gerant') }}" onKeyPress="if(this.value.length==50) return false;">
                 @error('email_gerant')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -241,8 +242,8 @@
                 <label class="form-label">Numero de Téléphone <span class="text-danger">*</span></label>
                 <fieldset class="form-icon-group left-icon position-relative">
                     <input type="tel" name="contact_gerant" id="contact_gerant"
-                        class="form-control phone-number @error('contact_gerant') is-invalid @enderror"
-                        placeholder="Ex: (+225) 00-00-00-00-00" value="{{ old('contact_gerant') }}">
+                        class="form-control  @error('contact_gerant') is-invalid @enderror"
+                        placeholder="Ex:(+225)00-00-00-00-00" value="{{ old('contact_gerant') }}" onKeyPress="if(this.value.length==20) return false;">
                     @error('contact_gerant')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -264,7 +265,7 @@
                 <fieldset class="form-icon-group left-icon position-relative">
                     <input type="tel" name="contact_whatsapp_gerant" id="contact_whatsapp_gerant"
                         class="form-control phone-number @error('contact_whatsapp_gerant') is-invalid @enderror"
-                        placeholder="Ex: (+225) 00-00-00-00-00" value="{{ old('contact_whatsapp_gerant') }}">
+                        placeholder="Ex: (+225)00-00-00-00-00" value="{{ old('contact_whatsapp_gerant') }}" onKeyPress="if(this.value.length==20) return false;">
                     @error('contact_whatsapp_gerant')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -288,11 +289,11 @@
                 <select name="gerant_type_document_id"
                     class="country form-control select2 @error('gerant_type_document_id') is-invalid @enderror"
                     aria-label="example" id="type-gerant-piece">
-                    <option>-- Selectionner une piece --</option>
+                    <option value="">-- Selectionner une piece --</option>
                     @foreach ($typeDocuments as $typeDocument)
-                        <option value="{{ $typeDocument->id }}"
-                            {{ old('gerant_type_document_id') == $typeDocument->id ? 'selected' : '' }}>
-                            {{ $typeDocument->libelle }}
+                        <option value="{{ $typeDocument['id'] }}"
+                            {{ old('gerant_type_document_id') == $typeDocument['id'] ? 'selected' : '' }}>
+                            {{ $typeDocument['libelle'] }}
                         </option>
                     @endforeach
                 </select>
@@ -328,7 +329,7 @@
                 <label class="form-label">Numero de Pieces <span class="text-danger">*</span></label>
                 <input type="text" name="numero_document_gerant" id="numero_document_gerant"
                     class="form-control @error('numero_document_gerant') is-invalid @enderror"
-                    placeholder="Numero de la pieces" value="{{ old('numero_document_gerant') }}">
+                    placeholder="Numero de la pieces" value="{{ old('numero_document_gerant') }}" onKeyPress="if(this.value.length==50) return false;">
                 @error('numero_document_gerant')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -339,7 +340,7 @@
                 <label class="form-label">Délivré à <span class="text-danger">*</span></label>
                 <input type="text" name="lieu_delivrance_document_gerant" id="lieu_delivrance_document_gerant"
                     class="form-control @error('lieu_delivrance_document_gerant') is-invalid @enderror"
-                    placeholder="Délivré à" value="{{ old('lieu_delivrance_document_gerant') }}">
+                    placeholder="Délivré à" value="{{ old('lieu_delivrance_document_gerant') }}" onKeyPress="if(this.value.length==50) return false;">
                 @error('lieu_delivrance_document_gerant')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -364,7 +365,7 @@
                 <select name="niveau_etude_gerant"
                     class="country form-control select2 @error('niveau_etude_gerant') is-invalid @enderror"
                     aria-label="example" id="niveau-etude-gerants">
-                    <option>-- Selectionner votre niveau d'etude --</option>
+                    <option value="">-- Selectionner votre niveau d'etude --</option>
                     <option value="Non Scolariser"
                         {{ old('niveau_etude_gerant') == 'Non Scolariser' ? 'selected' : '' }}>
                         Non Scolariser</option>
@@ -386,7 +387,7 @@
                 <label class="form-label">La Classe <span class="text-danger">*</span> </label>
                 <input type="text" name="classe_gerant" id="classe_gerant"
                     class="form-control @error('classe_gerant') is-invalid @enderror"
-                    placeholder="Preciser la classe" value="{{ old('classe_gerant') }}">
+                    placeholder="Preciser la classe" value="{{ old('classe_gerant') }}" onKeyPress="if(this.value.length==30) return false;">
                 @error('classe_gerant')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -397,8 +398,8 @@
                 <label class="form-label">Dernier Diplôme <span class="text-danger">*</span></label>
                 <select name="diplome_etude_obtenu_gerant" id="diplome_etude_obtenu_gerant"
                     class="country form-control select2 @error('diplome_etude_obtenu_gerant') is-invalid @enderror"
-                    aria-label="example" required>
-                    <option>-- Sélectionner votre dernier Diplôme --</option>
+                    aria-label="example" >
+                    <option value="">-- Sélectionner votre dernier Diplôme --</option>
                     <option value="CEPE" {{ old('diplome_etude_obtenu_gerant') == 'CEPE' ? 'selected' : '' }}>CEPE
                         (Certificat d'Études Primaires Élémentaires)</option>
                     <option value="BEPC" {{ old('diplome_etude_obtenu_gerant') == 'BEPC' ? 'selected' : '' }}>BEPC

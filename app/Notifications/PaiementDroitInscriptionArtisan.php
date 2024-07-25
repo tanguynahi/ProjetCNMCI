@@ -3,9 +3,9 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class PaiementDroitInscriptionArtisan extends Notification
 {
@@ -41,9 +41,10 @@ class PaiementDroitInscriptionArtisan extends Notification
 
             ->from(config('mail.from.address'), config('mail.from.name'))
             ->subject('Validation de votre compte CNMCI')
-            ->greeting('Bonjour '. formatSexe3($this->artisan->sexe). ' ' . $this->artisan->nom . ' ' . $this->artisan->prenom . ',')
+            ->greeting('Felicitation '. formatSexe3($this->artisan->sexe). ' ' . $this->artisan->nom . ' ' . $this->artisan->prenom . ',')
+            ->line('Votre demande d\'identification au registre des métiers a été approuvée')
             ->line('Merci pour la première étape de votre identification sur CNMCI. Veuillez cliquer sur le boutton ci-dessous pour payer votre droit d\'inscription.')
-            ->action('Passez au paiement', $this->LienDeValidation)
+            ->action('cliquez le lien pour finalise', $this->LienDeValidation)
             ->line('NB: Mail générer automatiquement ne pas y répondre!')
             ->line('Merci d’utiliser notre plateforme!');
     }

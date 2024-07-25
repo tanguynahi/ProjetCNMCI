@@ -1,4 +1,4 @@
-@extends('layouts.dashboard', ['title' => 'Images - Liste des Images'])
+@extends('layouts.dashboard', ['title' => 'Images - Liste des Metiers'])
 
 
 @push('css')
@@ -16,11 +16,11 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            <h5 class="card-title mb-0">Liste des Images</h5>
+                            <h5 class="card-title mb-0">Liste des Metiers</h5>
                         </div>
                         <div class="col-6">
                             <div class="d-flex justify-content-end">
-                                <a href="{{ route('slides.create') }}" class="btn btn-primary">Ajouter des Images</a>
+                                <a href="{{ route('typeactivites.create') }}" class="btn btn-primary">Ajouter un Métiers</a>
                             </div>
                         </div>
                     </div>
@@ -30,61 +30,40 @@
                         <thead>
                             <tr>
                                 <th>N°</th>
-                                <th>Image</th>
-                                <th>Titre</th>
-                                <th>Sous-titre</th>
-                                <th>Catégorie</th>
+                                <th>branche d'activite</th>
+                                <th>Libelle</th>
+                                <th>Description</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($slides as $index => $slide)
+                            @foreach ($metiers as $index => $metier)
                                 @php
-                                $imgUrl = $slide->lien_image ? asset($slide->lien_image) : asset('assets/dashboard/img/default-img.png');
+                                // $imgUrl = $slide->lien_image ? asset($slide->lien_image) : asset('assets/dashboard/img/default-img.png');
                                     $statusBadge =
-                                        $slide->status == 1
+                                        $metier->status == 1
                                             ? '<span class="badge bg-success"> Actif </span>'
                                             : '<span class="badge bg-danger"> Inactif </span>';
                                 @endphp
                                 <tr>
                                     <td><span class="text-primary fw-bold">#{{ $index + 1 }}</span></td>
-                                    <td>
-                                        <div class="d-flex justify-content-start align-items-center">
-                                            <div class="avatar-wrapper">
-                                                <div class="avatar avatar-sm me-3">
-                                                    <img src="{{ $imgUrl }}" alt="Image actualité"
-                                                        class="rounded-circle">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>{{ $slide->titre }}</td>
-                                    <td style="white-space: pre-line;">{!! couperTexte2($slide->sous_titre, 20) !!}</td>
-                                    {{-- <td>
-                                        {{ Str::words($actualite->description, 9) }}
-                                    </td> --}}
-                                    <td>
-                                        {{ $slide->categorie }}
-                                    </td>
+
+                                    <td>{{ $metier->branche_activite->libelle }}</td>
+                                    <td>{{ $metier->libelle }}</td>
+                                    <td style="white-space: pre-line;">{!! couperTexte2($metier->description, 20) !!}</td>
+
                                     <td>{!! $statusBadge !!}</td>
 
                                     <td>
                                         <div class="d-flex align-items-center">
-
-                                            {{-- <a href="{{ route('slides.show', $slide->id) }}"
-                                                data-bs-toggle="tooltip"
-                                                class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill"
-                                                data-bs-placement="top" aria-label="Infos" data-bs-original-title="Infos"><i
-                                                    class="ti ti-eye mx-2 ti-md"></i>
-                                            </a> --}}
-                                            <a href="{{ route('slides.edit', $slide->id) }}"
+                                            <a href="{{ route('typeactivites.edit', $metier->id) }}"
                                                 data-bs-toggle="tooltip"
                                                 class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill"
                                                 data-bs-placement="top" aria-label="Modifier"
                                                 data-bs-original-title="Modifier"><i class="ti ti-edit mx-2 ti-md"></i>
                                             </a>
-                                            <a href="#deleteModal{{ $slide->id }}" id="DeleteIdentification"
+                                            <a href="#deleteModal{{ $metier->id }}" id="DeleteIdentification"
                                                 class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill"
                                                 data-bs-toggle="modal" data-bs-toggle="tooltip" data-bs-placement="top"
                                                 aria-label="Supprimer" data-bs-original-title="Supprimer"><i
@@ -95,7 +74,7 @@
                                 </tr>
 
                                 <!-- Modal delete-->
-                                <div class="modal fade flip" id="deleteModal{{ $slide->id }}" tabindex="-1"
+                                <div class="modal fade flip" id="deleteModal{{ $metier->id }}" tabindex="-1"
                                     aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
@@ -105,8 +84,8 @@
                                                     style="width:90px;height:90px">
                                                 </lord-icon>
                                                 <div class="mt-4 text-center">
-                                                    <h4>Vous êtes sur le point de supprimer <br>une Image ?</h4>
-                                                    <p class="text-muted fs-15 mb-4">En supprimant cette Image,
+                                                    <h4>Vous êtes sur le point de supprimer <br> un metier ?</h4>
+                                                    <p class="text-muted fs-15 mb-4">En supprimant ce metier,
                                                         vous
                                                         supprimez
                                                         <br> toutes les informations la concernant de notre base de données.
@@ -118,7 +97,7 @@
                                                                 class="ri-close-line me-1 align-middle"></i> Fermer</button>
 
                                                         <form method="POST"
-                                                            action="{{ route('slides.destroy', $slide->id) }}">
+                                                            action="{{ route('typeactivites.destroy', $metier->id) }}">
                                                             @csrf
                                                             @method('DELETE')
                                                             {{-- <input name="_method" type="hidden" value="DELETE"> --}}

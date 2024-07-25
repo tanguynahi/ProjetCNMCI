@@ -18,7 +18,7 @@
                     <li class="nav-item me-3 dropdown">
                         <a class="nav-link" href="#">Formations</a>
                     </li>
-                    <li class="nav-item me-2"><a class="nav-link" href="{{ route('accueil') }}#contact">Contact</a></li>
+                    <li class="nav-item me-2"><a class="nav-link" href="{{ route('accueil.contact') }}#contact">Contact</a></li>
                     <li class="nav-item me-3"><a class="nav-link" href="{{ route('accueil') }}#faq">FAQ</a></li>
                 </ul>
                 @if (Auth::check())
@@ -42,7 +42,9 @@
                         </form>
                         <br>
                         <form class="d-flex ms-4">
-                            <a class="btn px-4 rounded btn-primary" href="{{ route('inscription') }}">Inscription</a>
+                            <a class="btn px-4 rounded btn-primary" href="{{ route('verification.registre') }}">
+                                Je m'Identifie
+                            </a>
                         </form>
                     @endif
                 @else
@@ -51,7 +53,9 @@
                     </form>
                     <br>
                     <form class="d-flex ms-4">
-                        <a class="btn px-4 rounded btn-primary" href="{{ route('inscription') }}">Inscription</a>
+                        <a class="btn px-4 rounded btn-primary" href="{{ route('verification.registre') }}">
+                            Je m'Identifie
+                        </a>
                     </form>
                 @endif
             </div>

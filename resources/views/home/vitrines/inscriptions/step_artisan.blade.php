@@ -17,7 +17,7 @@
             <label class="form-label">Nom Artisan<span class="text-danger">*</span></label>
             <input type="text" name="nom_artisan" class="form-control @error('nom_artisan') is-invalid @enderror"
                 placeholder="Nom" autocomplete="nom_artisan" id="nom_artisan" autofocus value="{{ old('nom_artisan') }}"
-                required>
+                required onKeyPress="if(this.value.length==20) return false;">
             @error('nom_artisan')
                 <span class="invalid-feedback" role="alert">
                     <strong>
@@ -30,7 +30,7 @@
             <label class="form-label">Prénoms Artisan <span class="text-danger">*</span></label>
             <input type="text" name="prenom_artisan" id="prenom_artisan"
                 class="form-control @error('prenom_artisan') is-invalid @enderror" placeholder="Prenoms"
-                autocomplete="prenom_artisan" autofocus value="{{ old('prenom_artisan') }}" required>
+                autocomplete="prenom_artisan" autofocus value="{{ old('prenom_artisan') }}" onKeyPress="if(this.value.length==70) return false;" required>
             @error('prenom_artisan')
                 <span class="invalid-feedback" role="alert">
                     <strong>
@@ -45,8 +45,9 @@
                 class="country form-control select2 @error('sexe_artisan') is-invalid @enderror" aria-label="example"
                 autocomplete="sexe_artisan" autofocus required>
                 <option>-- Selectionner un Sexe --</option>
-                <option value="Masculin" {{ old('sexe_artisan') == 'Masculin' ? 'selected' : '' }}>Masculin</option>
-                <option value="Feminin" {{ old('sexe_artisan') == 'Feminin' ? 'selected' : '' }}>Feminin</option>
+                <option value="1" {{ old('sexe_artisan') == '1' ? 'selected' : '' }}>Monsieur</option>
+                <option value="2" {{ old('sexe_artisan') == '2' ? 'selected' : '' }}>Madame</option>
+                <option value="3" {{ old('sexe_artisan') == '3' ? 'selected' : '' }}>Mademoiselle</option>
             </select>
             @error('sexe_artisan')
                 <span class="invalid-feedback" role="alert">
@@ -109,7 +110,7 @@
             <label class="form-label">Lieu De naissance <span class="text-danger">*</span></label>
             <input type="text" name="lieu_naissance_artisan" id="lieu_naissance_artisan"
                 class="form-control @error('lieu_naissance_artisan') is-invalid @enderror"
-                placeholder="Lieu de naissance" value="{{ old('lieu_naissance_artisan') }}" required>
+                placeholder="Lieu de naissance" value="{{ old('lieu_naissance_artisan') }}" onKeyPress="if(this.value.length==50) return false;" required>
             @error('lieu_naissance_artisan')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -120,7 +121,7 @@
             <label class="form-label">Adresse Artisan <span class="text-danger">*</span></label>
             <input type="text" name="adresse_artisan" id="adresse_artisan"
                 class="form-control @error('adresse_artisan') is-invalid @enderror" placeholder="Adresse Postale"
-                value="{{ old('adresse_artisan') }}" required>
+                value="{{ old('adresse_artisan') }}" onKeyPress="if(this.value.length==50) return false;" required>
             @error('adresse_artisan')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -134,7 +135,7 @@
             <select name="apprentissage_metier"
                 class="country form-control select2 @error('apprentissage_metier') is-invalid @enderror"
                 aria-label="example" id="apprentissage_metier">
-                <option>-- Selectionner votre niveau d'étude --</option>
+                <option value="">-- Selectionner votre niveau d'étude --</option>
                 <option value="Sur le Tas" {{ old('apprentissage_metier') == 'Sur le Tas' ? 'selected' : '' }}>Sur le
                     Tas
                 </option>
@@ -153,7 +154,7 @@
             <label class="form-label">Niveau métier</label>
             <input type="text" name="niveau_metier_artisan" id="niveau_metier_artisan"
                 class="form-control @error('niveau_metier_artisan') is-invalid @enderror" placeholder="Niveau métier"
-                value="{{ old('niveau_metier_artisan') }}" required>
+                value="{{ old('niveau_metier_artisan') }}" onKeyPress="if(this.value.length==30) return false;" required>
             @error('niveau_metier_artisan')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -164,7 +165,7 @@
             <label class="form-label">Diplôme métier <span class="text-danger">*</span></label>
             <input type="text" name="diplome_metier_obtenu" id="diplome_metier_obtenu"
                 class="form-control  @error('diplome_metier_obtenu') is-invalid @enderror"
-                placeholder="Diplôme métier " value="{{ old('diplome_metier_obtenu') }}" required>
+                placeholder="Diplôme métier " value="{{ old('diplome_metier_obtenu') }}" onKeyPress="if(this.value.length==50) return false;" required>
             @error('diplome_metier_obtenu')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -178,7 +179,7 @@
             <label class="form-label">Email Artisan</label>
             <input type="email" name="email_artisan" id="email_artisan"
                 class="form-control @error('email_artisan') is-invalid @enderror" placeholder="xxxx@gmail.com"
-                value="{{ old('email_artisan') }}" required>
+                value="{{ old('email_artisan') }}" required onKeyPress="if(this.value.length==50) return false;">
             @error('email_artisan')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -190,7 +191,7 @@
             <fieldset class="form-icon-group left-icon position-relative">
                 <input type="tel" name="contact_artisan" id="contact_artisan"
                     class="form-control phone-number @error('contact_artisan') is-invalid @enderror"
-                    placeholder="Ex: (+225) 00-00-00-00-00" value="{{ old('contact_artisan') }}" required>
+                    placeholder="Ex: (+225)00-00-00-00-00" value="{{ old('contact_artisan') }}" required onKeyPress="if(this.value.length==20) return false;">
                 @error('contact_artisan')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -215,7 +216,7 @@
             <fieldset class="form-icon-group left-icon position-relative">
                 <input type="tel" name="contact_whatsapp" id="contact_whatsapp"
                     class="form-control phone-number @error('contact_whatsapp') is-invalid @enderror"
-                    placeholder="Ex: (+225) 00-00-00-00-00" value="{{ old('contact_whatsapp') }}" required>
+                    placeholder="Ex: (+225) 00-00-00-00-00" value="{{ old('contact_whatsapp') }}"onKeyPress="if(this.value.length==20) return false;" required>
                 @error('contact_whatsapp')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -242,9 +243,9 @@
                 aria-label="example" id="type-artisan-piece" required>
                 <option>-- Selectionner une piece --</option>
                 @foreach ($typeDocuments as $typeDocument)
-                    <option value="{{ $typeDocument->id }}"
-                        {{ old('type_document_id') == $typeDocument->id ? 'selected' : '' }}>
-                        {{ $typeDocument->libelle }}
+                    <option value="{{ $typeDocument['id'] }}"
+                        {{ old('type_document_id') == $typeDocument['id'] ? 'selected' : '' }}>
+                        {{ $typeDocument['libelle'] }}
                     </option>
                 @endforeach
             </select>
@@ -280,7 +281,7 @@
             <label class="form-label">Numero de Pieces <span class="text-danger">*</span></label>
             <input type="text" name="numero_document_artisan" id="numero_document_artisan"
                 class="form-control @error('numero_document_artisan') is-invalid @enderror"
-                placeholder="Numero de la pieces" value="{{ old('numero_document_artisan') }}">
+                placeholder="Numero de la pieces" value="{{ old('numero_document_artisan') }}" onKeyPress="if(this.value.length==50) return false;">
             @error('numero_document_artisan')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -291,7 +292,7 @@
             <label class="form-label">Délivré à <span class="text-danger">*</span></label>
             <input type="text" name="lieu_delivrance_document_artisan" id="lieu_delivrance_document_artisan"
                 class="form-control @error('lieu_delivrance_document_artisan') is-invalid @enderror"
-                placeholder="Délivré à" value="{{ old('lieu_delivrance_document_artisan') }}">
+                placeholder="Délivré à" value="{{ old('lieu_delivrance_document_artisan') }}" onKeyPress="if(this.value.length==50) return false;">
             @error('lieu_delivrance_document_artisan')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -302,7 +303,7 @@
             <label class="form-label">le <span class="text-danger">*</span></label>
             <input type="date" name="date_delivrance_document_artisan" id="date_delivrance_document_artisan"
                 class="form-control @error('date_delivrance_document_artisan') is-invalid @enderror"
-                value="{{ old('date_delivrance_document_artisan') }}">
+                value="{{ old('date_delivrance_document_artisan') }}" onKeyPress="if(this.value.length==11) return false;">
             @error('date_delivrance_document_artisan')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -316,7 +317,7 @@
             <select name="niveau_etude"
                 class="country form-control select2 @error('niveau_etude') is-invalid @enderror" aria-label="example"
                 id="niveau-etude-artisan" required>
-                <option>-- Selectionner votre niveau d'etude --</option>
+                <option value="">-- Selectionner votre niveau d'etude --</option>
                 <option value="Non Scolariser" {{ old('niveau_etude') == 'Non Scolariser' ? 'selected' : '' }}>Non
                     Scolariser</option>
                 <option value="Primaire" {{ old('niveau_etude') == 'Primaire' ? 'selected' : '' }}>Primaire</option>
@@ -335,7 +336,7 @@
             <label class="form-label">La Classe <span class="text-danger">*</span> </label>
             <input type="text" name="classe" id="classe"
                 class="form-control @error('classe') is-invalid @enderror" placeholder="Preciser la classe"
-                value="{{ old('classe') }}">
+                value="{{ old('classe') }}" onKeyPress="if(this.value.length==30) return false;">
             @error('classe')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -346,8 +347,8 @@
             <label class="form-label">Dernier Diplôme artisan <span class="text-danger">*</span></label>
             <select name="diplome_etude_obtenu" id="diplome_etude_obtenu"
                 class="country form-control select2 @error('diplome_etude_obtenu') is-invalid @enderror"
-                aria-label="example" required>
-                <option>-- Sélectionner votre dernier Diplôme --</option>
+                aria-label="example">
+                <option value="">-- Sélectionner votre dernier Diplôme --</option>
                 <option value="CEPE" {{ old('diplome_etude_obtenu') == 'CEPE' ? 'selected' : '' }}>CEPE (Certificat
                     d'Études Primaires Élémentaires)</option>
                 <option value="BEPC" {{ old('diplome_etude_obtenu') == 'BEPC' ? 'selected' : '' }}>BEPC (Brevet

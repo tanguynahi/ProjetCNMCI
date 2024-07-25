@@ -6,61 +6,7 @@
         style="background-image:url('{{ asset('assets/home/page_succes.jpg') }}'); background-repeat: no-repeat; background-size:cover;">
         <div class="container-fluid">
             <div class="row ">
-                {{-- <div class="col-lg-12 d-flex justify-content-center align-items-center">
-                    <style>
-                        .success-container {
-                            background-color: #fff;
-                            padding: 20px;
-                            border-radius: 8px;
-                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                            text-align: center;
-                        }
-                        .success-container h1 {
-                            color: #4CAF50;
-                            margin-bottom: 20px;
-                        }
-                        .success-container p {
-                            color: #333;
-                            margin-bottom: 20px;
-                        }
-                        .success-container a {
-                            display: inline-block;
-                            padding: 10px 20px;
-                            /* background-color: #4CAF50; */
-                            background-color: gray;
-                            color: #fff;
-                            text-decoration: none;
-                            border-radius: 4px;
-                        }
-                        .success-container a:hover {
-                            background-color: #45a049;
-                        }
-                    </style>
-                    <div class="row justify-content-center">
-                        <div class="success-container">
-                            <h1>Félicitations !</h1>
-                            <center>
-                                <div class="col-md-6 col-lg-6 col-12 mb-4 ">
-                                    <label class="form-label bold" style="text-transform:uppercase;">Identification N°
-                                    </label>
-                                    <p style="text-transform:uppercase;" class="h6 fw-bold">
-                                        {{ $identification->numero_identification }} </p>
-                                </div>
-                            </center>
-                            <p><span class="fw-bold">{{ formatSexe3($identification->sexe_artisan) }}
-                                    {{ $identification->prenom_artisan }} {{ $identification->nom_artisan }}</span> votre
-                                identification a été soumis avec succès. <br>
 
-                            </p>
-                            <p>Une fois la validation de l'administrateur effectuée vous serez notifié par email : <br>
-                                <span
-                                    class="
-                                    text-primary mx-2">{{ $identification->email_artisan }}</span>
-                                pour la suite de votre inscription</p>
-                            <a href="{{ route('accueil') }}">Retour à la page d'accueil</a>
-                        </div>
-                    </div>
-                </div> --}}
                 <div class="col-lg-12 d-flex justify-content-center align-items-center">
                     <style>
                         .success-container {
@@ -127,16 +73,27 @@
                                     <label class="form-label bold" style="text-transform:uppercase;">Identification N°
                                     </label>
                                     <p style="text-transform:uppercase;" class="h6 fw-bold">
-                                        {{ $identification->numero_identification }} </p>
+                                        {{ $data['NUMERO_IDENT'] }}
+                                    </p>
                                 </div>
                             </center>
-                            <p><span class="fw-bold">{{ formatSexe3($identification->sexe_artisan) }}
-                                    {{ $identification->prenom_artisan }} {{ $identification->nom_artisan }}</span> votre
+                            <p><span class="fw-bold">
+                                    @if ($data['CIVILITE_ARTIS'] == 1)
+                                        Monsieur
+                                    @elseif ($data['CIVILITE_ARTIS'] == 2)
+                                        Madame
+                                    @else
+                                        Mademoiselle
+                                    @endif
+                                    {{-- {{ formatSexe3($data['CIVILITE_ARTIS']) }} --}}
+                                    {{ $data['PRENOMS_ARTIS'] }} {{ $data['NOM_ARTIS'] }}
+                                </span> votre
                                 identification a été soumis avec succès. <br>
 
                             </p>
-                            <p>Une fois la validation de l'administrateur effectuée, vous serez notifié par email : <br>
-                                <span class="text-primary mx-2">{{ $identification->email_artisan }}</span>
+                            <p>Une fois la validation de l'administrateur effectuée, vous serez notifié par sms sur votre
+                                numero : <br>
+                                <span class="text-primary mx-2">{{ $data['CONTACT_ARTIS'] }}</span>
                                 pour la suite de votre inscription
                             </p>
                             <a href="{{ route('accueil') }}">Retour à la page d'accueil</a>

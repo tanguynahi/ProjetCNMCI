@@ -14,7 +14,7 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon"
-        href="https://demos.pixinvent.com/vuexy-html-admin-template/assets/dashboard/img/favicon/favicon.ico" />
+        href="{{ asset('assets/home/cnmci.jpg') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -77,7 +77,8 @@
                     <!-- / Content -->
 
                     <!-- Footer -->
-                    @include('partials.dashboard_partials._footer')
+                    {{-- @include('partials.dashboard_partials._footer') --}}
+                    @include('partials.artisan_partials.footer')
 
                     <!-- / Footer -->
                     <div class="content-backdrop fade"></div>

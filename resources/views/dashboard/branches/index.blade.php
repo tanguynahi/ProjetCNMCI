@@ -1,6 +1,4 @@
 @extends('layouts.dashboard', ['title' => 'Branches d/ activites - Liste des Images'])
-
-
 @push('css')
     <link rel="stylesheet" href="{{ asset('assets/dashboard/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}">
     <link rel="stylesheet"
@@ -51,10 +49,12 @@
                                     <td style="white-space: pre-line;">{!! couperTexte2($brancheActivite->description, 20) !!}</td>
 
                                     <td>{!! $statusBadge !!}</td>
-
+                                        @php
+                                            // dd($brancheActivite->id);
+                                        @endphp
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <a href="{{ route('brancheactivites.edit', $brancheActivite->id) }}"
+                                            <a href="{{ route('branche.modification', $brancheActivite->id) }}"
                                                 data-bs-toggle="tooltip"
                                                 class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill"
                                                 data-bs-placement="top" aria-label="Modifier"
@@ -94,7 +94,7 @@
                                                                 class="ri-close-line me-1 align-middle"></i> Fermer</button>
 
                                                         <form method="POST"
-                                                            action="{{ route('brancheactivites.destroy', $brancheActivite->id) }}">
+                                                            action="{{ route('branche.delete', $brancheActivite->id) }}">
                                                             @csrf
                                                             @method('DELETE')
                                                             {{-- <input name="_method" type="hidden" value="DELETE"> --}}

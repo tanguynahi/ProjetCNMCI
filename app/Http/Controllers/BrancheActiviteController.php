@@ -75,17 +75,25 @@ class BrancheActiviteController extends Controller
     {
         //
         // $brancheActivite = BrancheActivite::findOrFail($id);
-        dd($brancheActivite);
+        // dd($brancheActivite);
+        // return view('dashboard.branches.edit', compact('brancheActivite'));
+
+    }
+    public function editBranche( $id)
+    {
+        //
+        $brancheActivite = BrancheActivite::findOrFail($id);
+        // dd($brancheActivite);
         return view('dashboard.branches.edit', compact('brancheActivite'));
 
     }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateBrancheActiviteRequest $request, BrancheActivite $brancheActivite)
     {
         //
+
 
     }
 
@@ -95,31 +103,12 @@ class BrancheActiviteController extends Controller
     public function destroy(BrancheActivite $brancheActivite)
     {
         //
-        try {
-            DB::beginTransaction();
 
-            $message = "";
-            # code...
-            $brancheActivite->status = 2;
-            $brancheActivite->save();
-            $message = "branche Supprimée avec succès !";
-            $brancheActivite->delete();
-            DB::commit();
-            toast($message, 'success');
-            return redirect()->route('brancheactivites.index');
-        } catch (\Throwable $e) {
-            //throw $th;
-            DB::rollBack();
-            toast("Une erreur s'est produite, veuillez réessayer.", 'error');
-            // Capturer toute autre exception (erreur 500)
-            Log::error('Erreur interne du serveur: ' . $e->getMessage());
-            return redirect()->back();
-        }
     }
     public function miseAjour(Request $request,  $id)
     {
-
         //
+        // dd('test');
         $validatedData = $request->validate([
             'libelle' => 'required|string|min:3',
             'description' => 'nullable|string|min:3',
@@ -154,4 +143,27 @@ class BrancheActiviteController extends Controller
         }
     }
 
+    public function supprimer($id){
+        $brancheActivite = BrancheActivite::findOrFail($id);
+        try {
+            DB::beginTransaction();
+
+            $message = "";
+            # code...
+            $brancheActivite->status = 2;
+            $brancheActivite->save();
+            $message = "branche Supprimée avec succès !";
+            $brancheActivite->delete();
+            DB::commit();
+            toast($message, 'success');
+            return redirect()->route('brancheactivites.index');
+        } catch (\Throwable $e) {
+            //throw $th;
+            DB::rollBack();
+            toast("Une erreur s'est produite, veuillez réessayer.", 'error');
+            // Capturer toute autre exception (erreur 500)
+            Log::error('Erreur interne du serveur: ' . $e->getMessage());
+            return redirect()->back();
+        }
+    }
 }

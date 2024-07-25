@@ -828,3 +828,12 @@ function formatJour($date)
         return $date->format('d M Y, à H:i');
     }
 }
+
+function messageBrut(array $tableauDeChaines){
+    $chainefinale = '';
+    // Parcourir le tableau et afficher chaque élément
+    foreach ($tableauDeChaines as $chaine) {
+        $chainefinale .= $chaine . "\n";
+    }
+    return $chainefinale;
+}

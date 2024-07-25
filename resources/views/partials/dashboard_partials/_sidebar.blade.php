@@ -2,18 +2,7 @@
     <div class="app-brand demo">
         <a href="{{ route('dashboard') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
-                <svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M0.00172773 0V6.85398C0.00172773 6.85398 -0.133178 9.01207 1.98092 10.8388L13.6912 21.9964L19.7809 21.9181L18.8042 9.88248L16.4951 7.17289L9.23799 0H0.00172773Z"
-                        fill="#7367F0" />
-                    <path opacity="0.06" fill-rule="evenodd" clip-rule="evenodd"
-                        d="M7.69824 16.4364L12.5199 3.23696L16.5541 7.25596L7.69824 16.4364Z" fill="#161616" />
-                    <path opacity="0.06" fill-rule="evenodd" clip-rule="evenodd"
-                        d="M8.07751 15.9175L13.9419 4.63989L16.5849 7.28475L8.07751 15.9175Z" fill="#161616" />
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M7.77295 16.3566L23.6563 0H32V6.88383C32 6.88383 31.8262 9.17836 30.6591 10.4057L19.7824 22H13.6938L7.77295 16.3566Z"
-                        fill="#7367F0" />
-                </svg>
+                <img src="{{ asset('assets/home/cnmci.jpg') }}" style="height: 100px; width:100px;" alt="Images Logo">
             </span>
             <span class="app-brand-text demo menu-text fw-bold">CNMCI</span>
         </a>
@@ -28,7 +17,7 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboards -->
-        <li class="menu-item active open">
+        <li class="menu-item open @if (Route::currentRouteName() == 'dashboard') active @endif">
             <a href="{{ route('dashboard') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-smart-home"></i>
                 <div data-i18n="Dashboards">Tableau de bord</div>
@@ -40,7 +29,7 @@
                 <div data-i18n="Charts">Statistiques</div>
             </a>
         </li>
-        <li class="menu-item">
+        {{-- <li class="menu-item">
             <a href="#" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-mail"></i>
                 <div data-i18n="Email">Email</div>
@@ -51,14 +40,14 @@
                 <i class="menu-icon tf-icons ti ti-messages"></i>
                 <div data-i18n="Chat">Chat</div>
             </a>
-        </li>
-        <li class="menu-item">
+        </li> --}}
+        <li class="menu-item @if (Route::currentRouteName() == 'identifications.index') active @endif">
             <a href="{{ route('identifications.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-id"></i>
                 <div data-i18n="Identifications">Identifications</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item @if (Route::currentRouteName() == 'demandes.index') active @endif">
             <a href="{{ route('demandes.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-git-compare"></i>
                 <div data-i18n="Request">Demandes</div>
@@ -112,35 +101,35 @@
             </a>
         </li>
         <!-- User interface -->
-        <li class="menu-item">
+        {{-- <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-database"></i>
                 <div data-i18n="Contributions">Cotisations</div>
                 <div class="badge bg-primary rounded-pill ms-auto">2</div>
             </a>
-        </li>
-        <li class="menu-item">
+        </li> --}}
+        <li class="menu-item @if (Route::currentRouteName() == 'actualites.index') active @endif">
             <a href="{{ route('actualites.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-book"></i>
                 <div data-i18n="News">Actualités</div>
                 <div class="badge bg-primary rounded-pill ms-auto">2</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item @if (Route::currentRouteName() == 'annonces.index') active @endif">
             <a href="{{ route('annonces.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-photo-up"></i>
                 <div data-i18n="Ads">Annonces</div>
                 <div class="badge bg-primary rounded-pill ms-auto">2</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item @if (Route::currentRouteName() == 'slides.index') active @endif">
             <a href="{{ route('slides.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-photo-up"></i>
                 <div data-i18n="Slides">Slides</div>
                 <div class="badge bg-primary rounded-pill ms-auto">2</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item @if (Route::currentRouteName() == 'faqs.index') active @endif">
             <a href="{{ route('faqs.index') }}" class="menu-link">
                 <i class="fa-regular fa-circle-question mx-2"></i>
                 <div data-i18n="FAQ">FAQ(s)</div>
@@ -155,7 +144,7 @@
                 <div class="badge bg-primary rounded-pill ms-auto">{{ \App\Models\Formation::count() }}</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item @if (Route::currentRouteName() == 'administrateurs.index') active @endif">
             <a href="{{ route('administrateurs.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-users"></i>
                 <div data-i18n="Admins">Administrateurs</div>
@@ -170,18 +159,26 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text" data-i18n="Files">Fichiers</span>
         </li>
-        <li class="menu-item">
-            <a href="#" class="menu-link">
-                <i class="fa-regular fa-circle-question mx-2"></i>
-                <div data-i18n="Type d'activite">Type d'activite</div>
-            </a>
-        </li>
-        <li class="menu-item">
+        <li class="menu-item @if (Route::currentRouteName() == 'brancheactivites.index') active @endif">
             <a href="{{ route('brancheactivites.index') }}" class="menu-link">
-                <i class="fa-regular fa-circle-question mx-2"></i>
-                <div data-i18n=" Branche activite"> Branche Activites</div>
+                {{-- <i class="fa-regular fa-circle-question mx-2"></i> --}}
+                <i class="fa-solid fa-minimize mx-2"></i>
+                <div data-i18n="Branche activites"> Branche Activites</div>
             </a>
         </li>
+
+        <li class="menu-item @if (Route::currentRouteName() == 'typeactivites.index') active @endif">
+            <a href="{{ route('typeactivites.index') }}" class="menu-link">
+                {{-- <i class="fa-regular fa-circle-question mx-2"></i> --}}
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                    class="bi bi-briefcase mx-1" viewBox="0 0 16 16">
+                    <path
+                        d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5m1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0M1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5" />
+                </svg>
+                <div data-i18n="Métiers">Métiers</div> 
+            </a>
+        </li>
+
 
         <!-- Misc -->
         <li class="menu-header small text-uppercase">
@@ -205,7 +202,7 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item">
+        <li class="menu-item @if (Route::currentRouteName() == 'parametres.index') active @endif">
             <a href="{{ route('parametres.index') }}" target="_blank" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-settings"></i>
                 <div data-i18n="Settings">Paramètres</div>

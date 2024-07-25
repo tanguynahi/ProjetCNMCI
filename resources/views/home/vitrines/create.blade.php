@@ -49,7 +49,7 @@
                         <!-- Formulaire de creatio d'acces (mot de passe) -->
                         <form class="row g-3">
                             <div class="col-12 text-center mb-4">
-                                <h1>Finalisez votre Inscriptions</h1>
+                                <h1>Finalisez  Identification</h1>
                                 <span>Veuillez créer votre accès.</span>
                             </div>
                             <div class="col-6">
@@ -77,13 +77,11 @@
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Mot de Passe</label>
-                                {{-- <input type="password" class="form-control form-control-lg" placeholder="XXXXXXXXXXXXXX"> --}}
                                 <input id="password" class="form-control form-control-lg" type="password"
                                     placeholder="Entre mot de passe">
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Confirmer mot de passe</label>
-                                {{-- <input type="password" class="form-control form-control-lg" placeholder="XXXXXXXXXXXXXX"> --}}
                                 <input id="password" class="form-control form-control-lg" type="password"
                                     placeholder="Confirmer mot de passe">
                             </div>
@@ -93,8 +91,7 @@
                                     <label class="form-check-label" for="flexCheckDefault"> J'accepte les <a href="#"
                                             title="voir" class="text-primary"> Termes de la politique de
                                             confidentialité
-                                        </a>
-                                        {{-- style="color:#cc8f5e" --}}
+                                        </a>     
                                     </label>
                                 </div>
                             </div>

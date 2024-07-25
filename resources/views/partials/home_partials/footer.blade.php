@@ -8,7 +8,7 @@
             <div class="col-lg-4 col-md-6 col-12">
                 <h3 class="mb-1 fw-bold color-900">
                     <a href="#">
-                        <img src="{{ $parametre->lien_logo }}" style="height: 100px; width:100px;" alt="Images Logo">
+                        <img src="{{ $parametre->lien_logo }}" style="height: 100px; width:100px;" alt="Image Logo">
                     </a>
                 </h3>
                 <p>Vous pouvez nous joindre :</p>

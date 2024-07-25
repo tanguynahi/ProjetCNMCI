@@ -6,26 +6,24 @@ use App\Models\FAQ;
 use App\Models\User;
 use App\Models\Slide;
 use App\Models\Artisan;
-use App\Models\Commune;
+
 use App\Models\Actualite;
 use App\Models\Parametre;
 use App\Models\Facturation;
-use App\Models\TypeActivite;
-use App\Models\TypeDocument;
+
 use Illuminate\Http\Request;
 use App\Models\Identification;
-use App\Models\SousPrefecture;
-use App\Models\TypeEntreprise;
+
 use Illuminate\Support\Carbon;
 use App\Models\ActiviteArtisan;
-use App\Models\BrancheActivite;
+
 // use Illuminate\Support\Facades\Validator;
 // use App\Http\Requests\ArtisanConnexionRequest;
-use App\Models\ChambreRegionale;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreIdentificationRequest;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
+// use App\Http\Requests\StoreIdentificationRequest;
 
 // use App\Http\Requests\UpdateIdentificationRequest;
 
@@ -52,16 +50,52 @@ class HomeController extends Controller
         $actualites = Actualite::orderBy('created_at', 'Desc')->paginate(3);
         return view('home.vitrines.index', compact('actualites', 'slides', 'annonces', 'partenaires', 'parametre', 'faqs'));
     }
-    public function inscription()
+    public function verificationRegistre()
     {
-        $chambresRegionales = ChambreRegionale::orderBy('libelle', 'ASC')->get();
-        $brancheActivites = BrancheActivite::orderBy('libelle', 'ASC')->get();
-        $typeActivites = TypeActivite::orderBy('libelle', 'ASC')->get();
-        $typeEntreprises = TypeEntreprise::orderBy('libelle', 'ASC')->get();
-        $sousPrefectures = SousPrefecture::orderBy('libelle', 'ASC')->get();
-        $typeDocuments = TypeDocument::orderBy('libelle', 'ASC')->get();
-        $communes = Commune::orderBy('libelle', 'ASC')->get();
-        return view('home.vitrines.inscription', compact('communes', 'typeDocuments', 'sousPrefectures', 'typeActivites', 'typeEntreprises', 'chambresRegionales','brancheActivites'));
+        return view('home.vitrines.inscriptions.debut');
+    }
+
+    public function inscription(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'numero_registre' => 'required'
+        ]);
+
+
+        $mess = "";
+        if ($validator->fails()) {
+            $mess = 'Veuillez renseigner un numero de registre valide';
+        } else {
+            $data = [
+                'numero_registre' => $request->numero_registre,
+                'value' => 'bew',
+            ];
+            $reponse = Http::post('http://192.168.100.207:8000/api/cnmci-ws/check-registre', $data);
+            $ResJSON = $reponse->json();
+            // dd(($ResJSON['message']) );
+            if ($reponse->status() === 200) {
+                if ($ResJSON['code'] === 200) {
+                    $registre = $request->numero_registre;
+                    $typeActivites = $ResJSON['data']['TypesActivites'];
+                    $brancheActivites = $ResJSON['data']['BranchesActivites'];
+                    $typeEntreprises = $ResJSON['data']['TypesEntreprises'];
+                    $typeDocuments = $ResJSON['data']['TypesDocs'];
+                    $sousPrefectures = $ResJSON['data']['SousPrefectures'];
+                    $communes = $ResJSON['data']['Communes'];
+                    return view('home.vitrines.inscription', compact('communes', 'typeDocuments', 'sousPrefectures', 'typeActivites', 'typeEntreprises', 'brancheActivites', 'registre'));
+                } else {
+
+                    $mess = messageBrut($ResJSON['message']);
+                    // toast($mess, 'error');
+                    // return back()->with('message', $mess);
+                }
+            } else {
+                $mess = 'Une erreur inattendue s\'est produite, verifier que vous avez accès à internet, ' .
+                    'puis reéssayer. erreur ' . $reponse->status();
+            }
+        }
+        toast($mess, 'error');
+        return back()->with('message', $mess);
     }
 
     // on la passe avec l'id de l'artisan pour mettre son mot de passe
@@ -98,162 +132,188 @@ class HomeController extends Controller
         }
     }
 
-    public function identification(Request $request)
+    public function identificationValid(Request $request)
     {
-            //StoreIdentificationRequest
-        try {
-            DB::beginTransaction();
-            // DB::beginTransaction();
-            $signature = null;
-            $lien_type_document_artisan = null;
-            $lien_type_document_gerant = null;
-            $lien_photo_artisan = null;
-            $lien_photo_gerant = null;
-            if ($request->hasFile('lien_type_document_gerant')) {
-                $file_name = Carbon::now()->timestamp . '.' . $request->lien_type_document_gerant->extension();
-                $request->lien_type_document_gerant->storeAs('images-gerant-typeDocument/', $file_name);
-                $lien_type_document_gerant = 'src-files/images-gerant-typeDocument/' . $file_name;
-            }
-            if ($request->hasFile('lien_type_document_artisan')) {
-                $file_name = Carbon::now()->timestamp . '.' . $request->lien_type_document_artisan->extension();
-                $request->lien_type_document_artisan->storeAs('images-artisan-typeDocument/', $file_name);
-                $lien_type_document_artisan = 'src-files/images-artisan-typeDocument/' . $file_name;
-            }
-            if ($request->hasFile('lien_photo_artisan')) {
-                $file_name = Carbon::now()->timestamp . '.' . $request->lien_photo_artisan->extension();
-                $request->lien_photo_artisan->storeAs('images-artisan/', $file_name);
-                $lien_photo_artisan = 'src-files/images-artisan/' . $file_name;
-            }
-            if ($request->hasFile('lien_photo_gerant')) {
-                $file_name = Carbon::now()->timestamp . '.' . $request->lien_photo_gerant->extension();
-                $request->lien_photo_gerant->storeAs('images-gerant/', $file_name);
-                $lien_photo_gerant = 'src-files/images-gerant/' . $file_name;
-            }
-            if ($request->hasFile('signature')) {
-                $file_name = Carbon::now()->timestamp . '.' . $request->signature->extension();
-                $request->signature->storeAs('images-artisan-signature/', $file_name);
-                $signature = 'src-files/images-artisan-signature/' . $file_name;
-            }
-            // dd($signature);
-            $commune = Commune::where('id', $request->commune_id)->first();
-            $identifiant = generateCode2('IDEN');
-            $identification = Identification::create([
-                'ID_CHAMBRE_REGION' => $commune->chambre_regionale_id,
-                'ID_TYPE_ENTREPRISES' => $request->type_entreprise_id,
-                'NUMERO_IDENT' => $identifiant,
-                'DENOMINATION' => $request->denomination_entreprise,
-                'ADRESSE_POSTAL' => $request->adresse_postale,
-                'CONTACT' => $request->contact_entreprise,
-                'ADR_EMAIL' => $request->email_entreprise,
-                'TYPE_REGISTRE' => $request->registre_entreprise,
-                'NUMERO_REGISTRE' => $request->numero_registre,
-                'REGIME_FISCALE' => $request->regime_fiscal,
-                'NB_ASSOCIES' => $request->nombre_associes,
-                'DUREE_PERS_MORAL' => $request->duree_personne_morale,
-                'TYPE_DUREE' => $request->annee_duree_personne_morale,
-                'CAPITAL_SOCIAL' => $request->capital_social,
-                'NUMERO_CNPS' => $request->numero_cnps,
-                'NUM_COMPTE_CONT' => $request->numero_compte_contribuable,
-                'ID_BRANCHES' => $request->branche_activite_id,
-                'ID_TYPE_ACTIVITES' => $request->type_activite_id,
-                'ACTIVITE_SECONDAIRE' => $request->activite_secondaire,
-                'RAISON_SOCIALE' => $request->raison_social,
-                'SIGLE' => $request->sigle_ou_enseigne,
-                'OBJET_SOCIAL' => $request->objet_social,
-                'DATE_DEBT_ACTIVITE' => $request->date_debut_activite,
-                'LIB_DEPARTEMENT' => $request->departement,
-                'ID_SOUS_PREFECTURE' => $request->sous_prefecture_id,
-                'ID_COMMUNE' => $request->commune_id,
-                'QUARTIER' => $request->quartier,
-                'VILLAGE' => $request->village,
-                'NUM_LOT' => $request->numero_lot,
-                'NUM_ILOT' => $request->numero_ilot,
-                'NB_COMPAGNON' => $request->nombre_compagnon,
-                'NB_APPRENTIS' => $request->nombre_apprenti,
-                'LIEN_MAP' => $request->lien_google_map,
-                'NOM_ART' => $request->nom_artisan,
-                'PRENOMS_ARTIS' => $request->prenom_artisan,
-                'DATE_NAISS_ARTIS' => $request->date_naissance_artisan,
-                'LIEU_NAISS_ARTIS' => $request->lieu_naissance_artisan,
-                'CIVILITE_ARTIS' => $request->sexe_artisan,
-                'ID_TYPE_DOCS_ARTIS' => $request->type_document_id,
-                'LIEN_TYPE_DOCS_ARTIS' => $lien_type_document_artisan,
-                'AUTRE_DOCS_ARTIS' => $request->autre_document_artisan,
-                'NUM_DOCS_ARTIS' => $request->numero_document_artisan,
-                'LIEU_DELIVRE_DOCS_ARTIS' => $request->lieu_delivrance_document_artisan,
-                'DATE_DELIVRE_DOCS_ARTIS' => $request->date_delivrance_document_artisan,
-                'NATIONALITE_ARTIS' => $request->nationalite_artisan,
-                'ADRESSE_ARTIS' => $request->adresse_artisan,
-                'CONTACT_ARTIS' => $request->contact_artisan,
-                'CONTACT_WHATSAPP_ARTIS' => $request->contact_whatsapp,
-                'ETAT_CIVIL_ARTIS' => $request->etat_civil_artisan,
-                'EST_GERANT' => $request->etes_gerant,
-                'ADR_EMAIL_ARTIS' => $request->email_artisan,
-                'AVATAR_ARTIS' => $lien_photo_artisan,
-                'NIVEAU_ETUDE_ARTIS' => $request->niveau_etude,
-                'CLASSE_ARTIS' => $request->classe,
-                'DIPLOME_OBT_ARTIS' => $request->diplome_etude_obtenu,
-                'APPRENTISS_MET_ARTIS' => $request->apprentissage_metier,
-                'NIVEAU_METIER_ARTIS' => $request->niveau_metier_artisan,
-                'DIPLOME_METIER_OBT_ARTIS' => $request->diplome_metier_obtenu,
-                'DIPLOME_CNMCI_ARTIS' => $request->diplome_cnmci,
-                'NOM_GERAN' => $request->nom_gerant,
-                'PRENOM_GERAN' => $request->prenom_gerant,
-                'DATE_NAI_GERAN' => $request->date_naissance_gerant,
-                'LIEU_NAISS_GERAN' => $request->lieu_naissance_gerant,
-                'CIVILITE_GERAN' => $request->sexe_gerant,
-                'ID_TYPE_DOCS_GERAN' => $request->gerant_type_document_id,
-                'LIEN_TYPE_DOCS_GERAN' => $lien_type_document_gerant,
-                'AUTRE_DOCS_GERAN' => $request->autre_document_gerant,
-                'NUM_DOCS_GERAN' => $request->numero_document_gerant,
-                'LIEU_DELIVRE_DOCS_GERAN' => $request->lieu_delivrance_document_gerant,
-                'DATE_DELIVRE_DOCS_GERAN' => $request->date_delivrance_document_gerant,
-                'NATIONALITE_GERAN' => $request->nationalite_gerant,
-                'ADRESSE_GERAN' => $request->adresse_gerant,
-                'CONTACT_GERAN' => $request->contact_gerant,
-                'CONTACT_WHATSAPP_GERAN' => $request->contact_whatsapp_gerant,
-                'NIVEAU_ETUDE_GERAN' => $request->niveau_etude_gerant,
-                'CLASSE_GERAN' => $request->classe_gerant,
-                'DIPLOME_ETD_OBT_GERAN' => $request->diplome_etude_obtenu_gerant,
-                'APPRENTISS_MET_GERAN' => $request->apprentissage_metier_gerant,
-                'NIVEAU_METIER_GERAN' => $request->niveau_metier_gerant,
-                'DIPLOME_MET_OBT_GERAN' => $request->diplome_metier_obtenu_gerant,
-                'DIPLOME_CNMCI_GERAN' => $request->diplome_cnmci_gerant,
-                'ETAT_CIVIL_GERAN' => $request->etat_civil_gerant,
-                'ADR_EMAIL_GERAN' => $request->email_gerant,
-                'AVATAR_GERAN' => $lien_photo_gerant,
-                'DECLARE_MAITRISE_METIER' => $request->declaration_maitrise_metier,
-                'DECLARE_NON_CONDAMNATION' => $request->declaration_honneur,
-                'ACCEPTE_CONFIDENTIAL' => $request->accepte_confidentialite,
-                'SIGNATURE' => $signature,
-                // 'avis' => $request->avis,
-                // 'motif_refus' => $request->motif_refus,
-                'STATUT' => 1,
 
+        // dd($request->all());
+        $signature = null;
+        $lien_type_document_artisan = null;
+        $lien_type_document_gerant = null;
+        $lien_photo_artisan = null;
+        $lien_photo_gerant = null;
 
-            ]);
+        $extdocartis = '';
+        $extavatartis = '';
+        $extdocgeran = '';
+        $extavatgeran = '';
+        $extsignartis = '';
 
-            if ($request->etes_gerant == "oui") {
-
-                $lien_photo_gerant =  $lien_photo_artisan;
-                $identification->update([
-                    'AVATAR_GERAN' => $lien_photo_gerant,
-                ]);
-                // dd($lien_photo_artisan);
-            }
-            // dd($identification->signature);
-            // dd($identification->lien_type_document_gerant ,$identification->lien_type_document_artisan );
-            DB::commit();
-            toast('Identification éffectuée avec succès !', 'success');
-            return redirect()->route('pageSuccess', ['id' => $identification->id]);
-        } catch (\Throwable $e) {
-            DB::rollback();
-            // dd('test');
-            toast('Une erreur s\'est produit, Veuillez réessayer.', 'error');
-            // Capturer toute autre exception (erreur 500)
-            Log::error('Erreur interne du serveur: ' . $e->getMessage());
-            return redirect()->back();
+        if ($request->hasFile('lien_type_document_gerant')) {
+            $path = $request->file('lien_type_document_gerant');
+            $extdocgeran = pathinfo($request->lien_type_document_gerant->getClientOriginalName(), PATHINFO_EXTENSION);
+            $docs = file_get_contents($path);
+            $lien_type_document_gerant = base64_encode($docs);
         }
+
+        if ($request->hasFile('lien_type_document_artisan')) {
+            $path = $request->file('lien_type_document_artisan');
+            $extdocartis = pathinfo($request->lien_type_document_artisan->getClientOriginalName(), PATHINFO_EXTENSION);
+            $docs = file_get_contents($path);
+            $lien_type_document_artisan = base64_encode($docs);
+        }
+
+        if ($request->hasFile('lien_photo_artisan')) {
+            $path = $request->file('lien_photo_artisan');
+            $extavatartis = pathinfo($request->lien_photo_artisan->getClientOriginalName(), PATHINFO_EXTENSION);
+            $docs = file_get_contents($path);
+            $lien_photo_artisan = base64_encode($docs);
+        }
+
+        if ($request->hasFile('lien_photo_gerant')) {
+            $path = $request->file('lien_photo_gerant');
+            $extavatgeran = pathinfo($request->lien_photo_gerant->getClientOriginalName(), PATHINFO_EXTENSION);
+            $docs = file_get_contents($path);
+            $lien_photo_gerant = base64_encode($docs);
+        }
+
+        if ($request->hasFile('signature')) {
+            $path = $request->file('signature');
+            $extsignartis = pathinfo($request->signature->getClientOriginalName(), PATHINFO_EXTENSION);
+            $docs = file_get_contents($path);
+            $signature = base64_encode($docs);
+        }
+        // dd('test');
+
+        $data = [
+            'p_id' => 0,
+            'type_entreprise' => $request->type_entreprise_id,
+            'denomination_entreprise' => $request->denomination_entreprise,
+            'adresse_entreprise' => $request->adresse_postale,
+            'contact_entreprise' => $request->contact_entreprise,
+            'email_entreprise' => $request->email_entreprise,
+            'registre_entreprise' => $request->registre_entreprise,
+            'numero_registre' => $request->numero_registre,
+            'regime_fiscal' => $request->regime_fiscal,
+            'nombre_associes' => $request->nombre_associes,
+            'duree_personne_morale' => $request->duree_personne_morale,
+            'type_duree' => $request->annee_duree_personne_morale,
+            'capital_social' => $request->capital_social,
+            'numero_cnps' => $request->numero_cnps,
+            'numero_compte_contribuable' => $request->numero_compte_contribuable,
+            'branche_activite' => $request->branche_activite_id,
+            'type_activite' => $request->type_activite_id,
+            'activite_secondaire' => $request->activite_secondaire,
+            'raison_social' => $request->raison_social,
+            'sigle_ou_enseigne' => $request->sigle_ou_enseigne,
+            'objet_social' => $request->objet_social,
+            'date_debut_activite' => $request->date_debut_activite,
+            'departement' => $request->departement,
+            'sous_prefecture' => $request->sous_prefecture_id,
+            'commune' => $request->commune_id,
+            'quartier' => $request->quartier,
+            'village' => $request->village,
+            'numero_lot' => $request->numero_lot,
+            'numero_ilot' => $request->numero_ilot,
+            'nombre_compagnon' => $request->nombre_compagnon,
+            'nombre_apprentis' => $request->nombre_apprenti,
+            'adresse_geographique_entreprise' => $request->lien_google_map,
+
+            'nom_artisan' => $request->nom_artisan,
+            'prenoms_artisan' => $request->prenom_artisan,
+            'date_naissance_artisan' => $request->date_naissance_artisan,
+            'lieu_naissance_artisan' => $request->lieu_naissance_artisan,
+            'civilite_artisan' => $request->sexe_artisan,
+            'type_piece_artisan' => $request->type_document_id,
+            'precise_autre_piece_artisan' => $request->autre_document_artisan,
+
+            'buff_piece_artisan' => $lien_type_document_artisan,
+            'buff_avatar_artisan' => $lien_photo_artisan,
+            'buff_piece_gerant' => $lien_type_document_gerant,
+            'buff_avatar_gerant' => $lien_photo_gerant,
+            'buff_signature_artisan' => $signature,
+
+            'extdocartis' => $extdocartis,
+            'extavatartis' => $extavatartis,
+            'extdocgeran' => $extdocgeran,
+            'extavatgeran' => $extavatgeran,
+            'extsignartis' => $extsignartis,
+
+            'numero_piece_artisan' => $request->numero_document_artisan,
+            'lieu_piece_artisan' => $request->lieu_delivrance_document_artisan,
+            'date_piece_artisan' => $request->date_delivrance_document_artisan,
+            'nationalite_artisan' => $request->nationalite_artisan,
+            'adresse_artisan' => $request->adresse_artisan,
+            'contact_artisan' => $request->contact_artisan,
+            'whatsapp_artisan' => $request->contact_whatsapp,
+            'etat_civil_artisan' => $request->etat_civil_artisan,
+            'artisan_est_gerant' => $request->etes_gerant,
+            'email_artisan' => $request->email_artisan,
+
+            'niveau_etude_artisan' => $request->niveau_etude,
+            'classe_artisan' => $request->classe,
+            'diplome_artisan' => $request->diplome_etude_obtenu,
+            'apprentissage_metier_artisant' => $request->apprentissage_metier,
+            'niveau_metier_artisan' => $request->niveau_metier_artisan,
+            'diplome_metier_artisan' => $request->diplome_metier_obtenu,
+            'diplome_cnmci_artisan' => $request->diplome_cnmci,
+            'nom_gerant' => $request->nom_gerant,
+            'prenoms_gerant' => $request->prenom_gerant,
+            'date_naissance_gerant' => $request->date_naissance_gerant,
+            'lieu_naissance_gerant' => $request->lieu_naissance_gerant,
+            'civilite_gerant' => $request->sexe_gerant,
+            'type_piece_gerant' => $request->gerant_type_document_id,
+
+            'precise_autre_piece_gerant' => $request->autre_document_gerant,
+            'numero_piece_gerant' => $request->numero_document_gerant,
+            'lieu_piece_gerant' => $request->lieu_delivrance_document_gerant,
+
+            'date_piece_gerant' => $request->date_delivrance_document_gerant,
+            'nationalite_gerant' => $request->nationalite_gerant,
+            'adresse_gerant' => $request->adresse_gerant,
+            'contact_gerant' => $request->contact_gerant,
+            'whatsapp_gerant' => $request->contact_whatsapp_gerant,
+            'niveau_etude_gerant' => $request->niveau_etude_gerant,
+            'classe_gerant' => $request->classe_gerant,
+            'diplome_gerant' => $request->diplome_etude_obtenu_gerant,
+            'apprentissage_metier_gerant' => $request->apprentissage_metier_gerant,
+            'niveau_metier_gerant' => $request->niveau_metier_gerant,
+            'diplome_metier_gerant' => $request->diplome_metier_obtenu_gerant,
+            'diplome_cnmci_gerant' => $request->diplome_cnmci_gerant,
+            'etat_civil_gerant' => $request->etat_civil_gerant,
+            'email_gerant' => $request->email_gerant,
+
+            'declare_maitrise_metier' => $request->declaration_maitrise_metier,
+            'declare_non_condamnation' => $request->declaration_honneur,
+            'accepte_confidentialite' => $request->accepte_confidentialite,
+        ];
+        // dd($data);
+        $reponse = Http::post('http://192.168.100.207:8000/api/cnmci-ws/build-ident', $data);
+        $ResJSON = $reponse->json();
+
+        // dd($ResJSON['code']);
+        $mess = "";
+        // dd('test');
+
+        if ($reponse->status() === 200) {
+            if ($ResJSON['code'] === 200) {
+                session()->put('identification', $ResJSON['data']);
+                toast('Identification éffectuée avec succès !', 'success');
+                // dd('tes');
+                return redirect()->route('pageSuccess', ['id' => $ResJSON['data']['ID_IDENTIFICATIONS']]);
+                // return redirect()->route('accueil');
+            } else {
+                if ($ResJSON['code'] === 401) {
+                    $mess = messageBrut($ResJSON['message']);
+                } else {
+                    $mess = $ResJSON['message'];
+                }
+            }
+        } else {
+            $mess = 'Une erreur inattendue s\'est produite, verifier que vous avez accès à internet, ' .
+                'puis reéssayer. erreur ' . $reponse->status();
+        }
+        toast($mess, 'error');
+        return back()->with('error', $mess);
     }
     /* ----------------------- les pages ------------------*/
     public function pageActualite()
@@ -296,20 +356,20 @@ class HomeController extends Controller
                 if ($user && password_verify($request->password, $user->password)) {
                     Auth::login($user);
 
-                    // Vérifier si l'utilisateur connecté a l'un des rôles spécifiques avant de le rediriger
-                    if (Auth::user()->hasRole('artisan')) {
-                        // Rediriger l'utilisateur vers /dashboard
-                        $message = "Bienvenue ! " . formatGender(auth()->user()->artisan->sexe_artisan) . "" . auth()->user()->artisan->nom_artisan . " " . auth()->user()->artisan->prenom_artisan . ".";
-                        toast($message, 'success');
-                        return redirect()->route('artisan.tableau_de_bord');
-                    } else {
-                        // Déconnecter l'utilisateur
-                        Auth::logout();
-                        $request->session()->invalidate();
-                        $request->session()->regenerateToken();
-                        toast('Connecté vous ici ', 'warning');
-                        return redirect()->route('login');
-                    }
+                    // // Vérifier si l'utilisateur connecté a l'un des rôles spécifiques avant de le rediriger
+                    // if (Auth::user()->hasRole('artisan')) {
+                    //     // Rediriger l'utilisateur vers /dashboard
+                    //     $message = "Bienvenue ! " . formatGender(auth()->user()->artisan->sexe_artisan) . "" . auth()->user()->artisan->nom_artisan . " " . auth()->user()->artisan->prenom_artisan . ".";
+                    //     toast($message, 'success');
+                    //     return redirect()->route('artisan.tableau_de_bord');
+                    // } else {
+                    //     // Déconnecter l'utilisateur
+                    //     Auth::logout();
+                    //     $request->session()->invalidate();
+                    //     $request->session()->regenerateToken();
+                    //     toast('Connecté vous ici ', 'warning');
+                    //     return redirect()->route('login');
+                    // }
                 } else {
                     // Si l'e-mail n'est pas trouvé dans la table "users" ou le mot de passe est incorrect, afficher un message d'erreur
                     // toast('Mot de passe incorrect.', 'error');
@@ -327,9 +387,33 @@ class HomeController extends Controller
     }
 
     /* ------------------ Page de succes identification   -------------------*/
-    public function pageSuccess($id)
-    {
-        $identification = Identification::find($id);
-        return view('home.vitrines.succes', compact('identification'));
+    public function pageSuccess($id) {
+        $data = session()->get('identification');
+        // dd($data);
+        return view('home.vitrines.succes', compact('data'));
     }
+
+
+
+    /*----- Formulaire de connexion des deux entité  ------ */
+    public function ConnecterFrom(){
+        return view('home.NouvelleConnexion.login');
+    }
+    public function traitementLogin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nom' => "required",
+            'Prenoms' => "required",
+            'contact' => "required",
+            'login' => "required",
+        ]);
+        if($validator->fails()){
+            session()->flash('type','alert-danger');
+            session()->flash('message','Erreur dans le formulaire');
+            return back()->withErrors($validator->errors())->withInput($request->input());
+        }
+        dd($request->all());
+    }
+
+
 }

@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ asset('assets/home/cssbundle/bootstrapdatepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/home/vendor/parsleyjs/css/parsley.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/home/vendor/prismjs/prism.css') }}">
+
     @stack('css')
 
 </head>
@@ -28,10 +29,12 @@
         .hidden {
             display: none;
         }
+
     </style>
     <div class="wrapper">
         @include('partials.home_partials.header')
-        <div class="page-body px-xl-4 px-sm-2 px-0 py-lg-2 py-1 mt-0 mt-lg-3"style="background-image:url('{{ asset('assets/home/show.jpg') }}'); background-repeat: no-repeat; background-size:cover;">
+        <div
+            class="page-body px-xl-4 px-sm-2 px-0 py-lg-2 py-1 mt-0 mt-lg-3"style="background-image:url('{{ asset('assets/home/show.jpg') }}'); background-repeat: no-repeat; background-size:cover;">
             <div class="container">
                 <div class="row g-3">
                     <div class="col-12 mt-3 mb-3">
@@ -125,7 +128,7 @@
                                                                     id="declaration_maitrise_metier" required
                                                                     class="@error('declaration_maitrise_metier') is-invalid
                                                                     @enderror"
-                                                                    value="J'accepte que toute fausse déclaration engage ma responsabilité pénale">
+                                                                    value="1">
                                                                 @error('declaration_maitrise_metier')
                                                                     <span class="invalid-feedback" role="alert">
                                                                         <strong>{{ $message }}</strong>
@@ -146,7 +149,7 @@
                                                             <div class="col-12">
                                                                 <input type="checkbox" name="declaration_honneur"
                                                                     id="declaration_honneur"
-                                                                    value="Je déclare n’avoir fait l’objet d’aucune condamnation pénale liée aux infractions contre les mineurs ou de sanction administrative m’interdisant de recevoir des mineurs en apprentissage."
+                                                                    value="1"
                                                                     class="@error('declaration_honneur') is-invalid
                                                                    @enderror"
                                                                     required>
@@ -190,7 +193,7 @@
                                                                     déclaration.</p>
                                                                 <input type="checkbox" name="accepte_confidentialite"
                                                                     id="accepte_confidentialite"
-                                                                    value="J'accepte la consentez à la collecte, l'utilisation et la conservation de vos informations personnelles."
+                                                                    value="1"
                                                                     class="@error('accepte_confidentialite') is-invalid
                                                                    @enderror"
                                                                     required>
@@ -218,10 +221,12 @@
                                                                 </span>
                                                             @enderror
                                                             <br>
-                                                            <button id="save-btn" class="btn btn-primary">Enregistrer la signature</button>
-                                                            <button id="clear-btn" class="btn btn-primary">Effacer</button>
+                                                            <button id="save-btn" class="btn btn-primary">Enregistrer
+                                                                la signature</button>
+                                                            <button id="clear-btn"
+                                                                class="btn btn-danger">Effacer</button>
                                                             <input type="file" name="signature" id="signature"
-                                                                class="hidden">
+                                                                class="hidden" value="{{ old('signature') }}" hidden required>
                                                         </div>
 
                                                     </div>
@@ -309,7 +314,6 @@
                                                             });
                                                         </script>
                                                     @endpush
-
                                                     <div class="mt-3">
                                                         <p><span class="text-danger fw-bold">*</span> Champs
                                                             obligatoires.</p>
@@ -319,7 +323,7 @@
                                                             class="btn btn-primary step-btn">Précédents</button>
 
                                                         <button type="submit"
-                                                            class="btn btn-primary step-btn ">Valider
+                                                            class="btn btn-success step-btn ">Valider
                                                         </button>
                                                     </div>
                                                 </div> <!-- .row end -->
@@ -344,14 +348,14 @@
             $('#btn-oui').click(function() {
                 copyArtisanToGerant();
                 // Activer le bouton Suivant
-                document.getElementById('etes_gerant').value = 'oui';
+                document.getElementById('etes_gerant').value = '1';
                 $('#gerant-details').show();
                 // $('button[data-step-action="next"]').prop('disabled', false);
                 // alert('Veuillez cliquer sur Suivant pour continuer.');
             });
 
             $('#btn-non').click(function() {
-                document.getElementById('etes_gerant').value = 'non';
+                document.getElementById('etes_gerant').value = '0';
                 $('#gerant-details').show(); // Afficher le formulaire de détails du gérant
                 vide();
                 // $('button[data-step-action="next"]').prop('disabled', false); // Désactiver le bouton Suivant
@@ -459,13 +463,30 @@
     <script>
         // Masking
         Inputmask({
-            "mask": "(+225) 99-99-99-99-99"
+            "mask": "(+225)99-99-99-99-99"
         }).mask(".phone-number");
         // Form Validation
-        $('.basic-form').parsley();
+        // $('.basic-form').parsley();
         // Date Picker
         $('.datepicker').datepicker({});
     </script>
+
+
+
+{{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
+{{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> --}}
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            // placeholder: "Selectionner",
+            // allowClear: true
+        });
+    });
+</script> --}}
+
+
+
 
     @stack('js')
     @include('vendor.sweetalert.alert')

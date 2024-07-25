@@ -56,12 +56,18 @@ Auth::routes(['register' => false]);
 // les routes de la page vitrine
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('accueil');
+
+    Route::get('/ConnecterFrom', 'ConnecterFrom')->name('accueil.ConnecterFrom');
+    Route::post('/traitementLogin', 'traitementLogin')->name('accueil.traitementLogin');
+
+    Route::get('/verification-registre', 'verificationRegistre')->name('verification.registre');
     Route::get('/page-Contact', 'contact')->name('accueil.contact');
     Route::get('/finalisation-inscription', 'create'); // on la passe avec l'id de l'artisan pour mettre son mot de passe
     Route::get('/attente-paiementInscription/{idinscription}/{idcartemembre?}', 'show')->name('attente.paiement'); // on la passe avec l'id de l'artisan pour mettre son mot de passe
+    Route::post('/inscriptions-artisan', 'inscription')->name('inscriptionP');
     Route::get('/inscriptions-artisan', 'inscription')->name('inscription');
     Route::get('/page-connexion-artisan', 'connexion')->name('connexion.artisan');
-    Route::post('/identification-artisan', 'identification')->name('identification.artisan');
+    Route::post('/identification-artisan', 'identificationValid')->name('identification.artisan');
     Route::post('/traitement-connexion', 'traitementConnexion')->name('artisan.traitementConnexion');
     Route::get('/page-actualiteIndex', 'pageActualite')->name('actualites'); // index de la page des actualites
     Route::get('/page-success/{id}', 'pageSuccess')->name('pageSuccess'); // la page success identification
@@ -141,5 +147,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::controller(BrancheActiviteController::class)->group(function(){
        Route::put('/mise-ajour/{id}','miseAjour')->name('branche.update');
+       Route::get('/modification/{id}','editBranche')->name('branche.modification');
+       Route::delete('/delete/{id}','supprimer')->name('branche.delete');
     });
 });
