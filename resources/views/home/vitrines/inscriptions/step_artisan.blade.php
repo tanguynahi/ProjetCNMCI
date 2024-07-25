@@ -190,8 +190,8 @@
             <label class="form-label">Numero de Téléphone <span class="text-danger">*</span></label>
             <fieldset class="form-icon-group left-icon position-relative">
                 <input type="tel" name="contact_artisan" id="contact_artisan"
-                    class="form-control phone-number @error('contact_artisan') is-invalid @enderror"
-                    placeholder="Ex: (+225)00-00-00-00-00" value="{{ old('contact_artisan') }}" required onKeyPress="if(this.value.length==20) return false;">
+                    class="form-control @error('contact_artisan') is-invalid @enderror"
+                    placeholder="9999999999" value="{{ old('contact_artisan') }}" required onKeyPress="if(this.value.length==10) return false;">
                 @error('contact_artisan')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -215,8 +215,8 @@
             <label class="form-label">WhatsApp <span class="text-danger">*</span></label>
             <fieldset class="form-icon-group left-icon position-relative">
                 <input type="tel" name="contact_whatsapp" id="contact_whatsapp"
-                    class="form-control phone-number @error('contact_whatsapp') is-invalid @enderror"
-                    placeholder="Ex: (+225) 00-00-00-00-00" value="{{ old('contact_whatsapp') }}"onKeyPress="if(this.value.length==20) return false;" required>
+                    class="form-control  @error('contact_whatsapp') is-invalid @enderror"
+                    placeholder="9999999999" value="{{ old('contact_whatsapp') }}"onKeyPress="if(this.value.length==10) return false;" required>
                 @error('contact_whatsapp')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

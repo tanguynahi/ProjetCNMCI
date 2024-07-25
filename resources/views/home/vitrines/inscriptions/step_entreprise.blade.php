@@ -1,8 +1,5 @@
-@push('css')
-@endpush
 
 <div class="row g-3">
-
     <div class="row mt-6">
         <div class="col-lg-3 col-md-3 col-12" data-select2-id="select2-data-19-lrou">
             <label class="form-label">Type Entreprise <span class="text-danger">*</span></label>
@@ -61,10 +58,10 @@
             <label class="form-label">Télèphone <span class="text-danger">*</span></label>
             <fieldset class="form-icon-group left-icon position-relative">
                 <input type="tel" name="contact_entreprise" id="contact_entreprise"
-                    class="form-control  phone-number @error('contact_entreprise') is-invalid @enderror"
-                    placeholder="Ex:(+225)00-00-00-00-00" autocomplete="contact_entreprise"
+                    class="form-control   @error('contact_entreprise') is-invalid @enderror"
+                    placeholder="9999999999" autocomplete="contact_entreprise"
                     value="{{ old('contact_entreprise') }}"autofocus required
-                    onKeyPress="if(this.value.length==20) return false;">
+                    onKeyPress="if(this.value.length==10) return false;">
                 @error('contact_entreprise')
                     <span class="invalid-feedback" role="alert">
                         <strong>
@@ -96,7 +93,7 @@
 
             <label class="form-check-label" for="RSC">RSC</label>
         </div>
-        <div class="col-md-6 col-lg-6 col-12">
+        <div class="col-md-6 col-lg-6 col-12 mb-2 mt-2">
             <input type="text" class="form-control " placeholder="Numero"
                 value="{{ old('numero_registre', $registre) }}" disabled>
             <input type="text" name="numero_registre"
@@ -111,7 +108,7 @@
                 </span>
             @enderror
         </div>
-        <div class="col-md-3 col-lg-3 col-12">
+        <div class="col-md-3 col-lg-3 col-12 mt-2">
             <div class="input-group">
                 <input type="number" name="capital_social"
                     class="form-control @error('capital_social') is-invalid @enderror " placeholder="Capital Social"
@@ -150,19 +147,7 @@
                 </span>
             @enderror
         </div>
-{{--
-        <div class="col-lg-6 col-md-6 col-12" data-select2-id="select2-data-19-lrou">
-            <label class="form-label">Metiers <span class="text-danger">*</span></label>
-            <select name="type_activite_id" class="form-control  @error('type_activite_id') is-invalid @enderror"
-                data-placeholder="Select" data-select2-id="select2-data-1-4ue7" tabindex="-1" aria-hidden="true"
-                id="type_activite_id">
-            </select>
-            @error('type_activite_id')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div> --}}
+
         <div class="col-lg-6 col-md-6 col-12" data-select2-id="select2-data-19-lrou">
             <label class="form-label">Metiers <span class="text-danger">*</span></label>
             <select name="type_activite_id" class="form-control @error('type_activite_id') is-invalid @enderror"
@@ -198,7 +183,7 @@
             <input type="date" name="date_debut_activite"
                 class="form-control @error('date_debut_activite') is-invalid @enderror"
                 autocomplete="date_debut_activite" autofocus value="{{ old('date_debut_activite') }}" required
-                onKeyPress="if(this.value.length==11) return false;">
+                onKeyPress="if(this.value.length==10) return false;">
             @error('date_debut_activite')
                 <span class="invalid-feedback" role="alert">
                     <strong>
@@ -367,7 +352,7 @@
                 class="form-control show-tick ms select2 select2-hidden-accessible @error('regime_fiscal') is-invalid @enderror"
                 data-placeholder="Select" data-select2-id="select2-data-1-4ue7" tabindex="-1" aria-hidden="true"
                 autocomplete="regime_fiscal" autofocus required>
-                <option value="" data-select2-id="select2-data-3-o5ur">--
+                <option value="" >--
                     Séléctionner
                     un regime --</option>
                 <option data-select2-id="select2-data-22-ekqo" value="Taxe communale de l'Entreprenant"
@@ -486,7 +471,7 @@
     </div>
 
     <div class="row mt-3">
-        <div class="col-sm-12 ">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-12 ">
             <div class="form-group">
                 <label for="adresse_postale">Adresse Entreprise <span style="color: red;">*</span></label>
                 <input type="text" class="form-control @error('adresse_postale') is-invalid @enderror" value="{{ old('adresse_postale') }}"
@@ -499,6 +484,8 @@
                 @enderror
             </div>
         </div>
+    </div>
+    <div class="row" hidden>
         <div class="col-6">
             <input type="text" name="lien_google_map" id="lien_google_map" class="" hidden required
                 value="{{ old('lien_google_map') }}">
@@ -510,23 +497,19 @@
             width: 1250px;
         }
     </style>
-
-    <div class="container mt-4">
         <!-- .row end -->
-        <div class="row g-3">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body"id="map">
+        <div class="row g-3 mt-4">
+                <div class=" col-12 col-lg-12 col-md-12 col-sm-12" id="map">
+                    {{-- <div class="card-body" > --}}
                         @error('lien_google_map')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                    </div>
+                    {{-- </div> --}}
                 </div>
-            </div>
         </div> <!-- Row end  -->
-    </div>
+
     <div class="mt-3">
         <p><span class="text-danger fw-bold">*</span> Champs obligatoires.</p>
     </div>
@@ -600,7 +583,7 @@
                         results[0]
                         .geometry.location.lat() + ", " + results[0].geometry.location.lng() + ")";
                 } else {
-                    alert('Geocode was not successful for the following reason: ' + status);
+                    alert('Le géocodage n\'a pas réussi pour la raison suivante :' + status);
                 }
             });
         }

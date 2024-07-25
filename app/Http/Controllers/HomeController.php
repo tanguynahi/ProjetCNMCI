@@ -72,7 +72,7 @@ class HomeController extends Controller
             ];
             $reponse = Http::post('http://192.168.100.207:8000/api/cnmci-ws/check-registre', $data);
             $ResJSON = $reponse->json();
-            // dd(($ResJSON['message']) );
+            // dd(($ResJSON['code']) );
             if ($reponse->status() === 200) {
                 if ($ResJSON['code'] === 200) {
                     $registre = $request->numero_registre;
@@ -369,6 +369,8 @@ class HomeController extends Controller
                     //     $request->session()->regenerateToken();
                     //     toast('Connecté vous ici ', 'warning');
                     //     return redirect()->route('login');
+
+                    //     return redirect()->route('dashboard'); // administrateur
                     // }
                 } else {
                     // Si l'e-mail n'est pas trouvé dans la table "users" ou le mot de passe est incorrect, afficher un message d'erreur
@@ -396,24 +398,7 @@ class HomeController extends Controller
 
 
     /*----- Formulaire de connexion des deux entité  ------ */
-    public function ConnecterFrom(){
-        return view('home.NouvelleConnexion.login');
-    }
-    public function traitementLogin(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'nom' => "required",
-            'Prenoms' => "required",
-            'contact' => "required",
-            'login' => "required",
-        ]);
-        if($validator->fails()){
-            session()->flash('type','alert-danger');
-            session()->flash('message','Erreur dans le formulaire');
-            return back()->withErrors($validator->errors())->withInput($request->input());
-        }
-        dd($request->all());
-    }
+
 
 
 }

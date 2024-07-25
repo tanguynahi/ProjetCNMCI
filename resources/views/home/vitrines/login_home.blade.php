@@ -57,7 +57,7 @@
                                 <fieldset class="form-icon-group right-icon position-relative">
                                     <input type="tel"
                                         class="form-control form-control-lg phone-number  @error('contact') is-invalid @enderror"
-                                        placeholder="Ex: (+225) 00-00-00-00-00" id="contact" name="contact"
+                                        placeholder="0000000000" id="contact" name="contact"
                                         value="{{ old('contact') }}" autocomplete="contact" autofocus required>
                                     @error('contact')
                                         <span class="invalid-feedback" role="alert">
@@ -127,7 +127,7 @@
     <script>
         // Masking
         Inputmask({
-            "mask": "(+225)99-99-99-99-99"
+              "mask": "9999999999"
         }).mask(".phone-number");
         // Form Validation
         $('.basic-form').parsley();

@@ -18,7 +18,7 @@
                         </div>
                         <div class="col-6">
                             <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-primary">Ajouter un admin</a>
+                                <a href="{{ route('administrateurs.create') }}" class="btn btn-primary">Ajouter un admin</a>
                             </div>
 
                         </div>

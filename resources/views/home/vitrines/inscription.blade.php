@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="{{ asset('assets/home/vendor/parsleyjs/css/parsley.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/home/vendor/prismjs/prism.css') }}">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     @stack('css')
 
 </head>
@@ -29,7 +31,6 @@
         .hidden {
             display: none;
         }
-
     </style>
     <div class="wrapper">
         @include('partials.home_partials.header')
@@ -122,11 +123,11 @@
                                                         </div>
                                                         <hr class="mt-4 mb-3">
                                                         <div class="row mt-2">
-                                                            <div class="col-12">
+                                                            <div class="col-12 col-lg-12 col-md-12 col-sm-12">
                                                                 <input type="checkbox"
                                                                     name="declaration_maitrise_metier"
                                                                     id="declaration_maitrise_metier" required
-                                                                    class="@error('declaration_maitrise_metier') is-invalid
+                                                                    class="form-check-input exclusive-checkbox @error('declaration_maitrise_metier') is-invalid
                                                                     @enderror"
                                                                     value="1">
                                                                 @error('declaration_maitrise_metier')
@@ -146,11 +147,10 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mt-2">
-                                                            <div class="col-12">
+                                                            <div class="col-12 col-lg-12 col-md-12 col-sm-12">
                                                                 <input type="checkbox" name="declaration_honneur"
-                                                                    id="declaration_honneur"
-                                                                    value="1"
-                                                                    class="@error('declaration_honneur') is-invalid
+                                                                    id="declaration_honneur" value="1"
+                                                                    class="form-check-input exclusive-checkbox @error('declaration_honneur') is-invalid
                                                                    @enderror"
                                                                     required>
                                                                 @error('declaration_honneur')
@@ -167,7 +167,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mt-2">
-                                                            <div class="col-12">
+                                                            <div class="col-12 col-lg-12 col-md-12 col-sm-12">
                                                                 <p>déclaration de confidentialité</p>
                                                                 <p for="" class="fw-bold">
                                                                     Nous collectons, utilisons et conservons vos
@@ -192,9 +192,8 @@
                                                                     informations personnelles comme décrit dans cette
                                                                     déclaration.</p>
                                                                 <input type="checkbox" name="accepte_confidentialite"
-                                                                    id="accepte_confidentialite"
-                                                                    value="1"
-                                                                    class="@error('accepte_confidentialite') is-invalid
+                                                                    id="accepte_confidentialite" value="1"
+                                                                    class="form-check-input exclusive-checkbox @error('accepte_confidentialite') is-invalid
                                                                    @enderror"
                                                                     required>
                                                                 @error('accepte_confidentialite')
@@ -205,30 +204,41 @@
                                                                 <span class="fw-bold">
                                                                     J'accepte
                                                                 </span>
-
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row mt-2 justify-content-center text-center">
-                                                        <div class="col-12 col-lg-6 col-md-6 text-center">
-                                                            <h6 for="signature">Votre signature</h6>
-                                                            <canvas id="signature-pad" width="400" height="200"
+                                                        <div class="col-12 col-lg-12 col-md-12 col-sm-12 text-center">
+                                                            <h6 for="signature" class="fw-bold">Votre signature <span
+                                                                    class="text-danger">*</span></h6>
+
+                                                            <canvas id="signature-pad" width="300" height="300"
                                                                 class="@error('signature') is-invalid
                                                                    @enderror"></canvas>
+                                                            <br>
+                                                            <span><i>Veuillez Entrer une signature electronique <span
+                                                                        style="color: gray">(champs
+                                                                        Obligatoire)</span></i></span>
                                                             @error('signature')
                                                                 <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
                                                             @enderror
                                                             <br>
-                                                            <button id="save-btn" class="btn btn-primary">Enregistrer
-                                                                la signature</button>
-                                                            <button id="clear-btn"
-                                                                class="btn btn-danger">Effacer</button>
-                                                            <input type="file" name="signature" id="signature"
-                                                                class="hidden" value="{{ old('signature') }}" hidden required>
+                                                            <div class="row">
+                                                                <div class="col-12 col-lg-12 col-md-12 col-sm-12">
+                                                                    <button id="save-btn"
+                                                                        class="btn btn-primary">Enregistrer
+                                                                        la signature</button>
+                                                                    <button id="clear-btn"
+                                                                        class="btn btn-danger">Effacer</button>
+                                                                    <input type="file" name="signature"
+                                                                        id="signature" class="hidden"
+                                                                        value="{{ old('signature') }}" hidden
+                                                                        required>
+                                                                </div>
+                                                            </div>
                                                         </div>
-
                                                     </div>
 
                                                     <style>
@@ -242,7 +252,8 @@
                                                         }
                                                     </style>
 
-                                                    @push('js')
+                                                    {{-- @push('js')
+                                                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                                                         <script>
                                                             document.addEventListener('DOMContentLoaded', () => {
                                                                 const canvas = document.getElementById('signature-pad');
@@ -265,11 +276,9 @@
                                                                 canvas.addEventListener('mouseup', () => {
                                                                     drawing = false;
                                                                 });
-
                                                                 canvas.addEventListener('mouseout', () => {
                                                                     drawing = false;
                                                                 });
-
                                                                 document.getElementById('save-btn').addEventListener('click', (event) => {
                                                                     event.preventDefault(); // Prevent form submission
 
@@ -278,7 +287,6 @@
                                                                     const file = new File([blob], 'signature.png', {
                                                                         type: 'image/png'
                                                                     });
-
                                                                     const fileInput = document.getElementById('signature');
                                                                     const dataTransfer = new DataTransfer();
                                                                     dataTransfer.items.add(file);
@@ -291,7 +299,121 @@
                                                                     fileInput.dispatchEvent(fileInputChangeEvent);
 
                                                                     // Optionally provide user feedback
-                                                                    alert('Signature enregistrée.');
+                                                                    // alert('Signature enregistrée.');
+                                                                    Swal.fire({
+                                                                        title: 'Succès!',
+                                                                        text: 'Signature enregistrée.',
+                                                                        icon: 'success',
+                                                                        confirmButtonText: 'OK'
+                                                                    });
+                                                                });
+                                                                document.getElementById('clear-btn').addEventListener('click', (event) => {
+                                                                    event.preventDefault(); // Prevent form submission
+                                                                    context.clearRect(0, 0, canvas.width, canvas.height);
+                                                                });
+
+                                                                function dataURLToBlob(dataURL) {
+                                                                    const byteString = atob(dataURL.split(',')[1]);
+                                                                    const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
+                                                                    const ab = new ArrayBuffer(byteString.length);
+                                                                    const ia = new Uint8Array(ab);
+                                                                    for (let i = 0; i < byteString.length; i++) {
+                                                                        ia[i] = byteString.charCodeAt(i);
+                                                                    }
+                                                                    return new Blob([ab], {
+                                                                        type: mimeString
+                                                                    });
+                                                                }
+                                                            });
+                                                        </script>
+                                                    @endpush --}}
+                                                    @push('js')
+                                                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                                                        <script>
+                                                            document.addEventListener('DOMContentLoaded', () => {
+                                                                const canvas = document.getElementById('signature-pad');
+                                                                const context = canvas.getContext('2d');
+                                                                let drawing = false;
+
+                                                                // Gestionnaires pour les événements de souris
+                                                                canvas.addEventListener('mousedown', startDrawing);
+                                                                canvas.addEventListener('mousemove', draw);
+                                                                canvas.addEventListener('mouseup', stopDrawing);
+                                                                canvas.addEventListener('mouseout', stopDrawing);
+
+                                                                // Gestionnaires pour les événements tactiles
+                                                                canvas.addEventListener('touchstart', startDrawing);
+                                                                canvas.addEventListener('touchmove', draw);
+                                                                canvas.addEventListener('touchend', stopDrawing);
+
+                                                                function startDrawing(event) {
+                                                                    event.preventDefault();
+                                                                    drawing = true;
+                                                                    const {
+                                                                        offsetX,
+                                                                        offsetY
+                                                                    } = getEventPosition(event);
+                                                                    context.beginPath();
+                                                                    context.moveTo(offsetX, offsetY);
+                                                                }
+
+                                                                function draw(event) {
+                                                                    event.preventDefault();
+                                                                    if (!drawing) return;
+                                                                    const {
+                                                                        offsetX,
+                                                                        offsetY
+                                                                    } = getEventPosition(event);
+                                                                    context.lineTo(offsetX, offsetY);
+                                                                    context.stroke();
+                                                                }
+
+                                                                function stopDrawing(event) {
+                                                                    event.preventDefault();
+                                                                    drawing = false;
+                                                                }
+
+                                                                function getEventPosition(event) {
+                                                                    if (event.touches && event.touches[0]) {
+                                                                        const rect = canvas.getBoundingClientRect();
+                                                                        return {
+                                                                            offsetX: event.touches[0].clientX - rect.left,
+                                                                            offsetY: event.touches[0].clientY - rect.top
+                                                                        };
+                                                                    } else {
+                                                                        return {
+                                                                            offsetX: event.offsetX,
+                                                                            offsetY: event.offsetY
+                                                                        };
+                                                                    }
+                                                                }
+
+                                                                document.getElementById('save-btn').addEventListener('click', (event) => {
+                                                                    event.preventDefault(); // Prevent form submission
+
+                                                                    const dataURL = canvas.toDataURL('image/png');
+                                                                    const blob = dataURLToBlob(dataURL);
+                                                                    const file = new File([blob], 'signature.png', {
+                                                                        type: 'image/png'
+                                                                    });
+                                                                    const fileInput = document.getElementById('signature');
+                                                                    const dataTransfer = new DataTransfer();
+                                                                    dataTransfer.items.add(file);
+                                                                    fileInput.files = dataTransfer.files;
+
+                                                                    // Trigger a change event for the file input
+                                                                    const fileInputChangeEvent = new Event('change', {
+                                                                        bubbles: true
+                                                                    });
+                                                                    fileInput.dispatchEvent(fileInputChangeEvent);
+
+                                                                    // Optionally provide user feedback
+                                                                    Swal.fire({
+                                                                        title: 'Succès!',
+                                                                        text: 'Signature enregistrée.',
+                                                                        icon: 'success',
+                                                                        confirmButtonText: 'OK'
+                                                                    });
                                                                 });
 
                                                                 document.getElementById('clear-btn').addEventListener('click', (event) => {
@@ -463,7 +585,7 @@
     <script>
         // Masking
         Inputmask({
-            "mask": "(+225)99-99-99-99-99"
+            "mask": "9999999999"
         }).mask(".phone-number");
         // Form Validation
         // $('.basic-form').parsley();
@@ -473,9 +595,9 @@
 
 
 
-{{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
-{{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> --}}
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
+    {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> --}}
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
         $('.select2').select2({

@@ -31,6 +31,7 @@ class AdministrateurController extends Controller
     public function create()
     {
         //
+        return view('dashboard.administrateurs.create');
     }
 
     /**
