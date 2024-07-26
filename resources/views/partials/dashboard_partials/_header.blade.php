@@ -380,8 +380,8 @@
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                        @if (!empty(auth()->user()->administrateur->lien_photo))
-                            <img src="{{ asset(auth()->user()->administrateur->lien_photo) }}" alt="Photo de profil"
+                        @if (!empty($us['avatar']))
+                            <img src="{{ asset($us['avatar']) }}" alt="Photo de profil"
                                 class="h-auto rounded-circle">
                         @else
                             <img src="{{ asset('assets/dashboard/img/avatars/1.png') }}" alt="Photo de profil"
@@ -395,8 +395,8 @@
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
                                     <div class="avatar avatar-online">
-                                        @if (!empty(auth()->user()->administrateur->lien_photo))
-                                            <img src="{{ asset(auth()->user()->administrateur->lien_photo) }}"
+                                        @if (!empty($us['avatar']))
+                                            <img src="{{ asset($us['avatar']) }}"
                                                 alt="Photo de profil" class="h-auto rounded-circle">
                                         @else
                                             <img src="{{ asset('assets/dashboard/img/avatars/1.png') }}"
@@ -405,10 +405,10 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    @if (auth()->user()->administrateur)
-                                        <span class="fw-medium d-block">{{ auth()->user()->administrateur->nom }}
-                                            {{ auth()->user()->administrateur->prenom }}</span>
-                                        <small class="text-muted">{{ auth()->user()->administrateur->email }}</small>
+                                    @if ($us['id_profil'] == 2)
+                                        <span class="fw-medium d-block">{{ $us['nom'] }}
+                                            {{ $us['prenoms']}}</span>
+                                        <small class="text-muted">{{ $us['adr_email'] }}</small>
                                     @else
                                         <span class="fw-medium d-block">Super Admin</span>
                                         <small class="text-muted">Admin</small>

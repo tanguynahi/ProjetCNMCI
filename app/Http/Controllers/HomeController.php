@@ -20,10 +20,11 @@ use App\Models\ActiviteArtisan;
 // use Illuminate\Support\Facades\Validator;
 // use App\Http\Requests\ArtisanConnexionRequest;
 // use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
-// use App\Http\Requests\StoreIdentificationRequest;
+use App\Http\Requests\StoreIdentificationRequest;
 
 // use App\Http\Requests\UpdateIdentificationRequest;
 
@@ -60,8 +61,6 @@ class HomeController extends Controller
         $validator = Validator::make($request->all(), [
             'numero_registre' => 'required'
         ]);
-
-
         $mess = "";
         if ($validator->fails()) {
             $mess = 'Veuillez renseigner un numero de registre valide';
@@ -70,21 +69,16 @@ class HomeController extends Controller
                 'numero_registre' => $request->numero_registre,
                 'value' => 'bew',
             ];
-            $reponse = Http::post('http://192.168.100.207:8000/api/cnmci-ws/check-registre', $data);
+            $reponse = Http::post(urlAPI() . '/check-registre', $data);
             $ResJSON = $reponse->json();
             // dd(($ResJSON['code']) );
             if ($reponse->status() === 200) {
                 if ($ResJSON['code'] === 200) {
                     $registre = $request->numero_registre;
-                    $typeActivites = $ResJSON['data']['TypesActivites'];
-                    $brancheActivites = $ResJSON['data']['BranchesActivites'];
-                    $typeEntreprises = $ResJSON['data']['TypesEntreprises'];
-                    $typeDocuments = $ResJSON['data']['TypesDocs'];
-                    $sousPrefectures = $ResJSON['data']['SousPrefectures'];
-                    $communes = $ResJSON['data']['Communes'];
-                    return view('home.vitrines.inscription', compact('communes', 'typeDocuments', 'sousPrefectures', 'typeActivites', 'typeEntreprises', 'brancheActivites', 'registre'));
+                    session()->put('reg', $registre);
+                    session()->put('params', $ResJSON['data']);
+                    return redirect()->route('formulaire');
                 } else {
-
                     $mess = messageBrut($ResJSON['message']);
                     // toast($mess, 'error');
                     // return back()->with('message', $mess);
@@ -95,7 +89,20 @@ class HomeController extends Controller
             }
         }
         toast($mess, 'error');
-        return back()->with('message', $mess);
+        return  view('home.vitrines.inscriptions.debut');
+    }
+
+    public function formInscription()
+    {
+        $registre = session()->get('reg');
+        $data = session()->get('params');
+        $typeActivites = $data['TypesActivites'];
+        $brancheActivites = $data['BranchesActivites'];
+        $typeEntreprises = $data['TypesEntreprises'];
+        $typeDocuments = $data['TypesDocs'];
+        $sousPrefectures = $data['SousPrefectures'];
+        $communes = $data['Communes'];
+        return view('home.vitrines.inscription', compact('communes', 'typeDocuments', 'sousPrefectures', 'typeActivites', 'typeEntreprises', 'brancheActivites', 'registre'));
     }
 
     // on la passe avec l'id de l'artisan pour mettre son mot de passe
@@ -134,8 +141,32 @@ class HomeController extends Controller
 
     public function identificationValid(Request $request)
     {
+        $messages = [
+            'type_document_id.required' => 'Le champ type de document est obligatoire.',
+            'type_document_id.integer' => 'Le type de document doit être un entier.',
+            'autre_document_artisan.required_if' => 'Le champ autre document artisan est requis lorsque le type de document est 5.',
+            'autre_document_artisan.string' => 'Le champ autre document artisan doit être une chaîne de caractères.',
+        ];
+        $validator = Validator::make($request->all(), [
+            'type_document_id' => 'required|integer',
+            'autre_document_artisan' => [
+                'nullable',
+                'string',
+                Rule::requiredIf($request->type_document_id == 5),
+            ],
+        ], $messages);
 
-        // dd($request->all());
+        if ($validator->fails()) {
+            // Extraire les messages d'erreur
+            $errors = $validator->errors()->all();
+            // Convertir les messages en une chaîne de caractères
+            $errorMessages = implode(' ', $errors);
+            // Afficher les messages d'erreur avec Toast
+            toast($errorMessages, 'error');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        
         $signature = null;
         $lien_type_document_artisan = null;
         $lien_type_document_gerant = null;
@@ -287,7 +318,7 @@ class HomeController extends Controller
             'accepte_confidentialite' => $request->accepte_confidentialite,
         ];
         // dd($data);
-        $reponse = Http::post('http://192.168.100.207:8000/api/cnmci-ws/build-ident', $data);
+        $reponse = Http::post(urlAPI() . '/build-ident', $data);
         $ResJSON = $reponse->json();
 
         // dd($ResJSON['code']);
@@ -345,51 +376,82 @@ class HomeController extends Controller
     }
     public function traitementConnexion(Request $request)
     {
-
-        try {
-            // Vérifier si l'e-mail existe dans la table "users"
-            $user = User::where('contact', $request->contact)->first();
-            // $user = User::all();
-            // dd($user);
-            if ($user) {
-                // Si l'e-mail existe dans la table "user" et le mot de passe est correct, connecter l'utilisateur
-                if ($user && password_verify($request->password, $user->password)) {
-                    Auth::login($user);
-
-                    // // Vérifier si l'utilisateur connecté a l'un des rôles spécifiques avant de le rediriger
-                    // if (Auth::user()->hasRole('artisan')) {
-                    //     // Rediriger l'utilisateur vers /dashboard
-                    //     $message = "Bienvenue ! " . formatGender(auth()->user()->artisan->sexe_artisan) . "" . auth()->user()->artisan->nom_artisan . " " . auth()->user()->artisan->prenom_artisan . ".";
-                    //     toast($message, 'success');
-                    //     return redirect()->route('artisan.tableau_de_bord');
-                    // } else {
-                    //     // Déconnecter l'utilisateur
-                    //     Auth::logout();
-                    //     $request->session()->invalidate();
-                    //     $request->session()->regenerateToken();
-                    //     toast('Connecté vous ici ', 'warning');
-                    //     return redirect()->route('login');
-
-                    //     return redirect()->route('dashboard'); // administrateur
-                    // }
-                } else {
-                    // Si l'e-mail n'est pas trouvé dans la table "users" ou le mot de passe est incorrect, afficher un message d'erreur
-                    // toast('Mot de passe incorrect.', 'error');
-
-                    return back()->withInput()->withErrors(['password' => 'Mot de passe incorrect.']);
-                }
+        // dd('test');
+        $data = [
+            'login' => $request->contact,
+            'motdepass' => $request->password,
+        ];  
+        $reponse = Http::post(urlAPI() . '/auth', $data);
+        $ResJSON = $reponse->json();
+        // dd($ResJSON['data']);
+        $mess = "";
+        // dd('test');
+        if ($reponse->status() === 200) {
+            if ($ResJSON['code'] === 200) {
+                $us = $ResJSON['data']['user'];
+                $identifications = $ResJSON['data']['identifications'];                
+                session()->put('user', $us);
+                session()->put('identifications', $identifications);
+                return redirect()->route('dashboard');
             } else {
-                return back()->withInput()->withErrors(['contact' => 'Aucun compte associé à ce numéro']);
+                // if ($ResJSON['code'] === 401) {
+                //     $mess = messageBrut($ResJSON['message']);
+                // } else {
+                //     $mess = $ResJSON['message'];
+                // }
             }
-        } catch (\Exception $e) {
-            // Gérer les erreurs
-            toast('Une erreur s\'est produite. Veuillez réessayer plus tard.', 'error');
-            return back()->withInput()->withErrors(['error' => 'Une erreur s\'est produite. Veuillez réessayer plus tard.']);
+        } else {
+            $mess = 'Une erreur inattendue s\'est produite, verifier que vous avez accès à internet, ' .
+                'puis reéssayer. erreur ' . $reponse->status();
+                toast($mess, 'error');
+                return back()->with('error', $mess);
         }
+
+        // try {
+        //     // Vérifier si l'e-mail existe dans la table "users"
+        //     $user = User::where('contact', $request->contact)->first();
+        //     // $user = User::all();
+        //     // dd($user);
+        //     if ($user) {
+        //         // Si l'e-mail existe dans la table "user" et le mot de passe est correct, connecter l'utilisateur
+        //         if ($user && password_verify($request->password, $user->password)) {
+        //             Auth::login($user);
+
+        //             // // Vérifier si l'utilisateur connecté a l'un des rôles spécifiques avant de le rediriger
+        //             // if (Auth::user()->hasRole('artisan')) {
+        //             //     // Rediriger l'utilisateur vers /dashboard
+        //             //     $message = "Bienvenue ! " . formatGender(auth()->user()->artisan->sexe_artisan) . "" . auth()->user()->artisan->nom_artisan . " " . auth()->user()->artisan->prenom_artisan . ".";
+        //             //     toast($message, 'success');
+        //             //     return redirect()->route('artisan.tableau_de_bord');
+        //             // } else {
+        //             //     // Déconnecter l'utilisateur
+        //             //     Auth::logout();
+        //             //     $request->session()->invalidate();
+        //             //     $request->session()->regenerateToken();
+        //             //     toast('Connecté vous ici ', 'warning');
+        //             //     return redirect()->route('login');
+
+        //             //     return redirect()->route('dashboard'); // administrateur
+        //             // }
+        //         } else {
+        //             // Si l'e-mail n'est pas trouvé dans la table "users" ou le mot de passe est incorrect, afficher un message d'erreur
+        //             // toast('Mot de passe incorrect.', 'error');
+
+        //             return back()->withInput()->withErrors(['password' => 'Mot de passe incorrect.']);
+        //         }
+        //     } else {
+        //         return back()->withInput()->withErrors(['contact' => 'Aucun compte associé à ce numéro']);
+        //     }
+        // } catch (\Exception $e) {
+        //     // Gérer les erreurs
+        //     toast('Une erreur s\'est produite. Veuillez réessayer plus tard.', 'error');
+        //     return back()->withInput()->withErrors(['error' => 'Une erreur s\'est produite. Veuillez réessayer plus tard.']);
+        // }
     }
 
     /* ------------------ Page de succes identification   -------------------*/
-    public function pageSuccess($id) {
+    public function pageSuccess($id)
+    {
         $data = session()->get('identification');
         // dd($data);
         return view('home.vitrines.succes', compact('data'));
@@ -398,7 +460,4 @@ class HomeController extends Controller
 
 
     /*----- Formulaire de connexion des deux entité  ------ */
-
-
-
 }

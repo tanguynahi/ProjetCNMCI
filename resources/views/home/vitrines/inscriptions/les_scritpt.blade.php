@@ -27,48 +27,6 @@
 
     //
 </script>
-
-{{-- <script>
-    let currentStep = 1; // Définition de l'étape actuelle
-    const totalSteps = document.querySelectorAll('.step').length;
-
-    function validateForm(currentStepIndex) {
-        const steps = document.querySelectorAll('.step-tab-panel'); // Sélectionnez tous les steps
-        const currentStep = steps[currentStepIndex]; // Obtenez le step actif en fonction de l'index
-        const requiredFields = currentStep.querySelectorAll('[required]');
-        let isValid = true;
-        requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-                isValid = false;
-                field.classList.add('is-invalid');
-            } else {
-                field.classList.remove('is-invalid');
-            }
-        });
-
-        if (!isValid) {
-            // Afficher le message dans le span avec id="message"
-            // displayMessage('Ce champ est obligatoire.');
-        }
-
-
-        return isValid;
-    }
-
-    function displayMessage(msg) {
-        const messageElement = document.getElementById('messageT');
-        messageElement.textContent = msg;
-        messageElement.style.color = 'red'; // Vous pouvez ajuster le style comme nécessaire
-    }
-
-    // Appel de la fonction validateForm avec l'index de l'étape actuelle pour validation
-    // Example d'utilisation
-    // document.getElementById('yourFormId').addEventListener('submit', function(event) {
-    //     if (!validateForm(currentStep - 1)) {
-    //         event.preventDefault(); // Empêche la soumission du formulaire si la validation échoue
-    //     }
-    // });
-</script> --}}
 <script>
     // Récupération de l'élément de sélection
     var selectPieces = document.getElementById('type-artisan-piece');
@@ -94,7 +52,7 @@
             document.getElementById('delivre-artisan-piece').style.display = 'block';
             document.getElementById('le-artisan-piece').style.display = 'block';
         }
-    });
+    }).trigger('change');
 </script>
 <script>
     // Récupération de l'élément de sélection
@@ -199,7 +157,6 @@
                 $('#div-diplome-gerants').hide();
             }
         });
-
         // Initialisation de Select2
         $('.select2').select2();
     });
@@ -210,18 +167,12 @@
         const checkboxOuiCompagnons = document.getElementById('checkbox-oui');
         const checkboxNonCompagnons = document.getElementById('checkbox-non');
         const nombreCompagnons = document.getElementById('nombre-compagnons');
-        // const nombreCompagnonsHomme = document.getElementById('nombre-compagnons-homme');
-        // const nombreCompagnonsFemme = document.getElementById('nombre-compagnons-femme');
 
         function updateCompagnonsField() {
             if (checkboxOuiCompagnons.checked) {
                 nombreCompagnons.classList.remove('hidden');
-                // nombreCompagnonsHomme.classList.remove('hidden');
-                // nombreCompagnonsFemme.classList.remove('hidden');
             } else {
                 nombreCompagnons.classList.add('hidden');
-                // nombreCompagnonsHomme.classList.add('hidden');
-                // nombreCompagnonsFemme.classList.add('hidden');
             }
         }
 

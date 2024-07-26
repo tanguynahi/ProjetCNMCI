@@ -13,17 +13,18 @@
                         <small class="text-muted float-end">Information sur l'administrateur</small>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('administrateurs.store') }}" method="POST"
+                        <form action="{{ route('traitement') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
-                            @method('PUT')
-                            {{-- <div class="row">
+                            {{-- @method('post') --}}
+                            <div class="row">
                                 <div class="card-body">
                                     <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                        <img src="{{ Auth::check() && auth()->user()->administrateur->lien_photo ? auth()->user()->administrateur->lien_photo : asset('assets/dashboard/img/avatars/14.png') }}"
+                                        <img src="{{ asset('assets/dashboard/img/avatars/14.png') }}"
                                             alt="user-avatar" class="d-block w-px-100 h-px-100 rounded"
                                             id="uploadedAvatar" />
-                                        <div class="button-wrapper">
+                                            {{-- Auth::check() && auth()->user()->administrateur->lien_photo ? auth()->user()->administrateur->lien_photo : --}}
+                                        <div class="button-wrapper">                                            
                                             <label for="upload" class="btn btn-primary me-2 mb-3" tabindex="0">
                                                 <i class="ti ti-upload d-block d-sm-none"></i> Photo Profil
                                                 <input type="file" id="upload" class="account-file-input" hidden
@@ -43,7 +44,7 @@
                                             <input type="text" name="nom" id="nom"
                                                 class="form-control @error('nom') is-invalid @enderror"
                                                 placeholder="Nom administrateur"
-                                                value="{{ old('nom', $administrateur->nom) }}" autocomplete="nom" autofocus
+                                                value="{{ old('nom') }}" autocomplete="nom" autofocus
                                                 required />
                                             @error('nom')
                                                 <span class="invalid-feedback" role="alert">
@@ -62,7 +63,7 @@
                                             <input type="text" name="prenom" id="prenom"
                                                 class="form-control @error('prenom') is-invalid @enderror"
                                                 placeholder="Prénom administrateur"
-                                                value="{{ old('prenom', $administrateur->prenom) }}" autocomplete="prenom"
+                                                value="{{ old('prenom') }}" autocomplete="prenom"
                                                 autofocus required />
                                             @error('prenom')
                                                 <span class="invalid-feedback" role="alert">
@@ -81,8 +82,8 @@
                                             <span class="input-group-text"><i class="ti ti-mail"></i></span>
                                             <input type="email" name="email" id="email"
                                                 class="form-control @error('email') is-invalid @enderror"
-                                                placeholder="Email de L'administrateur"
-                                                value="{{ old('email', $administrateur->email) }}" autocomplete="email"
+                                                placeholder="Email de L"
+                                                value="{{ old('email') }}" autocomplete="email"
                                                 autofocus required />
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
@@ -102,8 +103,8 @@
                                                     class="ti ti-phone"></i></span>
                                             <input type="text" name="contact" id="contact"
                                                 class="form-control @error('contact') is-invalid @enderror"
-                                                placeholder="Prénom administrateur"
-                                                value="{{ old('contact', $administrateur->contact) }}"
+                                                placeholder="Prénom"
+                                                value="{{ old('contact') }}"
                                                 autocomplete="contact" autofocus required />
                                             @error('contact')
                                                 <span class="invalid-feedback" role="alert">
@@ -123,14 +124,9 @@
                                                 class="select2 form-select @error('ville_id') is-invalid @enderror"
                                                 data-allow-clear="true">
                                                 <option value="">Selectionner la Ville</option>
-                                                @foreach ($villes as $ville)
-                                                    <option value="{{ $ville->id }} "
-                                                        {{ old('ville_id', $administrateur->ville_id) == $ville->id ? 'selected' : '' }}>
-                                                        {{ $ville->libelle }}
-                                                    </option>
-                                                @endforeach
+                                                
                                             </select>
-                                            @error('sexe')
+                                            @error('ville_id')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -150,7 +146,7 @@
                                                 <option value="">Selectionner le sexe</option>
                                                 @foreach (['M', 'F'] as $sexe)
                                                     <option value="{{ $sexe }} "
-                                                        {{ old('sexe', $administrateur->sexe) == $sexe ? 'selected' : '' }}>
+                                                        {{ old('sexe') == $sexe ? 'selected' : '' }}>
                                                         @if ($sexe === 'M')
                                                             {{ $sexe = 'Homme' }}
                                                         @else
@@ -176,7 +172,7 @@
                                             <input type="text" name="adresse" id="adresse"
                                                 class="form-control @error('adresse') is-invalid @enderror"
                                                 placeholder="adresse administrateur"
-                                                value="{{ old('adresse', $administrateur->adresse) }}"
+                                                value="{{ old('adresse') }}"
                                                 autocomplete="adresse" autofocus required />
                                             @error('adresse')
                                                 <span class="invalid-feedback" role="alert">
@@ -186,13 +182,13 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
                             <button type="submit" class="btn btn-primary">Enregistré</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="col-xl">
+            {{-- <div class="col-xl">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Changer le mot de passe</h5> <small class="text-muted float-end">Changement le
@@ -205,15 +201,15 @@
                                 <div class="col-6">
                                     <label class="form-label" for="basic-default-fullname">Nom Prenoms </label>
                                     <input type="text" class="form-control" id="basic-default-fullname"
-                                        placeholder="{{ old('nom', $administrateur->nom) }} {{ old('prenom', $administrateur->prenom) }}"
-                                        value="{{ old('nom', $administrateur->nom) }} {{ old('prenom', $administrateur->prenom) }}"
+                                        placeholder="{{ old('nom') }} {{ old('prenom') }}"
+                                        value="{{ old('nom', ) }} {{ old('prenom' ) }}"
                                         disabled readonly />
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="basic-default-fullname">Email </label>
                                     <input type="email" class="form-control" id="basic-default-fullname"
-                                        placeholder="{{ old('email', $administrateur->email) }}"
-                                        value="{{ old('email', $administrateur->email) }}" disabled readonly />
+                                        placeholder="{{ old('email') }}"
+                                        value="{{ old('email') }}" disabled readonly />
                                 </div>
 
                             </div>
@@ -282,7 +278,7 @@
                     </div>
 
                 </div>
-            </div>
+            </div> --}}
         </div>
 
     </div>

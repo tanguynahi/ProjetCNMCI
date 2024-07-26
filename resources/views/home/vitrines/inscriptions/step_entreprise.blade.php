@@ -183,7 +183,7 @@
             <input type="date" name="date_debut_activite"
                 class="form-control @error('date_debut_activite') is-invalid @enderror"
                 autocomplete="date_debut_activite" autofocus value="{{ old('date_debut_activite') }}" required
-                onKeyPress="if(this.value.length==10) return false;">
+                >
             @error('date_debut_activite')
                 <span class="invalid-feedback" role="alert">
                     <strong>
@@ -239,7 +239,7 @@
     </div>
     <div class="row mt-4">
         <div class="col-md-3 col-lg-3 col-12">
-            <label class="form-label">Nombre d'associer <span class="text-danger">*</span></label>
+            <label class="form-label">Nombre d'associer </label>
             <input type="number" name="nombre_associes"
                 class="form-control @error('nombre_associes') is-invalid @enderror" min="0"
                 autocomplete="nombre_associes" autofocus placeholder="nombre d'associe"
@@ -291,7 +291,7 @@
             @enderror
         </div>
         <div class="col-md-3 col-lg-3 col-12">
-            <label class="form-label">Numero CNPS de l'entreprise <span class="text-danger">*</span></label>
+            <label class="form-label">Numero CNPS de l'entreprise </label>
             <input type="text" name="numero_cnps" class="form-control @error('numero_cnps') is-invalid @enderror"
                 placeholder="Numero CNPS de l'entreprise"autocomplete="numero_cnps" autofocus
                 value="{{ old('numero_cnps') }}" onKeyPress="if(this.value.length==50) return false;">
@@ -379,7 +379,7 @@
             @enderror
         </div>
         <div class="col-md-3 col-lg-3 col-12">
-            <label class="form-label">Departement <span class="text-danger">*</span></label>
+            <label class="form-label">Departement </label>
             <input type="text" name="departement" class="form-control @error('departement') is-invalid @enderror"
                 placeholder="departement" autocomplete="departement" autofocus value="{{ old('departement') }}"
                 onKeyPress="if(this.value.length==50) return false;">
@@ -395,11 +395,11 @@
     </div>
     <div class="row mt-4">
         <div class="col-lg-3 col-lg-3 col-md-4" data-select2-id="select2-data-19-lrou">
-            <label class="form-label">Commune <span class="text-danger">*</span> </label>
+            <label class="form-label">Commune </label>
             <select name="commune_id"
                 class="form-control show-tick ms select2 select2-hidden-accessible @error('commune_id') is-invalid @enderror"
                 data-placeholder="Select" data-select2-id="select2-data-1-4ue7" tabindex="-1" aria-hidden="true"
-                autocomplete="commune_id" autofocus required>
+                autocomplete="commune_id" autofocus >
                 <option value="" data-select2-id="select2-data-3-o5ur">--
                     Séléctionner
                     un commune --</option>
@@ -419,11 +419,11 @@
             @enderror
         </div>
         <div class="col-lg-3 col-12 col-md-3" data-select2-id="select2-data-19-lrou">
-            <label class="form-label">Sous préfecture <span class="text-danger">*</span></label>
+            <label class="form-label">Sous préfecture</label>
             <select name="sous_prefecture_id"
                 class="form-control show-tick ms select2 select2-hidden-accessible @error('sous_prefecture_id') is-invalid @enderror"
                 data-placeholder="Select" data-select2-id="select2-data-1-4ue7" tabindex="-1" aria-hidden="true"
-                autocomplete="sous_prefecture_id" autofocus required>
+                autocomplete="sous_prefecture_id" autofocus >
                 <option data-select2-id="select2-data-3-o5ur" value="">--
                     Séléctionner
                     une sous préfecture --</option>
@@ -474,7 +474,7 @@
         <div class="col-sm-12 col-lg-12 col-md-12 col-12 ">
             <div class="form-group">
                 <label for="adresse_postale">Adresse Entreprise <span style="color: red;">*</span></label>
-                <input type="text" class="form-control @error('adresse_postale') is-invalid @enderror" value="{{ old('adresse_postale') }}"
+                <input type="text" class="form-control @error('adresse_postale') is-invalid @enderror" value="{{old('adresse_postale')}}"
                     id="adresse_postale" name="adresse_postale" placeholder="Entrez l'adresse de l'entreprise"
                     required onKeyPress="if(this.value.length==50) return false;">
                 @error('adresse_postale')

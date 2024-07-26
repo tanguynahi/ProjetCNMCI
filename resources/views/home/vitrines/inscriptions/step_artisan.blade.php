@@ -212,11 +212,11 @@
 
         </div>
         <div class="col-md-4 col-lg-4 col-12">
-            <label class="form-label">WhatsApp <span class="text-danger">*</span></label>
+            <label class="form-label">WhatsApp </label>
             <fieldset class="form-icon-group left-icon position-relative">
                 <input type="tel" name="contact_whatsapp" id="contact_whatsapp"
                     class="form-control  @error('contact_whatsapp') is-invalid @enderror"
-                    placeholder="9999999999" value="{{ old('contact_whatsapp') }}"onKeyPress="if(this.value.length==10) return false;" required>
+                    placeholder="9999999999" value="{{ old('contact_whatsapp') }}"onKeyPress="if(this.value.length==10) return false;" >
                 @error('contact_whatsapp')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

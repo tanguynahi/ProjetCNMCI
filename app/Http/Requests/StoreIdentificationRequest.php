@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreIdentificationRequest extends FormRequest
@@ -63,9 +64,18 @@ class StoreIdentificationRequest extends FormRequest
             'date_naissance_artisan' => 'required|date',
             'lieu_naissance_artisan' => 'required|string|max:50',
             'sexe_artisan' => 'required|integer|max:3',
+
             'type_document_id' => 'required|integer',
-            'lien_type_document_artisan' => 'nullable|string',
-            'autre_document_artisan' => 'nullable|string',
+            'autre_document_artisan' => [
+                'nullable',
+                'string',
+                Rule::requiredIf($this->type_document_id == 5),
+            ],
+            'lien_type_document_artisan' => [
+                'nullable',
+                'string',
+                Rule::requiredIf($this->type_document_id != 5),
+            ],
             'numero_document_artisan' => 'nullable|string|max:50',
             'lieu_delivrance_document_artisan' => 'nullable|string|max:50',
             'date_delivrance_document_artisan' => 'nullable|date',
@@ -113,7 +123,7 @@ class StoreIdentificationRequest extends FormRequest
             'declaration_maitrise_metier' => 'required|integer',
             'declaration_honneur' => 'required|integer',
             'accepte_confidentialite' => 'required|integer',
-            'signature' => 'required|string',
+            'signature' => 'required',
         ];
     }
 
@@ -243,7 +253,10 @@ class StoreIdentificationRequest extends FormRequest
         'accepte_confidentialite.required' => 'L\'acceptation de la confidentialité est obligatoire.',
         'accepte_confidentialite.integer' => 'L\'acceptation de la confidentialité doit être un entier.',
         'signature.required' => 'La signature est obligatoire.',
-        'signature.string' => 'La signature doit être une chaîne de caractères.',
+        // 'signature.string' => 'La signature doit être une chaîne de caractères.',
+
+        'autre_document_artisan.required_if' => 'Le champ autre document artisan est obligatoire lorsque le type de document est autres.',
+
     ];
     }
 

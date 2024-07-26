@@ -104,7 +104,7 @@
                 <select name="sexe_gerant" id="sexe_gerant"
                     class="country form-control select2 @error('sexe_gerant') is-invalid @enderror"
                     aria-label="example">
-                    <option value="">-- Selectionner un Sexe --</option>
+                    <option value=" ">-- Selectionner un Sexe --</option>
                     <option value="1" {{ old('sexe_gerant') == '1' ? 'selected' : '' }}>Monsieur</option>
                 <option value="2" {{ old('sexe_gerant') == '2' ? 'selected' : '' }}>Madame</option>
                 <option value="3" {{ old('sexe_gerant') == '3' ? 'selected' : '' }}>Mademoiselle</option>
@@ -120,7 +120,7 @@
                 <select name="etat_civil_gerant" id="etat_civil_gerant"
                     class="country form-control select2 @error('etat_civil_gerant') is-invalid @enderror"
                     aria-label="example">
-                    <option value="">-- Selectionner votre statut --</option>
+                    <option value=" ">-- Selectionner votre statut --</option>
                     <option value="Marié(e)" {{ old('etat_civil_gerant') == 'Marié(e)' ? 'selected' : '' }}>Marié(e)
                     </option>
                     <option value="Célibataire" {{ old('etat_civil_gerant') == 'Célibataire' ? 'selected' : '' }}>
@@ -261,7 +261,7 @@
                 </fieldset>
             </div>
             <div class="col-md-4 col-lg-4 col-12">
-                <label class="form-label">WhatsApp <span class="text-danger">*</span></label>
+                <label class="form-label">WhatsApp </label>
                 <fieldset class="form-icon-group left-icon position-relative">
                     <input type="tel" name="contact_whatsapp_gerant" id="contact_whatsapp_gerant"
                         class="form-control  @error('contact_whatsapp_gerant') is-invalid @enderror"

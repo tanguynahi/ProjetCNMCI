@@ -39,8 +39,12 @@ class AdministrateurController extends Controller
      */
     public function store(StoreAdministrateurRequest $request)
     {
-        //
 
+        
+
+    }
+    public function traiteCreation(Request $request){
+        dd($request->all());
     }
 
     /**

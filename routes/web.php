@@ -64,8 +64,11 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/page-Contact', 'contact')->name('accueil.contact');
     Route::get('/finalisation-inscription', 'create'); // on la passe avec l'id de l'artisan pour mettre son mot de passe
     Route::get('/attente-paiementInscription/{idinscription}/{idcartemembre?}', 'show')->name('attente.paiement'); // on la passe avec l'id de l'artisan pour mettre son mot de passe
+
     Route::post('/inscriptions-artisan', 'inscription')->name('inscriptionP');
     Route::get('/inscriptions-artisan', 'inscription')->name('inscription');
+    Route::get('/idenfitication', 'formInscription')->name('formulaire');
+
     Route::get('/page-connexion-artisan', 'connexion')->name('connexion.artisan');
     Route::post('/identification-artisan', 'identificationValid')->name('identification.artisan');
     Route::post('/traitement-connexion', 'traitementConnexion')->name('artisan.traitementConnexion');
@@ -77,6 +80,10 @@ Route::controller(HomeController::class)->group(function () {
 Route::controller(PaiementInitialController::class)->group(function () {
     Route::post('/paiement-inscription', 'paiementInscription')->name('paiement.inscription');
 });
+
+
+
+
 // route de l'espace artisan
 Route::controller(HomeDashboardController::class)->group(function () {
     Route::get('/tableau-de-bord', 'index')->name('artisan.tableau_de_bord');
@@ -91,13 +98,13 @@ Route::controller(CompagnonController::class)->group(function () {
     Route::get('/creation-compagnons', 'creationCompagnon')->name('compagnon.creation'); // la view de creation d'un compagnons
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('verifAuth')->group(function () {
+    
+        Route::controller(AdminDashboardController::class)->group(function () {
+            Route::get('/dashboard', 'index')->name('dashboard');
+            Route::get('/dashboard-statistiques', 'statistiques')->name('dashboard.statistiques');
+        });
 
-
-    Route::controller(AdminDashboardController::class)->group(function () {
-        Route::get('/dashboard', 'index')->name('dashboard');
-        Route::get('/dashboard-statistiques', 'statistiques')->name('dashboard.statistiques');
-    });
 
     Route::controller(IdentificationController::class)->group(function () {
         Route::put('/refuser-identification/{identification}', 'refuserIdentification')->name('refuser.identification');
@@ -149,5 +156,8 @@ Route::middleware('auth')->group(function () {
        Route::put('/mise-ajour/{id}','miseAjour')->name('branche.update');
        Route::get('/modification/{id}','editBranche')->name('branche.modification');
        Route::delete('/delete/{id}','supprimer')->name('branche.delete');
+    });
+    Route::controller(AdministrateurController::class)->group(function(){
+        Route::post('/traitementAdmini','traiteCreation')->name('traitement');
     });
 });

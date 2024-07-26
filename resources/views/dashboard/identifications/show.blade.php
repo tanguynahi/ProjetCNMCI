@@ -29,28 +29,28 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="row d-flex flex-column flex-lg-row">
                                 @php
-                                    $imgUrl = $identification->lien_photo_artisan
-                                        ? asset($identification->lien_photo_artisan)
+                                    $imgUrl = $identification['AVATAR_ARTIS']
+                                        ? asset($identification['AVATAR_ARTIS'])
                                         : asset('assets/dashboard/img/avatars/1.png');
-                                    $imgUrl2 = $identification->lien_photo_gerant
-                                        ? asset($identification->lien_photo_gerant)
+                                    $imgUrl2 = $identification['AVATAR_GERAN'] 
+                                        ? asset($identification['AVATAR_GERAN'])
                                         : asset('assets/dashboard/img/avatars/2.png');
 
                                     $avisBadge = '';
 
-                                    if ($identification->avis == 'En Attente') {
+                                    if ($identification['STATUT'] == 3) {
                                         $avisBadge =
                                             '<span class="badge bg-label-warning text-capitalized"> En Attente </span>';
-                                    } elseif ($identification->avis == 'Acceptée') {
+                                    } elseif ($identification['STATUT'] == 1) {
                                         $avisBadge =
                                             '<span class="badge bg-label-success text-capitalized"> Acceptée </span>';
-                                    } elseif ($identification->avis == 'Refusée') {
+                                    } elseif ($identification['STATUT'] == 4) {
                                         $avisBadge =
                                             '<span class="badge bg-label-danger text-capitalized"> Refusée </span>';
                                     }
 
                                     $statusBadge =
-                                        $identification->status == 1
+                                    $identification['STATUT'] == 1
                                             ? '<span class="badge bg-label-success text-capitalized"> Actif </span>'
                                             : '<span class="badge bg-label-danger text-capitalized"> Inactif </span>';
 
@@ -66,45 +66,45 @@
                                         <div class="col-lg-10 col-md-10">
                                             <p>
                                                 <span class="fw-bold">Nom & Prénom(s) :</span>
-                                                {{ $identification->nom_artisan }}
-                                                {{ $identification->prenom_artisan }}
+                                                {{ $identification['NOM_ARTIS'] }}
+                                                        {{ $identification['PRENOMS_ARTIS'] }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">Née le :</span>
-                                                {{ formatDate($identification->date_naissance_artisan) }}
+                                                {{ ($identification['DATE_NAISS_ARTIS']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2"> à: </span>
-                                                {{ $identification->lieu_naissance_artisan }}
+                                                {{ $identification['LIEU_NAISS_ARTIS'] }}
                                             </p>
                                             <p>
 
                                                 <span class="fw-bold">Nationalité :</span>
-                                                {{ $identification->nationalite_artisan }}
+                                                {{ $identification['NATIONALITE_ARTIS'] }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">Sexe :</span>
-                                                {{ $identification->sexe_artisan }}
+                                                {{ ($identification['CIVILITE_ARTIS']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">Domicilié à :</span>
-                                                {{ $identification->adresse_artisan }}
+                                                {{ ($identification['ADRESSE_ARTIS']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">Quartier :</span>
-                                                {{ $identification->quartier }}
+                                                {{ ($identification['QUARTIER']) }}
                                             </p>
                                             <p>
                                                 <span class="fw-bold">Pièce d'icentité :</span>
-                                                {{ $identification->typeDocument->libelle }}
+                                                {{ ($identification['ID_TYPE_DOCS_ARTIS']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">N° Pièce :</span>
-                                                {{ $identification->numero_document_artisan }}
+                                                {{ ($identification['NUM_DOCS_ARTIS']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">Délivré à :</span>
-                                                {{ $identification->lieu_delivrance_document_artisan }}
+                                                {{ ($identification['LIEU_DELIVRE_DOCS_ARTIS']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">Le :</span>
-                                                {{ formatDate($identification->date_delivrance_document_artisan) }}
+                                                {{ ($identification['DATE_DELIVRE_DOCS_ARTIS']) }}
                                             </p>
                                             <p>
-                                                <span class="fw-bold">Eta civil :</span>
-                                                {{ $identification->etat_civil_artisan }}
+                                                <span class="fw-bold">Etat civil :</span>
+                                                {{ ($identification['CIVILITE_ARTIS']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">Contact :</span>
-                                                {{ $identification->contact_artisan }}
+                                                {{ ($identification['CONTACT_ARTIS']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">WathSapp :</span>
-                                                {{ $identification->contact_whatsapp }}
+                                                {{ ($identification['CONTACT_WHATSAPP_ARTIS']) }}
                                             </p>
                                             <p>
                                                 <span class="fw-bold">Email :</span>
-                                                {{ $identification->email_artisan }}
+                                                {{ ($identification['ADR_EMAIL_ARTIS']) }}
                                             </p>
                                         </div>
                                     </div>
@@ -115,23 +115,23 @@
                                         professionnelle
                                         l'artisan</p>
                                     <p>
-                                        <span class="fw-bold">Niveau d'étude :</span> {{ $identification->niveau_etude }}
+                                        <span class="fw-bold">Niveau d'étude :</span>   {{ ($identification['NIVEAU_ETUDE_ARTIS']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Classe : </span>
-                                        {{ $identification->classe }}
+                                        {{ ($identification['CLASSE_ARTIS']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Diplôme obtenu : </span>
-                                        {{ $identification->diplome_etude_obtenu }}
+                                        {{ ($identification['DIPLOME_OBT_ARTIS']) }}
                                     </p>
                                     <p>
                                         <span class="fw-bold">Apprentissage du métier: </span>
-                                        {{ $identification->apprentissage_metier }}
+                                        {{ ($identification['APPRENTISS_MET_ARTIS']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Niveau métier : </span>
-                                        {{ $identification->niveau_metier_artisan }}
+                                        {{ ($identification['NIVEAU_METIER_ARTIS']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Dilpôme métier : </span>
-                                        {{ $identification->diplome_metier_obtenu }}
+                                        {{ ($identification['DIPLOME_METIER_OBT_ARTIS']) }}
                                     </p>
                                     <p>
                                         <span class="fw-bold">Dilpôme CNMCI : </span>
-                                        {{ $identification->diplome_cnmci }}
+                                        {{ ($identification['DIPLOME_CNMCI_ARTIS']) }}
                                     </p>
                                 </div>
 
@@ -140,72 +140,72 @@
                                     </p>
                                     <p>
                                         <span class="fw-bold">Activité principale exercée :</span>
-                                        {{ $identification->typeActivite->libelle }}
+                                        {{ ($identification['DENOMINATION']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Activité secondaire : </span>
-                                        {{ $identification->activite_secondaire }}
+                                        {{ ($identification['ACTIVITE_SECONDAIRE']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Dénomination de l'entreprise : </span>
-                                        {{ $identification->denomination_entreprise }}
+                                        {{ ($identification['DENOMINATION']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Sigle : </span>
-                                        {{ $identification->sigle_ou_enseigne }}
+                                        {{ ($identification['SIGLE']) }}
                                     </p>
                                     <p>
                                         <span class="fw-bold">Date de début :</span>
-                                        {{ formatDate($identification->date_debut_activite) }}
+                                        {{ ($identification['DATE_DEBT_ACTIVITE']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Type d'entreprise : </span>
-                                        {{ $identification->typeEntreprise->libelle }}
+                                        {{ ($identification['ID_TYPE_ENTREPRISES']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Régime Fiscal : </span>
-                                        {{ $identification->regime_fiscal }}
+                                        {{ ($identification['REGIME_FISCALE']) }}
                                     </p>
                                     <p>
                                         <span class="fw-bold">Durée personne morale : </span>
-                                        {{ $identification->duree_personne_morale }}
+                                        {{ ($identification['DUREE_PERS_MORAL']) }} {{ ($identification['TYPE_DUREE']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Capital social : </span>
-                                        {{ $identification->capital_social }}
+                                        {{ ($identification['CAPITAL_SOCIAL']) }}
                                     </p>
                                     <p>
                                         <span class="fw-bold">N° RST (CNPS) : </span>
-                                        {{ $identification->numero_cnps }}
+                                        {{ ($identification['NUMERO_CNPS']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">N° Compte contribuable :</span>
-                                        {{ $identification->numero_compte_contribuable }}
+                                        {{ ($identification['NUM_COMPTE_CONT']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Adresse postale : </span>
-                                        {{ $identification->adresse_postale }}
+                                        {{ ($identification['ADRESSE_POSTAL']) }}
                                     </p>
                                     <p>
                                         <span class="fw-bold">Contact : </span>
-                                        {{ $identification->contact_entreprise }}
+                                        {{ ($identification['CONTACT']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Email :</span>
-                                        {{ $identification->email_entreprise }}
+                                        {{ ($identification['ADR_EMAIL']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Localisation de l'activité : Département :
                                         </span>
-                                        {{ $identification->departement }}
+                                        {{ ($identification['LIB_DEPARTEMENT']) }}
                                     </p>
                                     <p>
-                                        <span class="fw-bold">LOT N° :</span> {{ $identification->numero_lot }}
+                                        <span class="fw-bold">LOT N° :</span>  {{ ($identification['NUM_LOT']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">ILOT N° : </span>
-                                        {{ $identification->numero_ilot }}
+                                        {{ ($identification['NUM_ILOT']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Régistre : </span>
-                                        {{ $identification->registre_entreprise }}
+                                        {{ ($identification['TYPE_REGISTRE']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">N° du régistre : </span>
-                                        {{ $identification->numero_registre }}
+                                        {{ ($identification['NUMERO_REGISTRE']) }}
                                     </p>
                                     <p>
-                                        <span class="fw-bold">Commune :</span> {{ $identification->commune->libelle }}
+                                        <span class="fw-bold">Commune :</span>  {{ ($identification['ID_COMMUNE']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">S/P : </span>
-                                        {{ $identification->sousPrefecture->libelle }}
+                                        {{ ($identification['ID_SOUS_PREFECTURE']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Quartier : </span>
-                                        {{ $identification->quartier }}
+                                        {{ ($identification['QUARTIER']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Village : </span>
-                                        {{ $identification->village }}
+                                        {{ ($identification['VILLAGE']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Localisation google : </span> <a
-                                            href="{{ $identification->lien_google_map }}" target="_blank">Visitez</a>
+                                            href="{{ ($identification['LIEN_MAP']) }}" target="_blank">Visitez</a>
                                     </p>
                                     <p>
                                         <span class="fw-bold">Nbre d'Associés :</span>
-                                        {{ $identification->nombre_associes }}
+                                        {{ ($identification['LIEN_MAP']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Nbre Compagnons : </span>
-                                        {{ $identification->nombre_compagnon }}
+                                        {{ ($identification['NB_COMPAGNON']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Nbre d'Apprentis : </span>
-                                        {{ $identification->nombre_apprenti }}
+                                        {{ ($identification['NB_APPRENTIS']) }}
                                     </p>
 
                                 </div>
@@ -220,48 +220,50 @@
                                         <div class="col-lg-10 col-md-10">
                                             <p>
                                                 <span class="fw-bold">Nom & Prénom(s) :</span>
-                                                {{ $identification->nom_gerant }}
-                                                {{ $identification->prenom_gerant }}
+                                                {{ ($identification['NOM_GERAN']) }}
+                                                {{ ($identification['PRENOM_GERAN']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">Née le :</span>
-                                                {{ formatDate($identification->date_naissance_gerant) }}
+                                                {{-- {{ formatDate($identification->date_naissance_gerant) }} --}}
+                                                {{formatDate ($identification['DATE_NAISS_GERAN']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2"> à: </span>
-                                                {{ $identification->lieu_naissance_gerant }}
+                                                {{ ($identification['LIEU_NAISS_GERAN']) }}
                                             </p>
                                             <p>
                                                 <span class="fw-bold">Nationalité :</span>
-                                                {{ $identification->nationalite_gerant }}
+                                                {{ ($identification['NATIONALITE_GERAN']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">Sexe :</span>
-                                                {{ $identification->sexe_gerant }}
+                                                {{ ($identification['CIVILITE_GERAN']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">Domicilié à :</span>
-                                                {{ $identification->adresse_gerant }}
+                                                {{ ($identification['ADRESSE_GERAN']) }}
                                             </p>
                                             <p>
-                                                @php
+                                                {{-- @php
                                                     $libelleTypeDocumentGerant = \App\Models\TypeDocument::where(
                                                         'id',
                                                         $identification->gerant_type_document_id,
                                                     )->value('libelle');
-                                                @endphp
+                                                @endphp --}}
                                                 <span class="fw-bold">Pièce d'icentité :</span>
-                                                {{ $libelleTypeDocumentGerant }}
+                                                {{ ($identification['ID_TYPE_DOCS_GERAN']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">N° Pièce :</span>
-                                                {{ $identification->numero_document_gerant }}
+                                                {{ ($identification['NUM_DOCS_GERAN']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">Délivré à :</span>
-                                                {{ $identification->lieu_delivrance_document_gerant }}
+                                                {{ ($identification['LIEU_DELIVRE_DOCS_GERAN']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">Le :</span>
-                                                {{ formatDate($identification->date_delivrance_document_gerant) }}
+                                                {{-- {{ formatDate($identification->date_delivrance_document_gerant) }} --}}
+                                                {{ ($identification['DATE_DELIVRE_DOCS_GERAN']) }}
                                             </p>
                                             <p>
                                                 <span class="fw-bold">Eta civil :</span>
-                                                {{ $identification->etat_civil_gerant }}
+                                                {{ ($identification['ETAT_CIVIL_GERAN']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">Contact :</span>
-                                                {{ $identification->contact_gerant }}
+                                                {{ ($identification['CONTACT_GERAN']) }}
                                                 <span class="fw-bold mx-lg-2 mx-md-2">WathSapp :</span>
-                                                {{ $identification->contact_whatsapp_gerant }}
+                                                {{ ($identification['CONTACT_WHATSAPP_GERAN']) }}
                                             </p>
                                             <p>
                                                 <span class="fw-bold">Email :</span>
-                                                {{ $identification->email_gerant }}
+                                                {{ ($identification['ADR_EMAIL_GERAN']) }}
                                             </p>
                                         </div>
                                     </div>
@@ -273,23 +275,23 @@
                                         du gerant</p>
                                     <p>
                                         <span class="fw-bold">Niveau d'étude :</span>
-                                        {{ $identification->niveau_etude_gerant }}
+                                        {{ ($identification['NIVEAU_ETUDE_GERAN']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Classe : </span>
-                                        {{ $identification->classe_gerant }}
+                                        {{ ($identification['CLASSE_GERAN']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Diplôme obtenu : </span>
-                                        {{ $identification->diplome_etude_obtenu_gerant }}
+                                        {{ ($identification['DIPLOME_ETD_OBT_GERAN']) }}
                                     </p>
                                     <p>
                                         <span class="fw-bold">Apprentissage du métier: </span>
-                                        {{ $identification->apprentissage_metier_gerant }}
+                                        {{ ($identification['APPRENTISS_MET_GERAN']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Niveau métier : </span>
-                                        {{ $identification->niveau_metier_gerant }}
+                                        {{ ($identification['NIVEAU_METIER_GERAN']) }}
                                         <span class="fw-bold mx-lg-2 mx-md-2">Dilpôme métier : </span>
-                                        {{ $identification->diplome_metier_obtenu_gerant }}
+                                        {{ ($identification['DIPLOME_MET_OBT_GERAN']) }}
                                     </p>
                                     <p>
                                         <span class="fw-bold">Dilpôme CNMCI : </span>
-                                        {{ $identification->diplome_cnmci_gerant }}
+                                        {{ ($identification['DIPLOME_CNMCI_GERAN']) }}
                                     </p>
                                 </div>
                             </div>
@@ -297,25 +299,25 @@
                             <div class="row align-items-center mb-3">
 
                                 <div class="col-lg-4 col-md-4 col-sm-12 pt-2">
-                                    @if ($identification->avis == 'Acceptée')
+                                    @if ($identification['STATUT'] == 1)
                                         <p><span class="fs-5">État : </span><u><span
                                                     class="text-success fs-5 fw-bold">Acceptée</span></u></p>
                                     @endif
 
-                                    @if ($identification->avis == 'En Attente')
+                                    @if ($identification['STATUT']  == 3)
                                         <p><span class="fs-5">État : </span><u><span
                                                     class="text-warning fs-5 fw-bold">En
                                                     attente</span></u></p>
                                     @endif
 
-                                    @if ($identification->avis == 'Refusée')
+                                    @if ($identification['STATUT']  == 4)
                                         <p><span class="fs-5">État : </span><u><span
                                                     class="text-danger fs-5 fw-bold">Refusée</span></u></p>
                                     @endif
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8">
                                     <div class="d-flex">
-                                        @if ($identification->avis == 'En Attente')
+                                        @if ($identification['STATUT']  == 3)
                                             <a id="btn_rejeter" class="btn btn-outline-danger mx-2 fw-bold"><i
                                                     class="fa fa-close me-1"></i>
                                                 Refusée</a>
@@ -327,7 +329,7 @@
 
                                 {{-- MODAL DE VALIDATION DE DEMANDE DE SOUSCRIPTION POUR PRODUIT --}}
                                 <!-- Modal accepterIdentificationModal-->
-                                @if ($identification->avis == 'En Attente')
+                                @if ($identification['STATUT']  == 3)
                                     <div class="modal fade flip" id="accepterIdentificationModal" tabindex="-1"
                                         aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
@@ -350,7 +352,7 @@
                                                             id="deleteRecord-close" data-bs-dismiss="modal"><i
                                                                 class="ri-close-line me-1 align-middle"></i> Non</button>
 
-                                                            <form action="{{ route('accepter.identification', $identification->id) }}"
+                                                            <form action="{{ route('accepter.identification', $identification['ID_IDENTIFICATIONS']) }}"
                                                                 method="POST" id="accepter_identification_artisan">
                                                                 @csrf
                                                                 @method('PUT')
@@ -397,8 +399,8 @@
                                         </div>
                                     </div>
                                 @endif
-                                @if ($identification->avis == 'En Attente')
-                                    <form action="{{ route('refuser.identification', $identification->id) }}"
+                                @if ($identification['STATUT'] == 3)
+                                    <form action="{{ route('refuser.identification', $identification['ID_IDENTIFICATIONS']) }}"
                                         method="POST" id="refuser_identification_artisan"
                                         class="needs-validation @if ($errors->has('motif_refus')) was-validated @endif"
                                         novalidate style="@if (!$errors->has('motif_refus')) display: none; @endif">
@@ -435,11 +437,11 @@
                                     </form>
                                 @endif
                             </div>
-                            @if ($identification->avis == 'Refusée')
+                            @if ($identification['STATUT'] == 4)
                                 <div class="row">
                                     <h6><u>Motif du refut :</u></h6>
                                     <div class="col-12">
-                                        <p class="fs-6">{{ $identification->motif_refus }}</p>
+                                        <p class="fs-6">{{ $identification['MOTIFS_REJET'] }}</p>
                                     </div>
                                 </div>
                             @endif

@@ -35,7 +35,6 @@
                                 <th>Entreprise</th>
                                 <th>Commune</th>
                                 <th>Status</th>
-                                {{-- <th>Etat</th> --}}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -43,27 +42,22 @@
 
                             @foreach ($identifications as $index => $identification)
                                 @php
-                                    $imgUrl = $identification->lien_photo
-                                        ? asset($identification->lien_photo)
+                                   $imgUrl = $identification['AVATAR_ARTIS']
+                                        ? asset($identification['AVATAR_ARTIS'])
                                         : asset('assets/dashboard/img/avatars/1.png');
 
                                     $avisBadge = '';
 
-                                    if ($identification->avis == 'En Attente') {
+                                    if ($identification['STATUT'] == 3) {
                                         $avisBadge =
                                             '<span class="badge bg-label-warning text-capitalized"> En Attente </span>';
-                                    } elseif ($identification->avis == 'Acceptée') {
+                                    } elseif ($identification['STATUT'] == 1) {
                                         $avisBadge =
                                             '<span class="badge bg-label-success text-capitalized"> Acceptée </span>';
-                                    } elseif ($identification->avis == 'Refusée') {
+                                    } elseif ($identification['STATUT'] == 4) {
                                         $avisBadge =
                                             '<span class="badge bg-label-danger text-capitalized"> Refusée </span>';
                                     }
-
-                                    $statusBadge =
-                                        $identification->status == 1
-                                            ? '<span class="badge bg-label-success text-capitalized"> Actif </span>'
-                                            : '<span class="badge bg-label-danger text-capitalized"> Inactif </span>';
 
                                 @endphp
                                 <tr>
@@ -78,49 +72,48 @@
                                             </div>
                                             <div class="d-flex flex-column">
                                                 <a href="pages-profile-user.html" class="text-heading text-truncate">
-                                                    <span class="fw-medium">{{ formatSexe3($identification->sexe_artisan) }}
-                                                        {{ $identification->nom_artisan }}
-                                                        {{ $identification->prenom_artisan }}</span>
+                                                    <span class="fw-medium">{{ ($identification['CIVILITE_ARTIS']) }}
+                                                        {{ $identification['NOM_ARTIS'] }}
+                                                        {{ $identification['PRENOMS_ARTIS'] }}</span>
                                                 </a>
-                                                <small class="text-truncate">{{ $identification->contact_artisan }}</small>
+                                                <small class="text-truncate">{{ $identification['CONTACT_ARTIS'] }}</small>
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{{ $identification->numero_identification }}</td>
-                                    <td>{{ $identification->typeActivite->libelle }}</td>
-                                    <td>{{ $identification->numero_registre }}</td>
+                                    <td>{{ $identification['NUMERO_IDENT'] }}</td>
+                                    <td>{{ $identification['ID_TYPE_ACTIVITES'] }}</td>
+                                    <td>{{ $identification['NUMERO_REGISTRE'] }}</td>
                                     <td>
                                         <div class="d-flex justify-content-start align-items-center">
                                             <div class="d-flex flex-column">
                                                 <a href="pages-profile-user.html" class="text-heading text-truncate">
                                                     <span
-                                                        class="fw-medium">{{ $identification->denomination_entreprise }}</span>
+                                                    class="fw-medium">{{ $identification['DENOMINATION'] }}</span>
                                                 </a>
                                                 <small
-                                                    class="text-truncate">{{ $identification->typeEntreprise->libelle }}</small>
+                                                    class="text-truncate">{{ $identification['ID_TYPE_ENTREPRISES'] }}</small>
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{{ Str::words($identification->commune->libelle, 2) }}</td>
+                                    <td>{{ ($identification['ID_COMMUNE']) }}</td>
 
                                     <td>{!! $avisBadge !!}</td>
-                                    {{-- <td>{!! $statusBadge !!}</td> --}}
                                     <td>
                                         <div class="d-flex align-items-center">
 
-                                            <a href="{{ route('identifications.show', $identification->id) }}"
+                                            <a href="{{ route('identifications.show', $identification['ID_IDENTIFICATIONS']) }}"
                                                 data-bs-toggle="tooltip"
                                                 class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill"
                                                 data-bs-placement="top" aria-label="Infos" data-bs-original-title="Infos"><i
                                                     class="ti ti-eye mx-2 ti-md"></i>
                                             </a>
-                                            <a href="{{ route('identifications.edit', $identification->id) }}"
+                                            <a href="{{ route('identifications.edit', $identification['ID_IDENTIFICATIONS']) }}"
                                                 data-bs-toggle="tooltip"
                                                 class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill"
                                                 data-bs-placement="top" aria-label="Modifier"
                                                 data-bs-original-title="Modifier"><i class="ti ti-edit mx-2 ti-md"></i>
                                             </a>
-                                            <a href="#deleteModal{{ $identification->id }}" id="DeleteIdentification"
+                                            <a href="#deleteModal{{ $identification['ID_IDENTIFICATIONS'] }}" id="DeleteIdentification"
                                                 class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill"
                                                 data-bs-toggle="modal" data-bs-toggle="tooltip" data-bs-placement="top"
                                                 aria-label="Supprimer" data-bs-original-title="Supprimer"><i
@@ -131,7 +124,7 @@
                                 </tr>
 
                                 <!-- Modal delete-->
-                                <div class="modal fade flip" id="deleteModal{{ $identification->id }}" tabindex="-1"
+                                <div class="modal fade flip" id="deleteModal{{ $identification['ID_IDENTIFICATIONS'] }}" tabindex="-1"
                                     aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
@@ -154,10 +147,9 @@
                                                                 class="ri-close-line me-1 align-middle"></i> Fermer</button>
 
                                                         <form method="POST"
-                                                            action="{{ route('identifications.destroy', $identification->id) }}">
+                                                            action="{{ route('identifications.destroy', $identification['ID_IDENTIFICATIONS']) }}">
                                                             @csrf
                                                             @method('DELETE')
-                                                            {{-- <input name="_method" type="hidden" value="DELETE"> --}}
                                                             <button class="btn btn-danger" id="delete-record">Oui,
                                                                 supprimer</button>
                                                         </form>
@@ -167,7 +159,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--end modal -->
                             @endforeach
 
                         </tbody>

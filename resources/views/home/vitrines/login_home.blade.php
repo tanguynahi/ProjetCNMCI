@@ -56,9 +56,9 @@
                                 <label class="form-label">Numero de Téléphone </label>
                                 <fieldset class="form-icon-group right-icon position-relative">
                                     <input type="tel"
-                                        class="form-control form-control-lg phone-number  @error('contact') is-invalid @enderror"
+                                        class="form-control form-control-lg   @error('contact') is-invalid @enderror"
                                         placeholder="0000000000" id="contact" name="contact"
-                                        value="{{ old('contact') }}" autocomplete="contact" autofocus required>
+                                        value="{{ old('contact') }}" autocomplete="contact" autofocus required onKeyPress="if(this.value.length==10) return false;">
                                     @error('contact')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>
